@@ -3,10 +3,12 @@
 #
 #  Necessary functions for deterministic simulation
 #  of adult genotypic frequency recursions for the
-#  SEXUALLY ANTAGONISTIC SELECTION MODEL of the 
-#  evolution of new inversions spanning the male 
-#  sex-determining locus and a second (SA) locus with
-#  partial linkage (within the PAR)
+#  SEXUALLY ANTAGONISTIC SELECTION MODEL for the 
+#  evolution of new inversions capturing the male
+#  dominant sex-determining allele at a sex- 
+#  determining locus and a male-beneficial 
+#  allele at a second (SA) locus with partial 
+#  linkage (within the PAR)
 #
 #  Author: Colin Olito
 #
@@ -38,7 +40,7 @@
 ## Necessary Functions
 #######################################################
 
-# meiosis & random mating functions
+# meiosis & random mating
 # Females
 x1m  <-  function(Fx, Fy, r) {
 	(Fx[1] + Fx[2]/2) * (Fy[1] + Fy[2]*(1 - r) + Fy[3] + Fy[4]*r)
@@ -182,10 +184,7 @@ lambdaYWkSel2  <-  function(Xf, Y, hm, sm) {
 #' @examples
 #' detSimYInversion(par.list, Fx.init, Fy.init, eqStart = TRUE, threshold = 1e-6) 
 
-getEqFreqs  <-  function(par.list, 
-						 Fx.init = c(0.25, 0.5, 0.25), 
-						 Fy.init = c(0.25, 0.25, 0, 0.25, 0.25, 0), 
-						 eqStart = TRUE, eq.threshold=1e-6) {
+getEqFreqsSAY  <-  function(par.list, eq.threshold=1e-6, ...) {
 
 	# unpack par.list
 	gen  =  par.list$gen
@@ -198,13 +197,6 @@ getEqFreqs  <-  function(par.list,
 	# Sexually antagonistic fitness expressions
 	 Wf  <-  c(1,      1 - hf*sf, 1 - sf)
 	 Wm  <-  c(1 - sm, 1 - hm*sm, 1)
-
-	##  Initilize data storage structures
-	Fx.gen  <-  matrix(0, ncol=3, nrow=par.list$gen)
-	colnames(Fx.gen)  <-  c('x1', 'x2', 'x3')
-	Fy.gen  <-  matrix(0, ncol=6, nrow=par.list$gen)
-	colnames(Fy.gen)  <-  c('y1', 'y2c', 'y2cI', 'y2t', 'y3', 'y3I')
-
 
 	# Arbitrary polymorphic initial frequencies
 	Fx.eq     <-  c(0.25, 0.5, 0.25)
@@ -251,8 +243,7 @@ getEqFreqs  <-  function(par.list,
 
 
 
-#' Forward deterministic simulation of genotypic recursions for
-#' inversion
+#' Forward deterministic simulation of genotypic recursions for invasion of a Y-linked inversion
 #'
 #' @title Forward deterministic simulation of adult genotypic recursions for 2-locus model
 #' 		  of PAR dynamics with an inversion genotype spanning the male SDR and the second locus
@@ -308,7 +299,7 @@ detSimYInversion  <-  function(par.list,
 
 	# Find equilibrium frequencies before introducing the inversion?
 	if(eqStart) {
-		initEq    <-  getEqFreqs(par.list=par.list, eq.threshold=1e-6)
+		initEq    <-  getEqFreqsSAY(par.list=par.list, eq.threshold=1e-6)
 		aFreq.eq  <-  initEq$aFreq.eq
 		Fx.eq     <-  initEq$Fx.eq
 		Fy.eq     <-  initEq$Fy.eq
@@ -329,9 +320,9 @@ detSimYInversion  <-  function(par.list,
 	lambdaInv  <-  lambdaYWkSel(Fx=Fx.eq, Fy=Fy.eq, r=r, hm=hm, sm=sm)
 
 	# Introduce inversion at low frequency
-	invMut  <-  c(2,4)[as.vector(rmultinom(1,prob=Fy.eq[c(2,4)], size=1)) == 1]
+	invMut  <-  c(2,5)[as.vector(rmultinom(1,prob=Fy.eq[c(2,5)], size=1)) == 1]
 	Fy.eq[invMut]  <-  Fy.eq[invMut] - 1e-5
-	Fy.eq[invMut + invMut/2]  <-  Fy.eq[invMut + invMut/2] + 1e-5
+	Fy.eq[invMut + 1]  <-  Fy.eq[invMut + 1] + 1e-5
 
 	# Initialize .gen storage
 	Fx.gen[1,]  <-  Fx.eq
@@ -367,7 +358,7 @@ detSimYInversion  <-  function(par.list,
 		Fym         <-  Fym/sum(Fym)
 		FxPr        <-  FxPr/sum(FxPr)
 		FyPr        <-  FyPr/sum(FyPr)
-		diffs       <-  abs(c(FxPr - Fx.eq, FyPr - Fy.eq))
+		diffs       <-  abs(c(FxPr - Fx.gen[i-1,], FyPr - Fx.gen[i-1,]))
 		Fx.gen[i,]  <-  FxPr
 		Fy.gen[i,]  <-  FyPr 
 		i=i+1

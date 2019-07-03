@@ -124,13 +124,8 @@ invFwdSimYInversion  <-  function(par.list, Fx.init, Fy.init, ...) {
 
 	# Introduce inversion at low frequency
 	invMut  <-  c(2,5)[as.vector(rmultinom(1,prob=Fy.eq[c(2,5)], size=1)) == 1]
-	Fy.eq[invMut]  <-  Fy.eq[invMut] - (2/N)
-	if(invMut == 2) {
-		Fy.eq[3]  <-  Fy.eq[3] + (2/N)		
-	}
-	if(invMut == 5) {
-		Fy.eq[6]  <-  Fy.eq[6] + (2/N)		
-	}
+	Fy.eq[invMut]      <-  Fy.eq[invMut] - (2/N)
+	Fy.eq[invMut + 1]  <-  Fy.eq[invMut + 1] + (2/N)
 
 	# Initialize .gen storage
 	Fx.gen  <-  Fx.eq
@@ -288,7 +283,7 @@ runWFSimsYinversionValidatePinvApprox  <-  function(par.list) {
 									"pInvApprox2"
 									)
 		# export data as .csv to ./output/data
-		filename <-  paste("./output/data/simResults/SA/SA_Y_InvvalidatePinv_sfGrad", "_N", par.list$N, "_hf", par.list$hf, "_hm", par.list$hm, "_sm", par.list$sm, "_r", par.list$r, ".csv", sep="")
+		filename <-  paste("./output/data/simResults/SA/SA_Y_validatePinv_sfGrad", "_N", par.list$N, "_hf", par.list$hf, "_hm", par.list$hm, "_sm", par.list$sm, "_r", par.list$r, ".csv", sep="")
 		write.csv(results.df, file=filename, row.names = FALSE)
 	}
 
@@ -342,7 +337,7 @@ runWFSimsYinversionValidatePinvApprox  <-  function(par.list) {
 									"pInvApprox2"
 									)
 		# export data as .csv to ./output/data
-		filename <-  paste("./output/data/simResults/SA/SA_Y_InvvalidatePinv_rGrad", "_N", par.list$N, "_hf", par.list$hf, "_sf", par.list$sf, "_hm", par.list$hm, "_sm", par.list$sm, ".csv", sep="")
+		filename <-  paste("./output/data/simResults/SA/SA_Y_validatePinv_rGrad", "_N", par.list$N, "_hf", par.list$hf, "_sf", par.list$sf, "_hm", par.list$hm, "_sm", par.list$sm, ".csv", sep="")
 		write.csv(results.df, file=filename, row.names = FALSE)
 	}
 }
