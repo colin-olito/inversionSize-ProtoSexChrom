@@ -50,8 +50,7 @@ source('./R/functions-SA-Y-determSims.R')
 #################################
 
 
-#' Forward deterministic simulation of genotypic recursions for
-#' inversion
+#' Wright-Fisher simulation of genotypic recursions for inversion
 #'
 #' @title Forward deterministic simulation of adult genotypic recursions for 2-locus model
 #' 		  of PAR dynamics with an inversion genotype spanning the male SDR and the second locus
@@ -145,24 +144,24 @@ invFwdSimYInversion  <-  function(par.list, Fx.init, Fy.init, ...) {
 		# 1) Meiosis & random mating  --> Offspring genotype frequencies
 		aFreq.eq  <-  c(Xf(Fx=Fx.gen), Xm(Fy=Fy.gen, r=r), Y(Fy=Fy.gen, r=r))
 		Fxm  <-  round(c(x1m(  Fx=Fx.gen, Fy=Fy.gen, r=r),
-					  x2m(  Fx=Fx.gen, Fy=Fy.gen, r=r),
-					  x3m(  Fx=Fx.gen, Fy=Fy.gen, r=r)), digits=8)
+						 x2m(  Fx=Fx.gen, Fy=Fy.gen, r=r),
+						 x3m(  Fx=Fx.gen, Fy=Fy.gen, r=r)), digits=8)
 		Fym  <-  round(c(y1m(  Fx=Fx.gen, Fy=Fy.gen, r=r),
-					  y2cm( Fx=Fx.gen, Fy=Fy.gen, r=r),
-					  y2cIm(Fx=Fx.gen, Fy=Fy.gen, r=r),
-					  y2tm( Fx=Fx.gen, Fy=Fy.gen, r=r),
-					  y3m(  Fx=Fx.gen, Fy=Fy.gen, r=r),
-					  y3Im( Fx=Fx.gen, Fy=Fy.gen, r=r)), digits=8)
+						 y2cm( Fx=Fx.gen, Fy=Fy.gen, r=r),
+						 y2cIm(Fx=Fx.gen, Fy=Fy.gen, r=r),
+						 y2tm( Fx=Fx.gen, Fy=Fy.gen, r=r),
+						 y3m(  Fx=Fx.gen, Fy=Fy.gen, r=r),
+						 y3Im( Fx=Fx.gen, Fy=Fy.gen, r=r)), digits=8)
 		# 4) Expected frequencies
-		FxPr  <-  round(c(x1Pr( Fxm=Fxm, Wf=Wf),
-					  x2Pr(  Fxm=Fxm, Wf=Wf),
-					  x3Pr(  Fxm=Fxm, Wf=Wf)), digits=8)
-		FyPr  <-  round(c(y1Pr( Fym=Fym, Wm=Wm),
-					  y2cPr( Fym=Fym, Wm=Wm),
-					  y2cIPr(Fym=Fym, Wm=Wm),
-					  y2tPr( Fym=Fym, Wm=Wm),
-					  y3Pr(  Fym=Fym, Wm=Wm),
-					  y3IPr( Fym=Fym, Wm=Wm)), digits=8)
+		FxPr  <-  round(c(x1Pr(  Fxm=Fxm, Wf=Wf),
+						  x2Pr(  Fxm=Fxm, Wf=Wf),
+						  x3Pr(  Fxm=Fxm, Wf=Wf)), digits=8)
+		FyPr  <-  round(c(y1Pr(  Fym=Fym, Wm=Wm),
+					  	  y2cPr( Fym=Fym, Wm=Wm),
+						  y2cIPr(Fym=Fym, Wm=Wm),
+						  y2tPr( Fym=Fym, Wm=Wm),
+						  y3Pr(  Fym=Fym, Wm=Wm),
+						  y3IPr( Fym=Fym, Wm=Wm)), digits=8)
 		# 5) Draw random frequencies in adults
 		Fx.gen      <-  as.vector(rmultinom(1, N/2, FxPr)/(N/2))
 		Fy.gen      <-  as.vector(rmultinom(1, N/2, FyPr)/(N/2))

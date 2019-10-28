@@ -1,0 +1,571 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Preamble
+\documentclass{article}
+
+%Dependencies
+\usepackage[left]{lineno}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+\newcommand\hl[1]{%
+  \bgroup
+  \hskip0pt\color{blue!80!black}%
+  #1%
+  \egroup
+}
+\usepackage{ogonek}
+\usepackage{float}
+\usepackage{charter}
+\usepackage[charter]{mathdesign}
+\usepackage{amsmath}
+\usepackage{old-arrows}
+\usepackage{enumitem}
+\usepackage{wasysym}
+
+% Other Packages
+%\usepackage{times}
+\RequirePackage{fullpage}
+\linespread{1.5}
+\RequirePackage[colorlinks=true, allcolors=black]{hyperref}
+\RequirePackage[english]{babel}
+%\RequirePackage{amsmath,amsfonts,amssymb}
+%\RequirePackage[sc]{mathpazo}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{url}
+\usepackage{tabu}
+
+% Bibliography
+%\usepackage[authoryear,sectionbib,sort]{natbib}
+\usepackage{natbib} \bibpunct{(}{)}{;}{author-year}{}{,}
+\bibliographystyle{genetics}
+\addto{\captionsenglish}{\renewcommand{\refname}{Literature Cited}}
+\setlength{\bibsep}{0.0pt}
+
+% Graphics package
+\usepackage{graphicx}
+\graphicspath{{../output/figures/}.pdf}
+
+% New commands: fonts
+%\newcommand{\code}{\fontfamily{pcr}\selectfont}
+%\newcommand*\chem[1]{\ensuremath{\mathrm{#1}}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+%\titleformat{\subsubsection}[runin]{\bfseries\itshape}{\thesubsubsection.}{0.5em}{}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title Page
+
+\title{The evolution of suppressed recombination between sex chromosomes by chromosomal inversions}
+\author{Colin Olito$^{\ast}$ \& Jessica K.~Abbott}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\noindent{} Department of Biology, Section for Evolutionary Ecology, Lund University, Lund 223 62, Sweden.
+
+\noindent{} $^{\ast}$ Corresponding author e-mail: \url{colin.olito@gmail.com}
+
+\bigskip
+
+\noindent{} \textit{Manuscript elements}: Figure~X, Figure~X, Figure~X, Table~X; {\itshape Supplementary Material}: Appendix A -- XXX; Appendix B -- XXX; Appendix C -- XXX; Appendix XXX -- Mathematica code to reproduce analytic results.
+
+\bigskip
+\noindent{} \textit{Running Head}: Inversions on sex chromosomes
+
+\bigskip
+
+\noindent{} \textit{Keywords}: XXX; XXX; XXX; XXX; XXX.
+
+\bigskip
+
+\noindent{} \textit{Manuscript type}: Investigation
+
+\bigskip
+
+
+% Set line number options
+\linenumbers
+\modulolinenumbers[1]
+\renewcommand\linenumberfont{\normalfont\small}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Main Text
+
+\newpage{}
+\section*{Abstract}
+
+\noindent{} ...
+\newpage{}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Introduction} \label{sec:Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+Sex chromosomes have evolved many times during the evolutionary history of eukaryotes \citep{Bull1983, Bachtrog2014}, and two defining features give them a unique role in evolutionary biology: ({\itshape i}) the presence of one or more genes providing a mechanism for sex-determination, and ({\itshape ii}) suppressed recombination in the vacinity of sex-determining loci, possibly extending to entire chromosomes (excluding small pseudo-autosomal regions, PARs, necessary for proper segregation). Recombination suppression is a critical step in sex chromosome evolution beacuse it decouples the evolutionary history of X and Y (or Z and W) chromosomes, enabling subsequent divergence (and eventual heteromorphy) through the accumulation of insertions, deletions, duplications, and rearrangements. Suppressed recombination also gives rise to other unique genetic features of sex chromosomes such as hemizygosity and different effective population sizes for Y- and X-linked genes relative to each other and to the autosomes \citep{BergeroCharlesworth2009,CharlesworthMarais2005}.
+	
+Classic evolutionary theory proposes that heteromorphic sex chromosomes evolve from ancestral autosomes in several steps: a new sex-determination gene (or linked gene cluster) originates on an ancestral pair of autosomes, followed by the accumulation of sexually antagonistic variation in linkage with the sex-determining locus -- with male-beneficial alleles associated with the proto-Y (or proto-W) and female-beneficial alleles with the proto-X (or proto-Z) -- resulting in selection for reduced recombination between these and the sex-determining loci \citep{Fisher1931, Nei1969, Charlesworth1980, Bull1983, Rice1987, Lenormand2003}. Indeed, sexually antagonistic selection also plays a key role in theories for the initial evolution of separate sexes from hermaphroditism by means of genetic sex-determination \citep{Charlesworth1978a, Charlesworth1978b, Bull1983, Olito2019}, and sex-chromosome turnovers \citep{vanDoornKirkpatrick2007,vanDoornKirkpatrick2010,OttoScottOsmond2018}. 
+
+Nevertheless, demonstrating empirically that sexual antagonism drives the evolution of recombination suppression between sex chromosomes remains problematic. On one hand, influential sex-limited selection experiments and population genomic analyses of heteromorphic sex chromosomes demonstrate that sexually anatagonistic variation can accumulate on sex chromosomes, apparently supporting the above theory (CITE). On the other hand, it is often difficult or impossible to determine whether this variation in fact preceded recombination suppression \citep{Charlesworth1980, Rice1984, Ironside2010, Ponnikas2018}. Recent studies identifying sexually antagonistic variation within sex-linked regions on established sex chromosomes provide meagre support for the theory for similar reasons (e.g., \citealt{BergeroCharlesworth2009, Wright2017,Bergero2019}).
+
+In addition to sexual antagonism, several other processes could potentially drive the evolution of suppressed recombination between sex chromosomes, including: (1) genetic drift -- e.g., neutral or nearly-neutral chromsomal rearrangements or accumulated sequence dissimilarities drifting to fixation \citep{CharlesworthMarais2005}; (2) positive selection -- e.g., of a beneficial chromsomal rearrangement supressing recombination \citep{Haldane1957}; (3) heterozygote advantage -- e.g., chance fixation of an overdominant rearrangement segregating at high frequencies; sheltering of recessive deleterious mutations has also been proposed as a possible mechanism \citep{Ironside2010,Branco2017, Ponnikas2018}; and (4) meiotic drive -- e.g., establishment of a meiotic drive element in linkage with a sex-determining factor \citep{UbedaPatten2010}. Compared to sexual antagonism these alternative hypotheses are underdeveloped, both in terms of theory and empirical investigation (reviewed in \citealt{Ironside2010, Ponnikas2018}). As we outline below, some deserve more attention as viable mechanisms, while others are perhaps less useful. Ideally, it would be possible to identify genomic signatures unique to each process, enabling empiricists to descriminate between different models of recombination suppression from genome sequence data. 
+
+One potentially informative signature of these different processes is the length of 'evolutionary strata' (discrete sex-linked regions with different levels of sequence differentiation) resulting from chromosomal inversions. Evolutionary strata can form when the non-recombining sex-determining region (SDR) is expanded by fixation of inversions inhibiting crossovers between the X and Y (Z and W) chromosomes (or other large-effect recombination modifiers). They also appear to be relatively common: fixation of multiple inversions has generated evolutionary strata on both ancient heteromorphic and younger homomorphic sex chromosomes in diverse taxa \citep{LahnPage1999,Handley2004, Wang2012}, and are becoming increasingly easy to identify from long-read genome sequence data \citep{WellenreutherBernatchez2018}. Importantly, the length of new inversions is thought to influence both the form and strength of selection they experience, and therefore their fixation probabilty \citep{vanValenLevins1968, KrimbasPowell1992}. The size of fixed inversions that expand the SDR could therefore shed light on the evolutionary processes underlying recombination suppression between sex chromosomes. 
+
+However, linking inversion size with fixation probability is difficult, particularly for inversions that expand the SDR. The successful establishment of new inversions depends upon the balance of opposing size-dependent processes: larger inversions are more likley to capture beneficial mutations or combinations of coadapted alleles, but also deleterious mutations, which could outweigh any beneficial effects (\citealt{Nei1967,vanValenLevins1968, Santos1986, ChengKirkpatrick2019}. Connallon \& Olito {\itshape unpubl.} develop this framework to address several different selection scenarios for autosomal inversions). The situation is slightly more complicated for still-recombining sex chromosomes. For example, partial linkage between sexually antagonistic loci and the SDR will build stronger associations between male-beneficial alleles and the Y chromosome, but also reduce the strength of selection for reducing the rate of recombination further \citep{Nei1969,Otto2019}.
+
+Here, we extend the general framework developed by \citet{vanValenLevins1968}, \citet{Santos1986}, and Connallon \& Olito {\itshape unpubl.} to address the link between the size of chromosomal inversions suppressing recombination between sex-chromosomes and their probability of fixation. Simply put, we ask whether the size of evolutionary strata caused by chromosomal inversions reflect the evolutionary processes driving their fixation? We focus on five main scenarios for the fixation of inversions expanding the SDR: 
+\begin{enumerate}[label=(\roman*)]
+	\item genetic drift of neutral inversions
+	\item unconditionally beneficial inversions (e.g., due to breakpoint effects)
+	\item sexually antagonistic selection
+	\item sex $\times$ ploidy specific selection
+	\item heterozygote advantage
+\end{enumerate}
+
+\noindent We do not consider the meiotic drive hypothesis (e.g., \citealt{UbedaPatten2010}) because this deals with the origination of genetic sex-determination rather than expansion of an existing SDR. We derive probabilities of fixation as a function of inversion size under each idealized scenario, first ignoring, and then taking into account the effects of deleterious mutations. We then use these fixation probabilities in a general theoretical framework for the expected length distribution of fixed inversions \citep{vanValenLevins1968,Santos1986} to illustrate the expected distribution of fixed inversion lengths for each scenario. 
+
+We show that neutral and unconditionally beneficial inversions should, on average, result in relatively small evolutionary strata. Inversions capturing sexually antagonistic variation in the vacinity of the SDL are most likely to involve intermediately-sized inversions that will be difficult to discriminate from other sex $\times$ ploidy scenarios. We find that it is necessary to distinguish between "sheltering" and "overdominance" scenarios under the broader "heterozygote advantage" hypothesis, but neither is likely to contribute significantly to recombination suppression between sex chromosomes. We conclude by briefly reviewing the available empirical data for sex-linked inversions on recombining sex chromosomes, and discuss how our theoretical predictions might be used to help distinguish between different processes potentially driving recombination suppression between sex chromosomes.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Models and Results} \label{sec:Models}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+The general framework for modeling the length distributions of fixed inversions has been well developed by \citet{vanValenLevins1968} and \citet{Santos1986} for the case of beneficial autosomal inversions. \hl{Connallon \& Olito {\itshape unpubl.}} recently extended this framework to address a variety of new selection scenarios. For brevity, we outline the key assumptions and rationale of our models of inversions suppressing recombination between sex chromosomes, and refer readers to these previous studies for more detailed background on the theoretical framework.
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{Key Assumptions}
+We make several important simplifying assumptions in our models. First, that sex is determined genetically, with a dominant male-determining factor (i.e., an X-Y system with heterozygous males). Our results are applicable to female heterogametic Z-W systems if male- and female-specific parameters are reversed. Second, that the gene(s) involved in sex determination are located in a sufficiently small non-recombining SDR that they can effectively be treated as a single locus (the SDL), which is randomly distributed on the sex chromosomes. Our theoretical predictions are therefore most applicable to the early stages of recombination suppression, while the SDR is still small relative to the chromosome arm on which it resides, and the length of inversions expanding it. Third, that new inversions occur rarely enough that all inverted chromosomes segregating in a population at a given time are descendent copies of a single original inversion mutation. The evolutionary fate of a new inversion is therefore effectively independent of any others (i.e., we assume "strong selection, weak mutation"; \citealt{Gillespie1991}). Fourth, that recombination is completely suppressed between heterokaryotypes, although in reality genetic exchange may occur rarely via double crossovers or gene conversion \citep{KrimbasPowell1992, KorunesNoor2019}.
+
+We focus on the evoutionary fate of inversions capturing the dominant male-determining factor at the SDL (i.e., "Y-linked" inversions). Of course, inversions that do not capture the male-determining factor ("X-linked" inversions) will also suppress recombination if they fix in a population. However, Y-linked inversions probably contribute more to recombination suppression because they ({\itshape i}) have a smaller effective population size than X-linked inversions ($N_Y < N_X$), and ({\itshape ii}) experience selection exclusively in males. We highlight only essential differences between Y- and X-linked model predictions for each scenario. Full details for each model are provided in Appendix \hl{XXX} of the Online Supporting Information, and simulation code is available at \url{https://github.com/colin-olito/inversionSize-ProtoSexChrom}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{Fixation Probabilities}
+
+Following \citet{vanValenLevins1968}, \citet{Santos1986}, and \hl{Connallon \& Olito {\itshape unpubl.}}, we define $x$, the length of an inversion expressed as the proportion of the chromosome arm that the inversion spans ($0 < x < 1$). Note, this scale is applicable only to paracentric inversions (those not spanning the centromere), which appear to be more common than pericentric inversions \citep{WellenreutherBernatchez2018}. 
+
+New inversions of different lengths will vary systematically in the number of mutations they capture when they first arise. The fixation probability of an inversion of length $x$ will depend both upon the selection scenario (i.e., scenarios ({\itshape i}) -- ({\itshape v}) above), and the number of deleterious alleles that it carries (represented by $k$, where $0 \leq k$). We assume that deleterious mutations segregate independently at different loci, and are at mutation-selection balance when a new inversion arises. 
+
+Following previous models of inversion evolution \citep{Nei1967, Santos1986, OrrKim1998, Connallon2018}, we assume that new inversions are unlikely to successfully establish unless they are initially free of deleterious mutations. We can therefore express the fixation probability as $\Pr(\text{fix} \mid x) = \Pr(\text{fix} \mid x, k=0) \Pr(k = 0 \mid x)$. With independently segregating deleterious mutations at mutation-selection balance, the probability that a new inversion of length $x$ is deleterious mutation-free will be $\Pr(k = 0 \mid x) = \exp \big[\frac{-2U_d x}{s_d} \big]$ \cite[e.g.][]{Nei1967,OrrKim1998}, where $s_d$ is the heterozygous fitness effect of each deleterious allele an individual inherits, and $2U_d$ is the chromosome-wide deleterious mutation rate. 
+
+Deleterious mutation-free inversions will initially be favoured relative to wild-type chromosomes, which will carry some deleterious alleles \citep{Nei1967,OhtaKojima1968, KimuraOhta1970}. However, this selective advantage will decay over time, eventually equalizing the relative fitnesses, as loci captured by the inversion approach equilibrium under mutation-selection balance \citep{Nei1967}. For each scenario, we first derive simple expressions for $\Pr(\text{fix} \mid x)$ in the absence of deleterious mutational variation. We then present time-dependent expressions for $\Pr(\text{fix} \mid x, k=0)$, which take into account the effects of deleterious mutations.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Neutral inversions}
+
+The fixation probability of neutral inversions expanding the SDR on recombining sex chromsomes is very similar to that of autosomal inversions (\hl{Connallon \& Olito {\itshape unpubl.}}), but must take into account the appropriate effective population sizes. For a Y-linked inversion, the effective population size is $N_Y = N_m/2$, where $N_m$ is the number of males in the population. Following classic population genetics theory, in the absence of deleterious mutations the fixation probability is equal to the initial frequency of the inversion \citep{Kimura1962}, which is $\Pr(\text{fix}) = 1/N_Y = 2/N_m$ for single copy Y-linked inversion mutation. For an X-linked inversion we have $N_X = 2N/3$, where $N$ is the total population size, and $\Pr(\text{fix}) = 1/N_X = 3/2N$. 
+
+Approximating the fixation probability of beneficial alleles under time-dependent selection, and analogously neutral inversions under deleterious mutation pressure, is a long-standing problem in population genetics which unfortunately has no simple analytic solution (e.g., see \citealt{OhtaKojima1968, KimuraOhta1970,UeckerHermisson2011, Waxman2011}). However, we can easily calculate the upper boundary approximation for the fixation probability of \hl{Connallon \& Olito ({\itshape unpubl.})} by substituting the appropriate effective population sizes. For Y- and X-linked inversions, the approximate upper bounds for the fixation probability of a new inversion that is initially free of deleterious mutations are 
+
+\begin{subequations}
+	\begin{equation}
+	\Pr(\text{fix} \mid x, k = 0) \approx 1/\big( N_Y \exp[U_d x/s_d] \big), \\
+	\end{equation}
+	\text{and}
+	\begin{equation}
+	\Pr(\text{fix} \mid x, k = 0) \approx 3/\big(2 N_X \exp[U_d x/s_d] \big)
+	\end{equation}
+\end{subequations}
+
+\noindent respectively. {\itshape When inversions restricting recombination between sex chromosomes are selectively neutral, the risk of initially capturing deleterious mutations causes the fixation proabability to be skewed towards smaller inversions with a maximum of $1/N_Y$ (or $1/N_X$) as $x$ approaches $0$ (Fig.~\ref{fig:fixProbFigText}A)}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Unconditionally beneficial inversions}
+
+The specific location of new inversion breakpoints may give inverted chromosomes a selective advantage over the wild-type chromosomes. For example, an inversion may bring a protein coding sequence into closer proximity to a promoter that improves transcription efficiency without disrupting other genes \citep{KrimbasPowell1992}. Under weak selection, and momentarily neglecting deleterious mutations, the fixation probability can be approximated by $\Pr(\text{fix}) \approx 2 s_{I}$ \citep{Haldane1927} (i.e., there is no relation between the length of the inversion and the fixation probability). For inversions capturing the SDL on a Y chromosome, $s_I = s_{I}^{m}$ represents the selective advantage of the inversion in males. For a new inversion capturing the SDL on an X-chromosome
+
+\begin{equation} \label{eq:benXlinkednoDel}
+	s_{I} \approx \frac{\big( 2 s_{I}^{f} \big(q + h (1 - 2q) \big) + s_{I}^{m} \big)}{3},
+\end{equation}
+
+\noindent where $q$ is the frequency, $s_{I}^{\text{sex}}$ is the sex-specific selection coefficient ($\text{sex} \in \{m,f\}$), and $h$ the dominance coefficient associated with the inversion \citep{Charlesworth2010}. Both approximations work well when $1/N \ll s_I \ll 1.$
+
+Taking deleterious mutations into account is mathematically similar to the haploid autosomal case (see Eqs.[\hl{11 \& 12}] in \hl{Connallon \& Olito {\itshape unpubl.}}, and Appendix \hl{XXX} of this paper). A new beneficial inversion that is also free of deleterious mutations will have a temporarily heightened selective advantage. Specifically, the relative fitness of the inversion chromosome will decline over time from $(1 + s_I)e^{U_d x}$ to $(1 + s_I)$ as it accumulates deleterious mutations \citep{Nei1967}. The resulting fixation probability can be approximated using a time-dependent branching process \citep{PeischlKirkpatrick2012, KirkpatrickPeischl2013}, which can be expressed in terms of a time-averaged {\itshape effective selection coefficient} for the inversion:
+
+\begin{equation} \label{eq:benSe}
+	s_{e} = s_t \sum_{t=0}^{\infty} (1 - s_I)^t = s_I \Bigg[1 + \frac{U_d x}{1 - (1-s_I)e^{-s_d}} \Bigg],
+\end{equation}
+
+\noindent where $s_I = s_{I}^{m}$ for inversions capturing the SDL on the Y chromosome, while $s_I$ is given by Eq[\ref{eq:benXlinkednoDel}] for those on the X-chromosome. Incorporating the probability that the inversion is initially mutation free, we have
+
+\begin{equation} \label{eq:benPrFix}
+	\Pr(\text{fix} \mid x, k = 0) \approx 2 s_I \Bigg[ 1+ \frac{U_d x}{1 - (1-s_I)e^{-s_d}} \Bigg] e^{\frac{-2U_d x}{s_d}},
+\end{equation}
+
+\noindent and $s_I$ is defined as above for Y- and X-linked inversions respectively. The overall effect of the selective advantage of the inversion and deleterious mutations is a right-skewed distribution of fixation probabilities for inversions of different sizes, with a maximum of $\approx 2 s_I$ as $x$ approaches $0$ (Fig.~\ref{fig:fixProbFigText}B). {\itshape For intrinsically beneficial inversions suppressing recombination between sex chromosomes, smaller inversions are always favoured because they are less likely to initially capture deleterious mutations.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Sexual antagonism}\label{sec:SexAntag}
+
+It is well established that sexually antagonistic (SA) variation can theoretically drive selection for recombination modifiers coupling selected alleles with specific sex chromosomes \cite[e.g.][]{Fisher1931,Nei1969, Charlesworth1978a, Charlesworth1980, Bull1983,Lenormand2003, Otto2019}. However, the role of pre-existing linkage between the SDL and SA loci in this process is complicated. On one hand, the idea that SA polymorphisms partially linked to the SDL promotes the accumulation of more linked SA polymorphisms, leading to stronger selection for recombination suppression is seductively intuitive \citep{Rice1984, Rice1996,Charlesworth2017, Otto2019}. On the other hand, the conditions for the spread of SA polymorphisms to multiple loci in linkage disequilibrium with the SDL are in fact quite restrictive \citep{Otto2019}. When recombination is suppressed by an inversion, multiple SA loci that may be partially linked or unlinked with the SDL may contribute to its overall fitness effect. The degree of linkage should also influence the size of fixed inversions by altering the equilibrium frequency of female- and male-beneficial alleles at captured SA loci, and the selective advantage of reducing recombination further.
+
+To begin disentangling the effects of linkage on the fixation probability of new inversions, we start with a simplified example. Suppose the expected number of SA loci on the sex chromosomes is equal to $A$, that they are uniformly distributed along the sex chromosomes (\citealt{vanValenLevins1968}, \hl{Connallon \& Olito {\itshape unpubl.}}), are biallelic (with fitness expressions {\itshape sensu} \citealt{Kidwell1977}: $w^{\female}_{AA} = 1$, $w^{\female}_{Aa}=1 - h_f s_f$, $w^{\female}_{aa} = 1 - s_f$ in females, and $w^{\mars}_{AA} = 1 - s_m$, $w^{\mars}_{Aa}=1 - h_m s_m$, $w^{\mars}_{aa} = 1$ in males), and are initially at equilibrium. The number of SA loci spanned by a new inversion, $n$, is then a Poisson distributed random variable with mean and variance $xA$. For now, we assume that $A$ is sufficiently small to ignore the possibility that $n$ is greater than about $1$ or $2$ (the approximation breaks down when $A > 2$). We focus on two idealized scenarios: ($1$) the SA locus is initially unlinked with the SDL (the SDL and SA loci recombine at a rate $r = 1/2$ per meiosis); and ($2$) the SA locus falls within the {\itshape sl}-PAR ($0 \leq r < 1/2$). For brevity, we limit our discussion to the fixation probability of Y-linked inversions (\hl{results for X-linked inversions are presented in Appendix XXX)}.
+
+Under the above assumptions, the fixation probability for a new inversion of size $x$ spanning both the SDL and a single unlinked SA locus is the product of three probabilities: that the inversion captures both loci, $\Pr(n = 1) = x^2 A e^{-xA}$; that it captures a male-beneficial allele at the SA locus, $\Pr(\text{male~ben.}) = \hat{q}$, where $\hat{q}$ is the equilibrium frequency of the male-beneficial allele; and that it escapes stochastic loss due to genetic drift, and fixes in the population, $\Pr(\text{fix}) \approx 2 s_I$. We can approximate the expected rate of increase of the rare inversion as $s_I \approx (\lambda_I - 1)$, where $\lambda_I$ is the eigenvalue associated with invasion of the rare inversion genotype into a population inititally at equilibrium in a deterministic two-locus model ($\lambda_I$ is also the leading eigenvalue under these conditions). When the SA locus is unlinked with the SDL ($r = 1/2$), the selection coefficient for the rare inversion is
+
+\begin{equation}\label{eq:SApFix2LocUnlinked}
+	s_I \approx s_m (1 - \hat{q}) \big( 1 - \hat{q} - h_m(1 - 2\hat{q}) \big) + O(s_{m}^{2}),
+\end{equation}
+
+\noindent where $s_m$ is the selection coefficient against the female-beneficial allele in males. With additive SA fitness ($h_f = h_m = 1/2$), the fixation probability reduces to
+
+\begin{equation}\label{eq:SApFix2LocUnlinkedAdd}
+	\Pr(\text{fix} \mid x,n=1) = s_m \hat{q}(1 - \hat{q})x^2 Ae^{-xA}.
+\end{equation}
+
+\noindent When $A \leq 2 $, Eq(\ref{eq:SApFix2LocUnlinkedAdd}) is a sigmoidal increasing function of inversion size over $0 < x \leq 1$, with a maximum at $x = 2/A $, implying that larger inversions are always favoured. {\itshape Intuitively, larger inversions are more likely to capture both the SDL and rare SA loci distributed uniformly along the chromosome}.
+
+How does linkage between the SDL and SA locus alter the fixation probability? We now make the additional assumptions that the SA locus falls within the {\itshape sl}-PAR region, which makes up a fraction, $P$, of the total chromosome length, and that $P \ll x$. Hence, any inversion that spans the SDL will also span the the {\itshape sl}-PAR. The probability of catching both the SDL and SA locus is now $\Pr(n = 1) = xAPe^{-AP}$. We can approximate $s_I \approx (\lambda_I - 1)$ as before, but the expression now involves the equilibrium frequency of the male-beneficial allele on Y chromosomes ($Y$) and X chromosomes in females ($X_f$) before the inversion occurs:
+
+\begin{equation}\label{eq:SAsI2LocLinked}
+	s_I \approx \frac{ s_m(1 - Y) \big( 1 - X_f - h_m(1 - 2X_f) \big)} { 1 - s_m \big(1 - X_f - Y(1 - h_m - X_f) + h_m X_f(1 - 2Y) \big) }.
+\end{equation}
+
+\noindent Notably, the recombination rate ($r$) drops out of $s_I$, clearly illustrating how linkage alters selection on the inversion by generating LD between the SDL and SA locus. Under additive SA fitness, the fixation probability simplifies to
+
+\begin{equation}\label{eq:SAsIpFix2LocLinked}
+	\Pr(\text{fix} \mid x,n=1,\text{{\itshape sl}-PAR}) = \frac{ 2 s_m Y (1 - Y)xAPe^{-AP}}{ 2 - s_m (2 - X_f - Y) },
+\end{equation}
+
+\noindent which is a linearly increasing function of $x$. {\itshape The overall effect of linkage between the SDL and SA locus is a modest shift in the fixation probability towards smaller inversions. Larger inversions are still always favoured because they are more likley to capture the SDL (and {\itshape sl}-PAR) than smaller ones (relaxing the assumption that $P \ll x$ only weakens the effect of linkage; \hl{Appendix XXX})}.
+
+Once an inversion capturing the SDL and a male-beneficial allele at the SA locus successfully establishes, it will behave much like an unconditionally beneficial inversion, and the effects of deleterious mutations can be taken into account as in Eq(\ref{eq:benPrFix}). With an SA locus unlinked with the SDL, the effect of deleterious mutations is to make $\Pr(\text{fix} \mid x,n=1)$ a non-monotonic function of $x$ with a maximum fixation probability at $\tilde{x}_{\text{unlinked}} = 3 s_d/(A s_d + 2 U_d)$ (Fig.~\ref{fig:fixProbFigText}C). When the SA locus is partially linked with the SDL, $\Pr(\text{fix} \mid x,n=1,\text{{\itshape sl}-PAR})$ deleterious mutations yield a similar function, but with a maximum fixation probability at $\tilde{x}_{\text{unlinked}} = s_d/U_d$. Comparing the two cases further illustrates the modest effect of linkage on the fixation probability of differently sized inversions:
+
+\begin{equation}\label{maxPrFix-wDel-SA}
+	\frac{\tilde{x}_{\text{linked}}}{\tilde{x}_{\text{unlinked}}} = \frac{2}{3} + \frac{A s_d}{3 U_d}.
+\end{equation}
+
+\noindent {\itshape In the simplified two-locus scenario, the critical inversion size corresponding to the maximum fixation probability when the SA locus is linked to the SDL is never smaller than two-thirds that for an unlinked SA locus, and increases with $A$ and $s_d$, but decreases with $U_d$ (Fig.~\ref{fig:fixProbFigText}C)}.
+
+Linkage effects on the fixation probability will generally remain weak when inversions may span more than one SA locus (i.e., when $A > 2$), although satisfying analytic approximations become elusive. Analogous to previous models of inversions capturing locally adaptive alleles \citep{KirkpatrickBarton2003, Connallon2018}, a new Y-linked inversion may capture male-beneficial alleles at a subset $M$ of the $n$ SA loci it spans, where $M \sim \text{Bin}(n \mid \overline{q})$, and $\overline{q}$ is the average equilibrium frequency of male beneficial alleles across the $n$ loci. With no epistasis, weak selection, and loose linkage among SA loci, the fixation probability of new inversions is
+
+\begin{equation}\label{eq:SApFixMultiLoc}
+	\Pr(\text{fix} \mid x) = \Pr(\text{fix} \mid n) \Pr(n \mid x) \approx 2 s_I x e^{-xA} \frac{(xA)^n}{n!},
+\end{equation}
+
+\noindent where
+
+\begin{equation}\label{eq:SASIMultiLoc}
+	s_I \approx \sum_{i \in n} s_{m,i} (1 - \hat{q}_{i}) \big( 1 - \hat{q}_i - h_{m,i} (1 - 2 \hat{q}_i) \big) - \sum_{i \in (n-M)} s_{m,i} \big( 1 - \hat{q}_i - h_{m,i} (1 - 2 \hat{q}_i) \big) + O(s_{i,m}^2),
+\end{equation}
+
+\noindent and $0$ for $s_I < 0$. More detailed assumptions are necessary to model the possibility of linkage between the SDL and some SA loci (e.g., a quantitative description of the recombination rate within the {\itshape sl}-PAR). However, when higher-order linkage effects between SA loci within the {\itshape sl}-PAR can be ignored (i.e., weak selection, SA loci not too tightly linked with the SDL; see \citealt{Otto2019}), the fixation probability is well approximated by substituting 
+
+\begin{align*}\label{eq:SASIMultiLocLinked}
+		s_I \approx \sum_{i \in (n - L)} s_{m,i} (1 - \hat{q}_{i}) \big( 1 - \hat{q}_i - h_{m,i} (1 - 2 \hat{q}_i) \big) &+ \sum_{i \in L} s_{m,i}(1 - Y) \big( 1 - X_{f,i} - h_{m,i}(1 - 2 X_{f,i}) \big)~- \numberthis\\
+		\sum_{i \in (n-L-M)} s_{m,i} \big( 1 - \hat{q}_i - h_{m,i} (1 - 2 \hat{q}_i) \big) &+ \sum_{i \in (L-M)} \big( 1 - X_{f,i} - h_{m,i}(1 - 2 X_{f,i}) \big),
+\end{align*}
+
+\noindent into Eq(\ref{eq:SApFixMultiLoc}), where $L$ denotes the set of SA loci falling within the {\itshape sl}-PAR ($\text{E} [L] = AP$). With deleterious mutations, the multilocus fixation probability becomes
+
+\begin{equation} \label{eq:SApFixMultiLocDelMut}
+	\Pr(\text{fix} \mid x, k = 0) \approx 2 s_I x e^{-xA} \frac{(xA)^n}{n!} \Bigg[ 1+ \frac{U_d x}{1 - (1-s_I)e^{-s_d}} \Bigg] e^{\frac{-2U_d x}{s_d}}.
+\end{equation}
+
+\noindent where $s_I$ is defined as in Eq(\ref{eq:SASIMultiLoc}) and Eq(\ref{eq:SASIMultiLocLinked}).
+
+Results for inversions on X chromosomes can be derived by similar steps. However, X-linked inversions are subject to selection in both males and females, and can be maintained as balanced polymorphisms under broad parameter conditions relative to Y-linked inversions (\hl{see online supplementary materials}). X-linked inversions may still contribute to suppressed recombination between sex chromosomes -- for example, by drifting to fixation whilst segregating at high frequencies -- but probably do so less often than Y-linked inversions.
+
+
+ \begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\linewidth]{./Fig1}
+ \caption{Fixation probability for inversions of different lengths capturing the SDL on the Y-chromosome under: (A) Neutral inversions; (B) Unconditionally beneficial inversions; and (C) Sexually antagonistic selection. Lines show analytic approximations of $\Pr(\text{fix} \mid x)$, points show results for Wright-Fisher simulations with different effective population sizes. Results are shown for the following parameter values: $U_d = 0.1$ and $s_d = 0.05$ (for all panels), $s_I = 0.02$ (for panel B), and $s_f = s_m = 0.02$, $A = 1$, $P = 0.05$ (for panel C). Dotted vertical lines indicate $\tilde{x}_{\text{unlinked}}$ and $\tilde{x}_{\text{linked}}$ in panel (C).}
+ \label{fig:fixProbFigText}
+ \end{figure}
+\vspace{1cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Haploid \& diploid selection}
+
+We have so far considered selection in the diploid phase only. However, all sexual eukaryotes have life-cycles that alternate between a reduced (e.g., haploid) and doubled (e.g., diploid) phase (\hl{Strasburger 1894; Roe 1975}). Moreover, haploid selection can play an important role in maintaining genetic polymorphisms \citep{ImmlerOtto2011}, as well as facilitating sex chromosome turnovers and transitions between sex determination systems \citep{OttoScottOsmond2018}. The models summarized above for sexually antagonistic selection can be easily generalized and extended to incorporate haploid selection. The critical difference, with respect to the fixation probability of differently sized inversions is that $s_I$ becomes a function of both haploid and diploid fitnesses, as well as the equilibrium frequency of selected loci on the sex chromosomes in males and females. 
+
+Consider the simple case of a rare inversion capturing the SDL and a single selected locus on the Y chromsome. To keep the model general, we retain arbitrary fitness expressions for the haploid ($v^{\female}_{A}$, $v^{\female}_{a}$ for female, and $v^{\mars}_{A}$, $v^{\mars}_{a}$ for male gametes, respectively) and diploid genotypes ($w^{\female}_{AA}$, $w^{\female}_{Aa}$, $w^{\female}_{aa}$ in females, and $w^{\mars}_{AA}$, $w^{\mars}_{Aa}$, $w^{\mars}_{aa}$ in males). For Y-linked inversions capturing a single selected locus, the approximate selection coefficient for the rare inversion under arbitrary linkage ($0 \leq r \leq 1/2$) is:
+
+\begin{equation}\label{eq:sI-HapDip-2LocLinked}
+	s_I \approx \frac{\big( v^{\female}_{a} X_f (v^{\mars}_{a} w^{\mars}_{aa} -v^{\mars}_{A} w^{\mars}_{Aa} ) - v^{\female}_{A} (1 - X_f) (v^{\mars}_{A} w^{\mars}_{AA} - v^{\mars}_{a} w^{\mars}_{Aa}) \big) (1 - Y)} {v^{\female}_{A} (1 - X_f) \big( v^{\mars}_{A} w^{\mars}_{AA} (1 - Y) + v^{\mars}_{a} w^{\mars}_{Aa} Y \big) + v^{\female}_{a} X_f \big( v^{\mars}_{a} w^{\mars}_{aa} Y + v^{\mars}_{A} (w^{\mars}_{Aa} - w^{\mars}_{Aa} Y) \big)}.
+\end{equation}
+
+\noindent In order for the rare inversion to invade, $s_I > 0$ must be satisfied for Eq(\ref{eq:sI-HapDip-2LocLinked}), which requires that the net fitness effect of the inversion across haploid and diploid phases is male-beneficial, or there is sufficient linkage equilibrium to offset a female-bias in selection. For example, under ploidally antagonistic selection with additive fitness in the diploid phase (where $v^{\text{sex}}_{A} = 1$, $v^{\text{sex}}_{a} = 1 - t$, and $w^{\text{sex}}_{AA} = 1 - s$, $w^{\text{sex}}_{Aa} = 1 - s/2$, $w^{\text{sex}}_{aa} = 1$), Eq(\ref{eq:sI-HapDip-2LocLinked}), and weak selection, an inversion capturing the SDL and the $a$ allele at the selected locus can invade when $s > 2 t + O(s^2,t^2)$.
+
+
+
+
+\hl{Think perhaps the easiest way to proceed here is to compare Eq(\ref{eq:SAsIpFix2LocLinked}) with the 2-locus result with haploid selection... noting that when there is ploidally antagonistic selection in males/male gametes, the net fitness effects across both phases must be male-beneficial. 
+
+Then, a brief discussion about X-linked inversions, noting there are now many more possibilities for an X-linked inversion to be maintained as a balanced polymorphism rather than going to fixation... } 
+
+{\itshape \hl{ Figure to illustrate deterministic equilibrium frequency of inversion to make the point that the inversion is maintained as a polymorphism over a large proportion of parameter space?}}.
+
+
+
+ \begin{figure}[htbp]
+ \centering
+ %\includegraphics[width=\linewidth]{./invFit2LocusModels}
+ \caption{\hl{Figure illustrating effect of recombination on the approximate invasion fitness of rare inversions ($2 (\lambda_I - 1)$) in the two-locus models of Sexual Antagonism, Haploid/Diploid selection, and Overdominance.}}
+ \label{fig:invFit2LocusModels}
+ \end{figure}
+\vspace{1cm}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Heterozygote advantage hypotheses}
+
+An often repeated hypothesis for the evolution of restricted recombination between sex chromosomes is that it permanently locks up recessive deleterious mutations as heterozygotes on the heteromorphic sex chromosome (see \citealt{Ironside2010, Ponnikas2018, Branco2017}, Supplementary Material). Theoretical models of neo-sex chromosome formation and recombination suppression around haploid mating-type loci are often cited to support this sheltering hypothesis (specifically \citealt{CharlesworthWall1999, AnotonovicsAbrams2004, JohnsonAntonovicsHood2005}). However, drawing parallels between these evolutionary scenarios must be done carefully because they involve different underlying assumptions. For example, \citet{CharlesworthWall1999} modeled the evolution of X- and Y-autosome fusions (or translocations) with inbreeding and {\itshape overdominance}, but to our knowledge, scenarios involving sheltering of deleterious recessives have yet to be studied. Moreover, a critical feature of these models is that recessive genes captured by the rearrangement cannot be expressed in males because they have no homologs on the other sex chromosome. Inbreeding also features prominantly in models of haploid mating-type chromosomes, where recombination suppression requires high rates of intra-tetrad mating, a form of self-fertilization common among some fungi \citep{AnotonovicsAbrams2004, JohnsonAntonovicsHood2005}. Importantly, intratetrad mating simultaneously reduces diploid expression of deleterious mutations, and generates linkage disequilibrium between the mating-type and load loci, both of which facilitate the evolution of reduced recombination. 
+
+For recombining sex chromosomes, where functional homologs still exist on both the X and Y, suppressed recombination alone does not shelter segregating deleterious recessives from being expressed as homozygotes. \citet{Fisher1935} first demonstrated that the accumulation of sheltered lethals on the Y chromosome requires implausible assumptions regarding the deleterious mutation rates. He neatly summarized the problem when these criteria are not met: "{\itshape The enforced heterozygosis of $A$ has had no influence whatever on the situation in which the lethal mutant is in equilibrium.}" (\citealt[][p.449]{Fisher1935}; $A$ is the SDL in Fisher's model), a result that also holds for sublethal deleterious recessives (\hl{see Online Supplementary Materials}). 
+
+Other authors have noted that reduced recombination between sex chromosomes will not be favoured unless sufficient linkage disequilibrium between the SDL and deleterious mutations is already present (\citealt{Charlesworth2017}; see also \citealt{Branco2017}, Supplementary Material). To determine whether linkage disequilibrium can cause sufficient sheltering of recessive deleterious mutations to allow an inversion to successfully invade, we briefly examine the simplified deterministic two-locus scenario for the Y-chromosome. Consider a rare inversion that spans the SDL and a second locus, $\mathbf{A}$, with wild-type allele, $A$, that mutates to a deleterious variant, $a$, at a rate $\mu$ per generation (with standard genotypic fitness expressions $w_{AA} = 1$, $w_{Aa} = 1 - h s_d$, $w_{aa} = 1 - s_d$). The approximate invasion fitness of the inversion, estimated as $s_I \approx (\lambda_I - 1)$ from the deterministic model, is 
+
+\begin{equation}
+	s_I = -\frac{1}{4} \Big[ s_d Y \Big(2 - 2 h \big(1 - X_f (2 - \mu)\big) - X_f (2 - \mu)\Big) (2 - \mu) \Big],
+\end{equation}
+
+\noindent which is negative for all biologically meaningful parameter space (i.e., $0 \leq s_m,\,h,\,X_f,\,Y,\,\mu \leq 1$). {\itshape When an inversion spanning the SDL and a deleterious mutation at a second locus on the Y chromsome suppresses recombination, no amount of prior linkage between can generate sufficient linkage disequilibrium to favor its establishment}.
+
+It is possible that a combination of strong inbreeding and tight linkage could generate enough linkage disequilibrium for recombination suppression by an inversion to evolve to shelter deleterious mutations, similar to models of haploid mating-type chromosomes. However, this seems unlikely to be a major evolutionary pathway towards suppressed recombination between sex chromosomes. Most species with diploid sex determination do not have a clear physiological mechanism enforcing high inbreeding rates analogous to intratetrad mating (CITE?). Strong inbreeding can occur in isolated populations, or those having experienced a severe bottleneck, but these demographic scenarios still require tight linkage, and the subsequent spread of the inversion in other demes if the entire species is not represented in the isolated population \citep{Lande1979}. Moreover, many recombining sex chromosomes occur in plant species that have recently evolved from an ancestral state of functional hermaphroditism, a process that involves strong selection for outcrossing \citep{Charlesworth1978a,Olito2019}. 
+
+{\itshape \hl{Perhaps best to just present a model that also includes inbreeding? \underline{had hoped to avoid this additional complication}}}.
+
+%%% I AM NOT CONVINCED THAT DISCUSSING THE OVERDOMINANCE SCENARIO IS NECESSARY
+%Suppressed recombination between sex chromosomes can also evolve when an inversion spans the SDL and an overdominant locus \citep{Haldane1957, Otto2014}, although the invasion conditions are somewhat restrictive. If there is no epistasis among overdominant loci spanned by the inversion (i.e., no 'cumulative overdominance'; \citealt{Haldane1957}), we can again simplify the problem to a two-locus scenario. Consider a rare inversion spanning the SDL and a biallelic overdominant locus on the Y chromosome, which is identical to the model of sexually antagonistic selection described above for $r \leq 1/2$, with the fitness expressions redefined as: $w^{\female}_{AA} = 1 - s_{f,1}$, $w^{\female}_{Aa} = 1$, $w^{\female}_{aa} = 1 - s_{f,2}$ in females, and $w^{\mars}_{AA} = 1 - s_{m,1}$, $w^{\mars}_{Aa}=1$, $w^{\mars}_{aa} = 1 - s_{m,2}$ in males. In this case, the inversion can successfully establish in the population when
+
+%\begin{equation}\label{eq:sI-OverDomInvConditions}
+%	0 \leq X_f < \frac{s_{m,1}} {s_{m,1} + s_{m,2}}.
+%\end{equation}
+
+%\noindent Eq(\ref{eq:sI-OverDomInvConditions}) is most easily satisfied when the fitness of $aa$ males is higher than any other homozygote ($s_{m,2} < s_{f,1},\,s_{f,2},\,s_{m,1}$). Under symmetric ($s_{\text{sex},1} = s_{\text{sex},2}$) or male-biased symmetric overdominance ($s_{f,i} > s_{m,i}$, where $i \in \{1,2\}$), the inversion can only invade when there is sufficiently tight linkage between the SDL and overdominant locus (Fig.~\hl{2?}). 
+
+%Of course, even when an inversion capturing the SDL and an overdominant locus successfully invades, it is maintained as a balanced polymorphismin the deterministic models (\hl{supplementary fig. with det.~eq.~freqs?}). Chance fixation whilst segregating at high frequencies under balancing selection is the only way for 'overdominant' inversions to completely halt recombination over the chromosomal region spanned by the inversion. Under conditions where the equilibrium inversion frequency is quite high (i.e., high fitness $aa$ males), the fixation probability of overdominant inversion .
+
+
+
+\bigskip
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{Distributions of fixed inversion lengths} \label{subsec:DistFixedInv}
+
+With expressions for the fixation probability of new inversions under different evolutionary scenarios in hand, it is possible to derive the corresponding expected distributions of fixed inversion sizes. Following \citet{vanValenLevins1968, Santos1986}, and \hl{Connallon \& Olito ({\itshape unpubl.}}), the proportion of fixed inversions of length $x$ is 
+
+\begin{equation} \label{eq:generalInvSizeModel}
+	g(x) = \frac{\Pr(\text{fix} \mid x) f(x)} {\int \Pr(\text{fix} \mid x) f(x)\,dx},
+\end{equation}
+
+\noindent where $f(x)$ is the probability of a new inversion of length $x$, and $\Pr(\text{fix} \mid x)$ is the fixation probability described for our different scenarios, and $x\int \Pr(\text{fix} \mid x) f(x)\,dx$ is the mean inversion length. Expressions for $g(x)$ should be taken as illustrative rather than predictive because we know very little about how the mutational process shapes $f(x)$. Despite this uncertainty in the length distribution of new inversions, we can address two scenarios representing plausible extremes.
+
+If inversion breakpoints are distributed uniformly across the chromosome arm containing the SDL, $f(x) = 2(1 - x)$, and we refer to this extreme scenario as the "random breakpoints" model \citep{vanValenLevins1968}. If instead inversion breakpoints tend to be clustered, for example in chromosomal regions with repetitive sequences, the resulting enrichment of smaller new inversions can be modeled phenomenologically using a truncated exponential distribution:
+
+\begin{equation} \label{eq:truncExp}
+	f(x) = \frac{ \lambda e^{-\lambda x}} {1 - e^{-\lambda}},
+\end{equation}
+
+\noindent where $\lambda$ is the exponential rate parameter \hl{Connallon \& Olito ({\itshape unpubl.}}). For strongly skewed distributions (e.g., $\lambda > 10$, as we assume here), the truncation effect is negligible, and $f(x)$ is approximately equal to the numerator of Eq(\ref{eq:truncExp}). We refer to this other extreme as the "exponential model".
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Discussion} \label{sec:Discussion}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+Our theoretical predictions have three key implications for the evolution of chromosomal rearrangements supressing recombination between sex chromosomes (and linked recombination modifiers with strong-effects)...
+
+\begin{enumerate}
+	\item What is the critical inversion length that maximizes the fixation probability for each scenario of inversion evolution? 
+	\item What does each scenario of inversion evolution predict about the distribution of the lengths of fixed inversions, and what does this mean in terms of an interpretable signal of "evolutionary strata" sizes?
+	\item What comparisons can we make with real data, and how are they informed by these theoretical predicitons?
+\end{enumerate}
+
+
+One key implication is that the most popular hypothesis for the evolution of reduced recombination between sex chromosomes will likely be indistinguishable from other hypotheses involving indirect selection...
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{Acknowledgements}
+This research was supported by a Wenner-Gren Postdoctoral Fellowship to C.O., and ERC-StG-2015-678148 to J.K.A. The authors gratefully acknowledge T.~Connallon, C.~Venables, the SexGen group at Lund University, the editor, and two anonymous reviewers for valuable feedback. C.O. conceived the study, developed the models, and performed the analyses. Both C.O. and J.K.A. wrote the manuscript.
+
+\section*{Trash Bin}
+
+For example, one could compare the theoretical distributions of fixed inversions expanding the SDR under different selection scenarios with observed lengths of evolutionary strata identified from sequence data.
+	 
+When inversions are selectively favoured because they capture beneficial mutations, or combinations of coadapted alleles, larger inversions are should be favoured because they are more likely to capture beneficial genetic variation (\citealt{Nei1967, vanValenLevins1968, ChengKirkpatrick2019}; Connallon \& Olito {\itshape unpubl.}), and will enjoy a selective advantage over smaller inversions when both are free of deleterious mutations \citep{Nei1967}. However, large inversions are also more likely to capture deleterious mutations, which would hinder thier spread \citep{Nei1967}. 
+
+
+We begin by briefly outlining each of the main hypotheses for why proto sex chromosomes evolve suppressed recombination. We derive the fixation probabilities for inversions of different sizes that capture a sex determining locus (SDL) on, and suppress recombination between, proto sex chromosomes in the absence of deleterious mutations. We then relax this assumption to explore the effect of deleterious mutational variation on the fixation process. Finally, we present the resulting size distribution of fixed inversions under each hypothesis.
+
+
+
+
+
+%As pointed out by \citet{Charlesworth2017}, homozygotes are not prevented from forming unless sufficient linkage disequilibrium between the SDL and deleterious mutations is already present. However, with random mating no amount of linkage between the SDL and selected loci generates sufficient linkage disequilibrium to favor invasion of an inversion suppressing recombination (\hl{present theoretical result here? OR see Online Supplementary Materials}). {\itshape \hl{Model including selfing to confirm whether this works with selfing and linkage? had hoped to avoid}}. 
+
+More recently, it has been pointed out that homozygotes are not prevented from forming unless sufficient linkage disequilibrium between the SDL and selected loci is already present \citep{Branco2017, Charlesworth2017}.
+
+Another possibility, first proposed for the evolution of chromosomal translocations, is that inbreeding purges deleterious mutations rapidly enough that a polymorphic mutation-selection balance is not maintained \citep{}. In this case, each new deleterious mutation behaves as if it occurs at a new site. 
+
+addressed sheltering of recessive lethals on the Y chromosome in a randomly mating population under mutation-selection balance. He
+
+More recent variation of the sheltering hypothesis invokes the additional requirements of prior linkage between deleterious mutations and the SDL, and 
+
+Sheltering recessive deleterious mutations on the Y chromosome is an implausible mechanism because nothing 	 .
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix material?}
+
+\subsection*{Neutral Inversions}
+
+
+\hl{[Can possibly cut this whole section down to just a citation \& substituting $N_Y$ and $N_X$ into the key results from our other paper]}. Approximating the fixation probability of beneficial alleles under time-dependent selection, and analogously neutral inversions under deleterious mutation pressure, is a long-standing problem in population genetics which unfortunately has no simple analytic solution (e.g., see \citealt{OhtaKojima1968, KimuraOhta1970,UeckerHermisson2011, Waxman2011}). However, by first substituting the appropriate effective population sizes, we can easily derive the upper boundary approximation of \hl{Connallon \& Olito ({\itshape unpubl.}}) for Y- and X-linked inversions expanding the SDR: Temporarily neglecting drift, the frequency of a mutation-free single-copy Y-linked inversion of length $x$ will increase deterministically according to
+
+\begin{equation}\label{eq:neuQT}
+	q_t = \frac{q_0 e^{\frac{U_d x}{s_d}(1 - e^{-s_d t})}}{1- q_0 e^{\frac{U_d x}{s_d}(1 - e^{-s_d t})}} \approx \frac{2}{N_m} e^{\frac{U_d x}{s_d}(1 - e^{-s_d t})},
+\end{equation}
+
+\noindent where $q_0 = 2/N_m$ \citep{Nei1967}. Hence, the temporary selective advantage of initially being mutation free gives new inversions an effective 'boost' in frequency of about $\exp[\frac{U_d x}{s_d}]$. If the population subsequently evolves to equilibrium, the fixation probability of the inversion will be approximately $\hat{q} \approx 2 e^{\frac{U_d x}{s_d}}/N_m$, which provides an approximate upper boundary on the fixation probability. Taking into account the probability that the inversion is initially deleterious mutation free, we have: 
+
+\begin{equation}\label{eq:neuPfix}
+	\Pr(\text{fix} \mid x, k = 0) \approx \frac{2 e^{\frac{U_d x}{s_d}}}{N_m} e^{\frac{-2U_d x}{s_d}} = \frac{2}{N_m e^{\frac{U_d x}{s_d}}}.
+\end{equation}
+
+\noindent Following the same steps for X-linked inversions expanding the SDR yields $\Pr(\text{fix} \mid x, k = 0) \approx 3/2 N_X e^{\frac{U_d x}{s_d}}$.
+
+
+ the selection coefficient for the Y-linked inversion is 
+
+\begin{equation}\label{eq:sIUnlinked}
+	s_I \approx s_m (1 - \hat{q} \big( 1 - \hat{q} - h_m (1 - 2 \hat{q})\big) + O(s_{m}^{2}),
+\end{equation}
+
+\noindent where $s_m$ is the selection coefficient in males against the female-benefit allele. 
+
+
+\begin{equation}\label{eq:SALambdaMultiLoc}
+	\lambda_I = \frac{\overline{W}_{I,n}}{\overline{W}_{n}} = \frac{\prod_{i \in M}\big[ (1 - \hat{q}_{i})(1 - h_{m,i} s_{m,i}) + \hat{q}_{i} \big]  
+	\prod_{i \in (n-M)}\big[ (1 - \hat{q}_{i})(1 - s_{m,i}) + \hat{q}_{i}(1 - h_{m,i} s_{m,i}) \big]} 
+	{ \prod_{i \in n} \big[ (1 - \hat{q}_i)^2 + 2 \hat{q}_i(1 - \hat{q}_i)(1 - h_{m,i} s_{m,i}) + \hat{q}_i^2 \big]}.
+\end{equation}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+% Bibliography
+%%%%%%%%%%%%%%%%%%%%%
+\bibliography{bibliography-inversionSize-ProtoSexChrom}
+
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Tables 
+
+\begin{table}[htbp]
+\caption{\bf Definition of terms and parameters.}
+\begin{tabu}to \linewidth{l X} \hline
+\multicolumn{2}{l}{{\itshape Key terms}} \\
+$x$ & Inversion size, expressed as fraction of the chromosome that it spans ($0 < x < 1$). \\
+$N$, $N_e$, & Census and effective population sizes, respectively. \\
+$N_Y$, $N_X$, & Effective population size for Y- and X-linked genes, respectively. \\
+$s$ & Fitness effect of an unconditionally beneficial inversion ($0 < s \ll 1$). \\
+$s_{i}$ & Sex specific fitness effect of selected loci in diploid phase ($i \in \{s,f\}$). \\
+$t_{i}$ & Sex specific fitness effect of selected loci in haploid phase ($i \in \{s,f\}$). \\
+$A$ & Expected number of sexually antagonistic alleles on sex chromosomes \\
+$P$ & Length of {\itshape sl}-PAR, expressed as fraction of total chromosome length \\
+$\lambda$ & Rate parameter for the exponential model of new inversion lengths; $\lambda^{-1}$ is the average length of a new inversion under the exponential model. \\
+\multicolumn{2}{l}{{\itshape Deleterious mutations}} \\
+$U_d$ & Chromosome-wide deleterious mutation rate ($0 < U_d$) \\
+$s_{d}$ & Fitness effect of deleterious alleles ($0 < s_d \ll 1$). \\
+\multicolumn{2}{l}{{\itshape Deterministic 2-locus inversion models}} \\
+$r$ & Recombination rate between SDL and selected locus \\
+$\lambda_I$ & Leading eigenvalue associated with invasion of rare inversion genotype \\
+$\hat{q}$ & Equilibrium frequency of male-beneficial sexually antagonistic allele (when $r = 1/2$) \\
+$X_f$, $X_m$, $Y$ & Equilibrium frequency of male-beneficial sexually antagonistic allele on X chromosomes in males and females, and on Y chromosomes, respectively (when $0 \leq r \leq 1/2$) \\
+\hline
+\end{tabu}
+\label{tab:Parameters}\\
+\end{table}
+\newpage{}
+
+
+% \begin{table}[htbp]
+% \centering
+% \caption{\bf Fitness expressions for models involving selected loci.}
+% \begin{tabu}to 15cm {X[1,l] X[2,l] X[2,l] X[2,l]} \hline
+% \multicolumn{4}{l}{{\bf \textit{Sexually Antagonistic Selection}}} \\
+% Females & $w^{f}_{AA} = 1$ & $w^{f}_{Aa} = 1 - h_f s_f$ & $w^{f}_{aa} = 1 - s_f$ \\
+% Males & $w^{m}_{AA} = 1 - s_m$ & $w^{m}_{Aa} = 1 - h_m s_m$ & $w^{m}_{aa} = 1$ \\
+% \end{tabu}
+% \vskip 2mm
+% \begin{tabu}to 15cm {X[1,l] X[2,l] X[2,l]}
+% \multicolumn{3}{l}{{\bf \textit{Haploid Selection}}} \\
+% Females & $w^{f}_{A} = 1$ & $w^{f}_{a} = 1 - s_f$ \\
+% Males & $w^{m}_{A} = 1 - s_m$ & $w^{m}_{a} = 1$ \\
+% \hline
+% \end{tabu}
+% \label{tab:fitness}\\
+% {\footnotesize Note: Subscripts for the offspring fitness expressions indicate ... }
+% \end{table}
+% \newpage{}
+
+
+
+\begin{table}[htbp]
+\caption{\bf Fixation probabilities and average lengths of fixed inversions capturing the SDL on recombining Y chromosomes. Results take into account effects of deleterious mutations on inversion evolutionary dynamics.}
+\begin{tabu}{l X[c,2] X[c] X[c]} 
+\hline
+ & Maximum $\Pr(\text{fix} \mid x)$:        & Mean size:             & Mean size: \\
+ & $\tilde{x}$  & Random breakpoints$^1$ & Exponential$^2$ \\
+\hline
+New inversions & $-$      & $\text{E}(x) = 1/3$ & $\text{E}(x) = 1/\lambda$ \\
+Neutral        & $x \rightarrow 0$  & $\text{E}(x) = 1/3$ & $\text{E}(x) = 1/\lambda$ \\
+Beneficial     & $x \rightarrow 0$    & $\text{E}(x) = 1/3$ & $\text{E}(x) = 1/\lambda$ \\
+Sexually Antagonistic (2-locus) &  &  &  \\
+~~~{\itshape One unlinked SA locus}  & $s_d / U_d$ & $\text{E}(x) = result$ & $\text{E}(x) = result$ \\
+~~~{\itshape One linked SA locus} & $\frac{3 s_d}{A s_d + 2 U_d}$ & $\text{E}(x) = result$ & $\text{E}(x) = result$ \\
+Haploid/Diploid       & $result$ & $\text{E}(x) = result$ & $\text{E}(x) = result$ \\
+\hline
+\end{tabu}
+\begin{tabu}{X}
+\footnote{} {\footnotesize Under the random breakpoints model: $f(x) = 2(1 - x)$.} \\
+\footnote{} {\footnotesize Under the exponential model: $f(x) = \lambda e^{-\lambda x}$.} \\
+{\footnotesize Other relevant notes....}
+\end{tabu}
+\label{tab:invProbSize}
+\end{table}
+\newpage{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Figures 
+
+
+ \begin{figure}[htbp]
+ \centering
+ \includegraphics[width=\linewidth]{./Fig1}
+ \caption{Fixation probability for inversions of different lengths capturing the SDL on the Y-chromosome under: (A) Neutral inversions; (B) Unconditionally beneficial inversions; and (C) Sexually antagonistic selection. \hl{Note: I will change the y-axes to be more easily interpretable values (e.g., fractions of $N$, $s_m$, etc.)}}
+ \label{fig:fixProbFig}
+ \end{figure}
+\vspace{1cm}
+
+
+ \begin{figure}[htbp]
+ \centering
+% \includegraphics[width=\linewidth]{./Fig1}
+ \caption{Expected length distribution for inversions capturing the SDL on the Y-chromosome under: (A) Neutral inversions; (B) Unconditionally beneficial inversions; and (C) Sexually antagonistic selection. Solid and dashed lines show results for the random breakpoints and exponential models of new inversions respectively}
+ \label{fig:invSizeFig}
+ \end{figure}
+ \newpage{}
+
+
+ \newpage{}
+
+
+
+\end{document}

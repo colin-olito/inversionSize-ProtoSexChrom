@@ -35,8 +35,8 @@ source('R/functions-figures.R')
 # Figures for the paper
 ########################
 
-# toPdf(Fig.1(), figPath(name='Fig1.pdf'), width=5, height=7.75)
-# embed_fonts(figPath(name='Fig1.pdf'))
+ toPdf(fixationProbabilityFigure(), figPath(name='Fig1.pdf'), width=10, height=4)
+ embed_fonts(figPath(name='Fig1.pdf'))
 
 # toPdf(Fig.2(), figPath(name='Fig2.pdf'), width=7, height=7)
 # embed_fonts(figPath(name='Fig2.pdf'))
