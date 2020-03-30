@@ -35,11 +35,24 @@ source('R/functions-figures.R')
 # Figures for the paper
 ########################
 
+
  toPdf(fixationProbabilityFigure(), figPath(name='Fig1.pdf'), width=10, height=4)
  embed_fonts(figPath(name='Fig1.pdf'))
 
-# toPdf(Fig.2(), figPath(name='Fig2.pdf'), width=7, height=7)
-# embed_fonts(figPath(name='Fig2.pdf'))
+# Pr(fix | x, SDR)
+ toPdf(PrCatchFixFigure(SDRloc = c(1/2, 1/10)), figPath(name='PrCatchFixFig.pdf'), width=10, height=8)
+ embed_fonts(figPath(name='PrCatchFixFig.pdf'))
+
+ toPdf(expectedDistributionFig(SDRloc = c(1/2, 1/10)), figPath(name='expDistFig.pdf'), width=7, height=7)
+ embed_fonts(figPath(name='expDistFig.pdf'))
+
+ toPdf(determInvFreqPlot(wesMovie = 'Zissou1'), figPath(name='detEqInvFreqFig.pdf'), width=10, height=10)
+ embed_fonts(figPath(name='detEqInvFreqFig.pdf'))
+
+source('R/functions-figures.R')
+ toPdf(recombEffectSATwoLocus(), figPath(name='recombEffect.pdf'), width=10, height=6)
+ embed_fonts(figPath(name='recombEffect.pdf'))
+
 
 # toPdf(Fig3Alt(), 
 #             figPath(name='Fig3Alt.pdf'), width=7, height=7)

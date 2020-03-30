@@ -21,8 +21,8 @@ rm(list=ls())
 #####################
 ##  Functions
 
-pr.fix.Ybeneficial = function(x, Ny, sI, sd, Ud){
-	2*sI*( (Ud*x) / (1 - (1 - sI)*exp(-sd)) )*exp(-2*Ud*x/sd)
+pr.fix.Ybeneficial = function(x, sI, sd, Ud){
+	2*sI*(1 + ((Ud*x) / (1 - (1 - sI)*exp(-sd))) )*exp(-Ud*x/sd)
 }
 
 beneficialFwdSimY  <-  function(par.list) {
@@ -34,7 +34,8 @@ beneficialFwdSimY  <-  function(par.list) {
 	Ud   <-  par.list$Ud
 
 	#number of simulation runs per parameter set and x
-	reps = max(10^5*Ny*sI)
+#	reps = max(10^5*Ny*sI)
+	reps = 10^5
 
 	#initial inversion frequency
 	q.0 = 1/Ny
@@ -42,6 +43,9 @@ beneficialFwdSimY  <-  function(par.list) {
 	# Storage vectors
 	invSizes = 1:11/11
 	simulated = rep(0, length(invSizes))
+
+	# Calculate threshold frequency for inversion establishment
+		pcrit        <-  4/(Ny*sI)
 
 	for(j in 1:length(invSizes)){
 		#inversion size
@@ -56,8 +60,10 @@ beneficialFwdSimY  <-  function(par.list) {
     
 			while(q*(1 - q) > 0){
 				#expected frequency after selection
-				w.avg = q*(1 + sI)*exp(-Ud*x*(1 - exp(-sd*t))) + (1 - q)*exp(-Ud*x)
-				F.sel = q + q*(1 - q)*((1 + sI)*exp(-Ud*x*(1 - exp(-sd*t))) - exp(-Ud*x))/w.avg
+#				w.avg = q*(1 + sI)*exp(-Ud*x*(1 - exp(-sd*t))) + (1 - q)*exp(-Ud*x)
+#				F.sel = q + q*(1 - q)*((1 + sI)*exp(-Ud*x*(1 - exp(-sd*t))) - exp(-Ud*x))/w.avg
+				w.avg = q*(1 + sI)*exp(-Ud*x*(2 - exp(-sd*t))) + (1 - q)*exp(-2*Ud*x)
+				F.sel = q + q*(1 - q)*((1 + sI)*exp(-Ud*x*(2 - exp(-sd*t))) - exp(-2*Ud*x))/w.avg
       
 				#binomial sampling
 				q = rbinom(1, Ny, F.sel)/(Ny)
@@ -70,7 +76,7 @@ beneficialFwdSimY  <-  function(par.list) {
 		simulated[j] = successes/reps
 		cat('\r', paste(j, "/ ", length(invSizes)))
 	}
-	PrMutFree = exp(-2*Ud*invSizes/sd)
+	PrMutFree = exp(-Ud*invSizes/sd)
 	ben.sim = PrMutFree*simulated
 
 	res  <-  data.frame(

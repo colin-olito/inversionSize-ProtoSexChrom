@@ -180,12 +180,10 @@ lambdaYWkSel  <-  function(Xf, Xm, hf, sf) {
 #' 
 #' @param par.list A list with desired parameter values for the simulation with structure:
 #' par.list  <-  list(
-#'				   gen    =  5000,
-#'				   sm     =  0.1,
-#'				   sf     =  0.1,
-#'				   hm     =  1/2,
-#'				   hf     =  1/2,
-#'				   r      =  1/2
+#'				   selType  =  "SA",
+#' 				   selPars  =  c(hf, sf, hm, sm),
+#'				   gen      =  5000,
+#'				   r        =  1/2
 #'				   )
 #' @return	Returns a list with deterministic equilibrium frequencies 
 #' 			for each genotype, and for the frequency of the A allele
@@ -193,31 +191,38 @@ lambdaYWkSel  <-  function(Xf, Xm, hf, sf) {
 #' @seealso 
 #' @export
 #' @author Colin Olito.
-getEqFreqsSAX  <-  function(par.list, eq.threshold=1e-6, ...) {
+#' detSimYInversion(par.list, Fx.init, Fy.init, eqStart = TRUE, threshold = 1e-6) 
+#'				   selType  =  "OD",
+#' 				   selPars  =  c(sf1, sf2, sm1, sm2)
+getEqFreqsX  <-  function(par.list, eq.threshold=1e-6, ...) {
 
 	# unpack par.list
-	gen  =  par.list$gen
-	sm   =  par.list$sm
-	sf   =  par.list$sf
-	hm   =  par.list$hm
-	hf   =  par.list$hf
-	r    =  par.list$r
+	selType  =  par.list$selType
+	selPars  =  par.list$selPars
+	gen      =  par.list$gen
+	r        =  par.list$r
 
 	# Sexually antagonistic fitness expressions
-	 Wf  <-  c(1,      1 - hf*sf, 1 - sf)
-	 Wm  <-  c(1 - sm, 1 - hm*sm, 1)
+	if(selType == "SA") {
+		Wf  <-  c(1,              1 - selPars[1]*selPars[2], 1 - selPars[2])
+		Wm  <-  c(1 - selPars[4], 1 - selPars[3]*selPars[4], 1)
+	}
+	if(selType == "OD") {
+		Wf  <-  c(1 - selPars[1], 1, 1 - selPars[2])
+		Wm  <-  c(1 - selPars[3], 1, 1 - selPars[4])
+	}
 
 	# Arbitrary polymorphic initial frequencies
 	Fx.eq     <-  c(1/3, 0,   0, 1/3,   0, 1/3)
 	Fy.eq     <-  c(1/4, 0, 1/4,   0, 1/4, 1/4)
-	aFreq.eq  <-  c(0,0,0)
+	AFreq.eq  <-  c(0,0,0)
 
 	##  Generation Loop
 	# Start simulation
 	diffs  <-  rep(1,2)
 	i=1
 	while(i < (gen + 1) & any(abs(diffs[abs(diffs) > 0]) > eq.threshold)) {
-		aFreq.eq  <-  c(Xf(Fx=Fx.eq), Xm(Fy=Fy.eq, r=par.list$r), Y(Fy=Fy.eq, r=r))
+		AFreq.eq  <-  c(Xf(Fx=Fx.eq), Xm(Fy=Fy.eq, r=par.list$r), Y(Fy=Fy.eq, r=r))
 		Fxm  <-  round(c(x1m(  Fx=Fx.eq, Fy=Fy.eq, r=r),
 						 x1Im( Fx=Fx.eq, Fy=Fy.eq, r=r),
 						 x1IIm(Fx=Fx.eq, Fy=Fy.eq, r=r),
@@ -249,7 +254,7 @@ getEqFreqsSAX  <-  function(par.list, eq.threshold=1e-6, ...) {
 	}
 
 	res  <-  list(
-				  "aFreq.eq"  =  aFreq.eq,
+				  "AFreq.eq"  =  AFreq.eq,
 				  "Fx.eq"     =  Fx.eq,
 				  "Fy.eq"     =  Fy.eq
 				  )
@@ -267,12 +272,10 @@ getEqFreqsSAX  <-  function(par.list, eq.threshold=1e-6, ...) {
 #' 
 #' @param par.list A list with desired parameter values for the simulation with structure:
 #' par.list  <-  list(
-#'				   gen    =  5000,
-#'				   sm     =  0.1,
-#'				   sf     =  0.1,
-#'				   hm     =  1/2,
-#'				   hf     =  1/2,
-#'				   r      =  1/2
+#'				   selType  =  "SA",
+#' 				   selPars  =  c(hf, sf, hm, sm),
+#'				   gen      =  5000,
+#'				   r        =  1/2
 #'				   )
 #' @param Fx.init A vector of length 3 containing initial genotypic frequencies for females
 #' 				  Fx = c(x1, x2, x3)
@@ -283,30 +286,35 @@ getEqFreqsSAX  <-  function(par.list, eq.threshold=1e-6, ...) {
 #' @export
 #' @author Colin Olito.
 #' @examples
-#' detSimYInversion(par.list, Fx.init, Fy.init, eqStart = TRUE, threshold = 1e-6) 
-
+#'				   selType  =  "OD",
+#' 				   selPars  =  c(sf1, sf2, sm1, sm2)
 detSimXInversion  <-  function(par.list, 
 							   Fx.init = c(1/3, 0,   0, 1/3,   0, 1/3), 
 							   Fy.init = c(1/4, 0, 1/4,   0, 1/4, 1/4), 
 							   eqStart = TRUE, eq.threshold=1e-6) {
-	##  Warnings
-#	if(any(par.list[2:6] < 0) | any(par.list[2:6] > 1) | par.list$r > 0.5)
-#		stop('The chosen parameter values fall outside of biologically plausible bounds')
+
+
+
 
 	if(any(c(round(sum(Fx.init), digits=4), round(sum(Fy.init), digits=4)) != 1))
 		stop('Initial frequencies must sum to 1')
 
+
 	# unpack par.list
-	gen  =  par.list$gen
-	sm   =  par.list$sm
-	sf   =  par.list$sf
-	hm   =  par.list$hm
-	hf   =  par.list$hf
-	r    =  par.list$r
+	selType  =  par.list$selType
+	selPars  =  par.list$selPars
+	gen      =  par.list$gen
+	r        =  par.list$r
 
 	# Sexually antagonistic fitness expressions
-	 Wf  <-  c(1,      1 - hf*sf, 1 - sf)
-	 Wm  <-  c(1 - sm, 1 - hm*sm, 1)
+	if(selType == "SA") {
+		Wf  <-  c(1,              1 - selPars[1]*selPars[2], 1 - selPars[2])
+		Wm  <-  c(1 - selPars[4], 1 - selPars[3]*selPars[4], 1)
+	}
+	if(selType == "OD") {
+		Wf  <-  c(1 - selPars[1], 1, 1 - selPars[2])
+		Wm  <-  c(1 - selPars[3], 1, 1 - selPars[4])
+	}
 
 	##  Initilize data storage structures
 	Fx.gen  <-  matrix(0, ncol=6, nrow=par.list$gen)
@@ -316,8 +324,8 @@ detSimXInversion  <-  function(par.list,
 	
 	# Find equilibrium frequencies before introducing the inversion?
 	if(eqStart) {
-		initEq    <-  getEqFreqsSAX(par.list=par.list, eq.threshold=1e-6)
-		aFreq.eq  <-  initEq$aFreq.eq
+		initEq    <-  getEqFreqsX(par.list=par.list, eq.threshold=1e-6)
+		AFreq.eq  <-  initEq$AFreq.eq
 		Fx.eq     <-  initEq$Fx.eq
 		Fy.eq     <-  initEq$Fy.eq
 	} 
@@ -331,8 +339,8 @@ detSimXInversion  <-  function(par.list,
 
 	# Evaluate Eigenvalue associated with invasion 
 	# of the inversion for initial equilibrium
-	lambdaInv  <-  lambdaYWkSel(Xf=aFreq.eq[1], Xm=aFreq.eq[2], hf=hf, sf=sf)
-
+	lambdaInv  <-  lambdaY(Wf=Wf, Xf=AFreq.eq[1], Xm=AFreq.eq[2])
+	
 	# Introduce inversion at low frequency
 	mutProb  <-  c(Fx.eq[1], Fx.eq[4]/2, Fy.eq[1]/2, Fy.eq[3]/2)/sum(c(Fx.eq[1], Fx.eq[4]/2, Fy.eq[1]/2, Fy.eq[3]/2))
 	invMut   <-  c(1,4,7,9)[as.vector(rmultinom(1,prob=mutProb, size=1)) == 1]
@@ -350,13 +358,13 @@ detSimXInversion  <-  function(par.list,
 	Fy.gen[1,]  <-  Fy.eq
 	
 	# save initial equilibrium frequencies
-	aFreq.init  <-  aFreq.eq
+	AFreq.init  <-  AFreq.eq
 
 	# Generation loop
 	diffs  <-  rep(1,12)
 	i=2
 	while(i < (gen + 1) & any(abs(diffs[abs(diffs) > 0]) > eq.threshold)) {
-		aFreq.eq  <-  c(Xf(Fx=Fx.gen[i-1,]), Xm(Fy=Fy.gen[i-1,], r=r), Y(Fy=Fy.gen[i-1,], r=r))
+		AFreq.eq  <-  c(Xf(Fx=Fx.gen[i-1,]), Xm(Fy=Fy.gen[i-1,], r=r), Y(Fy=Fy.gen[i-1,], r=r))
 		Fxm  <-  round(c(
 						 x1m(  Fx=Fx.gen[i-1,], Fy=Fy.gen[i-1,], r=r),
 						 x1Im( Fx=Fx.gen[i-1,], Fy=Fy.gen[i-1,], r=r),
@@ -399,15 +407,14 @@ detSimXInversion  <-  function(par.list,
 
 	# Did inversion invade? 
 	# Did the prediction based on the eigenvalue agree with the simulation results?
-#	simInvasion  <-  sum(Fy.gen[nrow(Fy.gen),c(3,6)]) > 1e-05
 	lastGen      <-  nrow(Fx.gen)
-	initInvFreq  <-  (2*sum(Fx.gen[1,c(2,3,5)]*c(1/2, 1 ,1/2)) + sum(Fy.gen[1,c(2,4)]))/3
-	eqInvFreq    <-  (2*sum(Fx.gen[lastGen,c(2,3,5)]*c(1/2, 1 ,1/2)) + sum(Fy.gen[lastGen,c(2,4)]))/3
+	initInvFreq  <-  (2*((Fx.gen[1,      2]*1/2) + (Fx.gen[1      ,3]) + (Fx.gen[1      ,5]*1/2)) + (Fy.gen[1      ,2] + Fy.gen[1      ,4]))/3
+	eqInvFreq    <-  (2*((Fx.gen[lastGen,2]*1/2) + (Fx.gen[lastGen,3]) + (Fx.gen[lastGen,5]*1/2)) + (Fy.gen[lastGen,2] + Fy.gen[lastGen,4]))/3
 	simInvasion  <-  round(eqInvFreq, digits=8) > round(initInvFreq,digits=8)
 	eigInvasion  <-  lambdaInv > 1
 
-	#put names on aFreq.eq
-	names(aFreq.eq)  <-  c("Xf","Xm","Y")
+	#put names on AFreq.eq
+	names(AFreq.eq)  <-  c("Xf","Xm","Y")
 
 	# Put results in a list
 	res  <-  list ("maxRuntime"   =  nrow(Fx.gen) >= gen,
@@ -417,8 +424,9 @@ detSimXInversion  <-  function(par.list,
 				   "eigInvasion"  =  eigInvasion,
 				   "simInvasion"  =  simInvasion,
 				   "lambdaInv"    =  lambdaInv,
-				   "aFreq.init"   =  aFreq.init,
-				   "aFreq.eq"     =  aFreq.eq,
+				   "AFreq.init"   =  AFreq.init,
+				   "AFreq.eq"     =  AFreq.eq,
+				   "eqInvFreq"    =  eqInvFreq,
 				   "gen"          =  nrow(Fx.gen)
 				   )
 
@@ -429,3 +437,90 @@ detSimXInversion  <-  function(par.list,
 
 
 
+
+#' Wrapper function to find equilibrium frequencies 
+#' of X inversions across selection parameter space
+detXSAInversionEQFreqs  <-  function(selRange = c(0,1), by=0.1, generations = 10000,
+								   dom = c(1/2, 1/2), r = 1/2, eq.threshold = 1e-6) {
+
+	# define parameter space being explored
+	sfs      <-  seq(from=selRange[1], to=selRange[2], by=by)
+	len.s    <-  length(sfs)
+	sms      <-  sfs
+
+	# data storage
+	Xf.init  <-  rep(0, length=(len.s^2))
+	Xm.init  <-  rep(0, length=(len.s^2))
+	Y.init   <-  rep(0, length=(len.s^2))
+	Xf.eq    <-  rep(0, length=(len.s^2))
+	Xm.eq    <-  rep(0, length=(len.s^2))
+	Y.eq     <-  rep(0, length=(len.s^2))
+	inv.eq   <-  rep(0, length=(len.s^2))
+	eigInv   <-  rep(0, length=(len.s^2))
+	simInv   <-  rep(0, length=(len.s^2))
+
+	# Simulation Loop
+	cat('\r', paste("Progress", 0, "/ ", len.s))
+
+	for(i in 1:len.s) {
+		for(j in 1:length(sms)) {
+			selPars  <-  c(dom[1], sfs[i], dom[2], sms[j])
+			par.list  <-  list(
+								selType  =  "SA",
+								selPars  =  selPars,
+								gen      =  generations,
+								r        =  r
+							   )
+
+			# Run Deterministic Fwd Simulation
+			Res  <-  detSimXInversion(par.list=par.list, eq.threshold=eq.threshold)
+
+			# Store results
+			Xf.init[(i-1)*len.s + j]  <-  Res$AFreq.init[1]
+			Xm.init[(i-1)*len.s + j]  <-  Res$AFreq.init[2]
+			Y.init[(i-1)*len.s + j]   <-  Res$AFreq.init[3]
+			Xf.eq[(i-1)*len.s + j]    <-  Res$AFreq.eq[1]
+			Xm.eq[(i-1)*len.s + j]    <-  Res$AFreq.eq[2]
+			Y.eq[(i-1)*len.s + j]     <-  Res$AFreq.eq[3]
+			inv.eq[(i-1)*len.s + j]   <-  Res$eqInvFreq
+			eigInv[(i-1)*len.s + j]   <-  Res$eigInvasion
+			simInv[(i-1)*len.s + j]   <-  Res$simInvasion
+
+		}
+		cat('\r', paste("Progress", i, "/ ", len.s))
+
+	}
+
+	# Vectors for data.frame
+	recomb  <-  rep(r, times=len.s^2)
+	hfs     <-  rep(selPars[1], times=len.s^2)
+	hms     <-  rep(selPars[3], times=len.s^2)
+	Sfs     <-  c()
+	for(i in 1:len.s) {
+		Sfs  <-  c(Sfs, rep(sfs[i], times = len.s))
+	}
+	Sms     <-  rep(sms, times=len.s)
+
+	# Compile results in a data.frame
+	results.df  <-  data.frame(
+						   "hf"       =  hfs,
+						   "sf"       =  Sfs,
+						   "hm"       =  hms,
+						   "sm"       =  Sms,
+						   "r"        =  recomb,
+						   "Xf.init"  =  Xf.init,
+						   "Xm.init"  =  Xm.init,
+						   "Y.init"   =  Y.init,
+						   "Xf.eq"    =  Xf.eq,
+						   "Xm.eq"    =  Xm.eq,
+						   "Y.eq"     =  Y.eq,
+						   "inv.eq"   =  inv.eq,
+						   "eigInv"   =  eigInv,
+						   "simInv"   =  simInv
+							)
+
+		# export data as .csv to ./output/data
+		filename <-  paste("./output/data/simResults/deterministicSims-X", "_sMax", selRange[2], "_r", r, "_hf", selPars[1], "_hm", selPars[3], ".csv", sep="")
+		write.csv(results.df, file=filename, row.names = FALSE)
+
+}

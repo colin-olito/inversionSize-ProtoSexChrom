@@ -22,7 +22,7 @@ rm(list=ls())
 ##  Functions
 
 pr.fix.neutral = function(x, Ny, sd, Ud){
-	1 / (Ny*exp(Ud*x/sd))
+	1 / (Ny)
 }
 
 neutralFwdSimY  <-  function(par.list) {
@@ -33,7 +33,8 @@ neutralFwdSimY  <-  function(par.list) {
 	Ud   <-  par.list$Ud
 
 	#number of simulation runs per parameter set and x
-	reps = max(200*Ny)
+#	reps = max(200*Ny)
+	reps = max(10^5,100*Ny)
 
 	#initial inversion frequency
 	q.0 = 1/Ny
@@ -58,8 +59,10 @@ neutralFwdSimY  <-  function(par.list) {
 
 			while(q*(1 - q) > 0){
 				#expected frequency after selection
-				w.avg = q*exp(-Ud*x*(1 - exp(-sd*t))) + (1 - q)*exp(-Ud*x)
-				F.sel = q + q*(1 - q)*(exp(-Ud*x*(1 - exp(-sd*t))) - exp(-Ud*x))/w.avg
+#				w.avg = q*exp(-Ud*x*(1 - exp(-sd*t))) + (1 - q)*exp(-Ud*x)
+#				F.sel = q + q*(1 - q)*(exp(-Ud*x*(1 - exp(-sd*t))) - exp(-Ud*x))/w.avg
+				w.avg = q*exp(-Ud*x*(2 - exp(-sd*t))) + (1 - q)*exp(-2*Ud*x)
+				F.sel = q*(exp(-Ud*x*(2 - exp(-sd*t))))/w.avg
 
 				#binomial sampling
 				q = rbinom(1, Ny, F.sel)/(Ny)
@@ -73,7 +76,7 @@ neutralFwdSimY  <-  function(par.list) {
 		cat('\r', paste(j, "/ ", length(invSizes)))
 	}
 
-	PrMutFree = exp(-2*Ud*invSizes/sd)
+	PrMutFree = exp(-Ud*invSizes/sd)
 	neutral.sim = PrMutFree*simulated
 
 	res  <-  data.frame(
