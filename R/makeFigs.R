@@ -46,6 +46,7 @@ source('R/functions-figures.R')
  toPdf(expectedDistributionFig(SDRloc = c(1/2, 1/10)), figPath(name='expDistFig.pdf'), width=7, height=7)
  embed_fonts(figPath(name='expDistFig.pdf'))
 
+source('R/functions-figures.R')
  toPdf(determInvFreqPlot(wesMovie = 'Zissou1'), figPath(name='detEqInvFreqFig.pdf'), width=10, height=10)
  embed_fonts(figPath(name='detEqInvFreqFig.pdf'))
 

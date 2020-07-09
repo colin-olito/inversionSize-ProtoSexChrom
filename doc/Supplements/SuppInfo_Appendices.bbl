@@ -1,4 +1,4 @@
-\begin{thebibliography}{9}
+\begin{thebibliography}{10}
 
 \bibitem[{Clark}(1987)]{Clark1987}
 {Clark, A.~G.}, 1987 Natural selection and y-linked polymorphism. Genetics {\bf
@@ -8,6 +8,10 @@
 {Connallon, T. {\rm and} A.~G. Clark}, 2012 A general population genetic
   framework for antagonistic selection that accounts for demography and
   recurrent mutation. Genetics {\bf 190}: 1477--1489.
+
+\bibitem[{Connallon {\rm and} Olito}(2020)]{ConnallonOlito2020}
+{Connallon, T. {\rm and} C.~Olito}, 2020 Impact of chromosomal inversion length
+  on fixation probability. Mol.~Ecol. p. In Review.
 
 \bibitem[{Kidwell {\em et~al.\/}}(1977){Kidwell, Clegg, Stewart, {\rm and}
   Prout}]{Kidwell1977}

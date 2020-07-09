@@ -96,9 +96,9 @@
 %%%%%%%%%%%%
 \subsection{Fixation Probability}
 
-As described in the the main article, our models make several key assumptions, including ({\itshape i}) that deleterious mutations are at mutation-selection balance at loci on the sex chromosomes that are unlinked with the sex determining locus (SDL) and one another; ({\itshape ii}) that new inversions are unlikely to fix unless they are initially free of deleterious mutations; and ({\itshape ii}) that the timescale for inversion fixation is shorter than that of gene loss/degeneration or dosage compensation due to recombination suppression between sex chromosomes (i.e., both inversion and non-inversion X and Y chromosomes have functional homologs for the same genes). Under these assumptions, a mutation-free inversion will enjoy a temporary fitness advantage over the average non-inverted chromosome in the population. Over time, however, mutations will accumulate on the inversion chromosomes until they too are at equilibrium, equalizing the fitness of inverted and non-inverted chromosomes. Any approximation of the fixation probability for neutral inversions that are initially free of deleterious mutations must therefore take into account how frequent inversion descendants would become in the population before they become selectivley neutral.
+As described in the the main article, our models make several key assumptions, including ({\itshape i}) that deleterious mutations are at mutation-selection balance at loci on the sex chromosomes that are unlinked with the sex determining region (SDR) and one another; ({\itshape ii}) that new inversions are unlikely to fix unless they are initially free of deleterious mutations; and ({\itshape ii}) that the timescale for inversion fixation is shorter than that of gene loss/degeneration or dosage compensation due to recombination suppression between sex chromosomes (i.e., both inversion and non-inversion X and Y chromosomes have functional homologs for the same genes). Under these assumptions, a mutation-free inversion will enjoy a temporary fitness advantage over the average non-inverted chromosome in the population. Over time, however, mutations will accumulate on the inversion chromosomes until they too are at equilibrium, equalizing the fitness of inverted and non-inverted chromosomes. Any approximation of the fixation probability for neutral inversions that are initially free of deleterious mutations must therefore take into account how frequent inversion descendants would become in the population before they become selectivley neutral.
 
-Prior to any recombination suppression between sex chromosomes, the dynamics of deleterious mutations at loci unlinked with the SDL are identical to those at autosomal loci. Hence, the equilibrium frequency of deleterious alleles at each locus will be $\hat{p} \approx \frac{\mu}{h_d s_d}$, where $\mu$ is the single-locus deleterious mutation rate. Following \citet{Nei1967} (their Eq[7] and Eq[8]), the general solution for the approximate frequency of deleterious mutations over time at a given locus is
+Prior to any recombination suppression between sex chromosomes, the dynamics of deleterious mutations at loci unlinked with the SDR are identical to those at autosomal loci. Hence, the equilibrium frequency of deleterious alleles at each locus will be $\hat{p} \approx \frac{\mu}{h_d s_d}$, where $\mu$ is the single-locus deleterious mutation rate. Following \citet{Nei1967} (their Eq[7] and Eq[8]), the general solution for the approximate frequency of deleterious mutations over time at a given locus is
 
 \begin{equation}\label{eq:delMutAccum}
 	p_t = \hat{p}(1 - e^{-h_d s_d}).
@@ -108,9 +108,9 @@ Prior to any recombination suppression between sex chromosomes, the dynamics of 
 
 
 %%%%%%%%%%%%
-\subsubsection*{Inversions spanning the SDL on the Y chromosome}
+\subsubsection*{Inversions spanning the SDR on the Y chromosome}
 
-From Eq(\ref{eq:delMutAccum}), we can write the fitness of individuals carrying inversions spanning the SDL on a Y chromosome as follows:
+From Eq(\ref{eq:delMutAccum}), we can write the fitness of individuals carrying inversions spanning the SDR on a Y chromosome as follows:
 
  \begin{table}[htbp]\label{tab:NeutralYinvFitTab}
  \centering
@@ -122,7 +122,7 @@ From Eq(\ref{eq:delMutAccum}), we can write the fitness of individuals carrying 
  $t$ & $e^{-U_d x(2 - e^{-h_d s_d t})}$ & $e^{-2 U_d x}$ \\
  $t$ (relative to $X \mid Y_I$) & 1 & $e^{- U_d x e^{-h_d s_d t}}$ \\
  \hline
- \multicolumn{3}{p{3.3\tabucolX}}{{\footnotesize Note: Fitness expressions are given for the $0^{\text{th}}$ and $t^{\text{th}}$ generation when an inversion capturing the SDL on a Y chromosome is initially free of deleterious mutations. Note also that these fitness expressions are approximate for $h_d \approx 1/2$.}}
+ \multicolumn{3}{p{3.3\tabucolX}}{{\footnotesize Note: Fitness expressions are given for the $0^{\text{th}}$ and $t^{\text{th}}$ generation when an inversion capturing the SDR on a Y chromosome is initially free of deleterious mutations. Note also that these fitness expressions are approximate for $h_d \approx 1/2$.}}
  \end{tabu}
  \end{table}
  \newpage{}
@@ -145,7 +145,7 @@ From Eq(\ref{eq:delMutAccum}), we can write the fitness of individuals carrying 
 	q_{t} = \frac{q_{0} \, \text{Exp}\Bigg[ U_d x \frac{(1 - e^{-h_d s_d t})}{(1 - e^{-h_d s_d})} \Bigg]} {1 - q_{0} + q_0 \, \text{Exp}\Bigg[ U_d x \frac{(1 - e^{-h_d s_d t})}{(1 - e^{-h_d s_d})} \Bigg]}.
 \end{equation} 
 
-\noindent (see \hl{Connallon \& Olito {\itshape unpubl.}}). In the limit of $t \rightarrow \infty$, the frequency of inversion descendents will converge to 
+\noindent \citep[see][]{ConnallonOlito2020}. In the limit of $t \rightarrow \infty$, the frequency of inversion descendents will converge to 
 
 \begin{equation}\label{eq:NeutralYinvGenSolLimit}
 	q_{t} = \frac{q_{0} \, \text{Exp}\Big[ \frac{U_d x}{1 - e^{-h_d s_d} } \Big]} {1 - q_{0} + q_0 \, \text{Exp}\Big[ \frac{U_d x}{1 - e^{-h_d s_d} } \Big]}.
@@ -167,16 +167,16 @@ Multiplying $q_{\text{eff}}$ by the probability that the inversion is initially 
 		 &= N^{-1}_Y , \numberthis
 \end{align*}
 
-Overall, the fact that larger inversions are less likely to be initially free of deleterious mutations offsets the greater temporary fitness benefit of actually being mutation-free. The fixation probability for neutral inversions remains approximately unchanged in the presence of deleterious mutation pressure that is approximately equal to $q_0 = N^{-1}_Y$. increasing risk of catching overall fixation probability of an initially mutation-free neutral inversion spanning the SDL on a Y chromosome is approximately equal to $q^Y_{\text{eff}}$, as presented in Eq(\hl{2}a) of the main text.
+Overall, the fact that larger inversions are less likely to be initially free of deleterious mutations offsets the greater temporary fitness benefit of actually being mutation-free. The fixation probability for neutral inversions remains approximately unchanged in the presence of deleterious mutation pressure that is approximately equal to $q_0 = N^{-1}_Y$. increasing risk of catching overall fixation probability of an initially mutation-free neutral inversion spanning the SDR on a Y chromosome is approximately equal to $q^Y_{\text{eff}}$, as presented in Eq(\hl{2}a) of the main text.
 
 
 
 %%%%%%%%%%%%%%%
-\subsubsection*{Inversions spanning the SDL on an X chromosome}
+\subsubsection*{Inversions spanning the SDR on an X chromosome}
 
-The frequency dynamics of initially mutation-free inversions spanning the SDL on the X chromosome turn out to be nearly identical to both autosomal inversions and those on the Y chromsome. Here we briefly outline the one key difference between the results provided for inversions on the X vs.~Y chromosomes. 
+The frequency dynamics of initially mutation-free inversions spanning the SDR on the X chromosome turn out to be nearly identical to both autosomal inversions and those on the Y chromsome. Here we briefly outline the one key difference between the results provided for inversions on the X vs.~Y chromosomes. 
 
-We can write the fitness of individuals carrying inversions spanning the SDL on an X chromosome from Eq(\ref{eq:delMutAccum}) as follows:
+We can write the fitness of individuals carrying inversions spanning the SDR on an X chromosome from Eq(\ref{eq:delMutAccum}) as follows:
 
  \begin{table}[htbp]\label{tab:NeutralXinvFitTab}
  \centering
@@ -198,11 +198,11 @@ We can write the fitness of individuals carrying inversions spanning the SDL on 
  $t$ (relative to $X \mid Y_I$) & 1 & $e^{-2 U_d x e^{-h_d s_d t}}$ & \\
  $t$ (approx.) & 1 & $1 - U_d x e^{-h_d s_d t}$ & \\
  \hline
- \multicolumn{4}{p{4.4\tabucolX}}{{\footnotesize Note: Fitness expressions are given for the $0^{\text{th}}$ and $t^{\text{th}}$ generation when an inversion capturing the SDL on an X chromosome is initially free of deleterious mutations. Note also that these fitness expressions are approximate for $h_d \approx 1/2$.}}
+ \multicolumn{4}{p{4.4\tabucolX}}{{\footnotesize Note: Fitness expressions are given for the $0^{\text{th}}$ and $t^{\text{th}}$ generation when an inversion capturing the SDR on an X chromosome is initially free of deleterious mutations. Note also that these fitness expressions are approximate for $h_d \approx 1/2$.}}
  \end{tabu}
  \end{table}
 
-\noindent Unlike the model for inversions on the Y chromosome, there is no general solution to the discrete time recursion for the frequency of inversion descendents when the inversion spans the SDL on an X chromosome. Nevertheless, we can use a continuous time approximation to the general solution for the discrete time model. Under weak selection and mutation, the rate of change in the frequency of inversion descendents is roughly 
+\noindent Unlike the model for inversions on the Y chromosome, there is no general solution to the discrete time recursion for the frequency of inversion descendents when the inversion spans the SDR on an X chromosome. Nevertheless, we can use a continuous time approximation to the general solution for the discrete time model. Under weak selection and mutation, the rate of change in the frequency of inversion descendents is roughly 
 
 \begin{equation}\label{eq:NeutralXinvDiffEq}
 	\frac{\partial q_t}{\partial t} = q_t(1 - q_t)U_d x \, e^{-h_d s_d t} + O(U_d^2).
@@ -226,7 +226,7 @@ We can write the fitness of individuals carrying inversions spanning the SDL on 
 	q^X_{\text{eff}} \approx N^{-1}_X \, e^{\frac{U_d x}{h_d s_d }},
 \end{equation} 
 
-\noindent after which it will evolve neutrally. $q^X_{\text{eff}}$ therefore provides an approximation for the fixation probability of an initially mutation-free neutral inversion spanning the SDL on an X chromosome. 
+\noindent after which it will evolve neutrally. $q^X_{\text{eff}}$ therefore provides an approximation for the fixation probability of an initially mutation-free neutral inversion spanning the SDR on an X chromosome. 
 
 Multiplying $q_eff$ by the probability that the inversion is initially free of deleterious mutations, $\Pr(k = 0 \mid x) = e^{-\frac{U_d x}{s_d}}$, gives the overall fixation probability presented in Eq(\hl{2}b) of the main text:
 
@@ -252,15 +252,15 @@ Comparing Eq(\ref{eq:NeutralYinvPFix}) with Eq(\ref{eq:NeutralXinvPFix}) for equ
 
 In the main text we present analyses of simplified two-locus models for two scenarios: ({\itshape iii}) sexual antagonism and ({\itshape iv}) haploid and diploid selection (roman numerals from the main text). Each of these models represent modest extensions of earlier population genetic models of the PAR including \citet{Clark1987}, \citet{Otto2011}, and \citet{Otto2014, Otto2019}. We refer readers to these papers for comprehensive theoretical background on two-locus PAR models. 
 
-We use the two-locus models to examine the invasion conditions for rare inversions spanning the SDL and other selected loci, and to approximate the overall selection coefficient for inversions, taking into account the possible effects of partial linkage between the SDL and the selected locus prior to the inversion mutation. The recursions for each of these models are structurally alike, and the evolutionary invasion analyses follow similar steps. Here, we develop the recursions for scenario ({\itshape iii}) sexual antagonism, and a detailed description of the invasion analysis. Details for the other models are presented in the Mathematica notebook files (.nb) available in the Online Supplementary Materials.
+We use the two-locus models to examine the invasion conditions for rare inversions spanning the SDR and other selected loci, and to approximate the overall selection coefficient for inversions, taking into account the possible effects of partial linkage between the SDR and the selected locus prior to the inversion mutation. The recursions for each of these models are structurally alike, and the evolutionary invasion analyses follow similar steps. Here, we develop the recursions for scenario ({\itshape iii}) sexual antagonism, and a detailed description of the invasion analysis. Details for the other models are presented in the Mathematica notebook files (.nb) available in the Online Supplementary Materials.
 
 
 %%%%%%%%%%%%
 \subsection{Recursions (Y chromosome inversion)}
 
-Consider the two-locus genetic system described in the main text: one locus determines whether a chromosome is considered X or Y, with XX individuals being female, and XY individuals being male (YY are considered lethal); and a second locus having alleles $A$ and $a$ that may be linked to the sex-determining locus and is subject to natural selection. Recombination between the two loci occurs at a rate $r$ per meiosis. Generations are discrete, and the population size is assumed to be large enough that drift is negligible. The life cycle proceeds: haploid selection $\rightarrow$ random mating $\rightarrow$ diploid selection.
+Consider the two-locus genetic system described in the main text: one locus determines whether a chromosome is considered X or Y, with XX individuals being female, and XY individuals being male (YY are considered lethal); and a second locus having alleles $A$ and $a$ that may be linked to the sex-determining region and is subject to natural selection. Recombination between the two loci occurs at a rate $r$ per meiosis. Generations are discrete, and the population size is assumed to be large enough that drift is negligible. The life cycle proceeds: haploid selection $\rightarrow$ random mating $\rightarrow$ diploid selection.
 
-When studying the invasion of an inversion capturing the SDL and one allele at a selected locus on the Y chromosome, there are three relevant female genotypes: $AA$, $Aa$, and $aa$, with frequencies denoted $x_1$, $x_2$, and $x_3$, and general fitness expressions at selection denoted $w_{f,1}$, $w_{f,2}$, $w_{f,3}$. However, there are six relevant genotypes for males: $AA$, $Aa$ (cis-), $Aa^I$ (cis-), $aA$ (trans-), $aa$, and $aa^I$, with frequencies $y_{1}$, $y_{2c}$, $y^I_{2c}$, $y_{2t}$, $y_{3}$, $y_{3I}$, but fitness expressions $w_{m,1}$, $w_{m,2}$, $w_{m,3}$. Note that male heterozygote genotype labels indicate whether the $A$ allele is located on the X chromosome ($y_{2c}$), or on the Y chromosome ($y_{2t}$), and "$I$" superscripts denote inverted haplotypes. It is assumed that recombination is suppressed between inverted and non-inverted chromosomes.
+When studying the invasion of an inversion capturing the SDR and one allele at a selected locus on the Y chromosome, there are three relevant female genotypes: $AA$, $Aa$, and $aa$, with frequencies denoted $x_1$, $x_2$, and $x_3$, and general fitness expressions at selection denoted $w_{f,1}$, $w_{f,2}$, $w_{f,3}$. However, there are six relevant genotypes for males: $AA$, $Aa$ (cis-), $Aa^I$ (cis-), $aA$ (trans-), $aa$, and $aa^I$, with frequencies $y_{1}$, $y_{2c}$, $y^I_{2c}$, $y_{2t}$, $y_{3}$, $y_{3I}$, but fitness expressions $w_{m,1}$, $w_{m,2}$, $w_{m,3}$. Note that male heterozygote genotype labels indicate whether the $A$ allele is located on the X chromosome ($y_{2c}$), or on the Y chromosome ($y_{2t}$), and "$I$" superscripts denote inverted haplotypes. It is assumed that recombination is suppressed between inverted and non-inverted chromosomes.
 
 \begin{equation*}
 	\text{Female genotypes}:\left( \begin{array}{cc|c}
@@ -323,9 +323,9 @@ When studying the invasion of an inversion capturing the SDL and one allele at a
 %%%%%%%%%%%%
 \subsection{Eigenvalues (Y chromosome inversion)}
 
-Under the assumptions stated in the main article, a new inversion must capture the SDL and a male-beneficial allele at the SA locus in order to invade. Accordingly, we use SA fitness expressions {\itshape sensu} \citealt{Kidwell1977,ConnallonClark2012,Otto2011}), where $w_{f,1} = 1$, $w_{f,2} = 1 - h_f s_f$, and $w_{f,3} = 1 - s_f$, and $w_{m,1} = 1 - s_m$, $w_{m,2} = 1 - h_m s_m$, and $w_{m,3} = 1$. We are interested in the evolutionary fate of rare inversion genotypes capturing the $a$ allele at the SA locus.
+Under the assumptions stated in the main article, a new inversion must capture the SDR and a male-beneficial allele at the SA locus in order to invade. Accordingly, we use SA fitness expressions {\itshape sensu} \citealt{Kidwell1977,ConnallonClark2012,Otto2011}), where $w_{f,1} = 1$, $w_{f,2} = 1 - h_f s_f$, and $w_{f,3} = 1 - s_f$, and $w_{m,1} = 1 - s_m$, $w_{m,2} = 1 - h_m s_m$, and $w_{m,3} = 1$. We are interested in the evolutionary fate of rare inversion genotypes capturing the $a$ allele at the SA locus.
 
-Substituting $x_3 = 1 - x_1 - x_2$ and $y_3 = 1 - y_1 - y_{2c} - y^I_{2c} - y_{2t} - y^I_3$, yields a system of $7$ genotypic frequency recursions. A key assumption in the analysis is that all non-inversion genotypes are initially at equilibrium when a new inversion mutation occurs. Specifically, we assume that $x_i = \hat{x}_i$ for $i \in \{1,\,2 \}$ and $y_j = \hat{y}_j$ where $j \in \{ 1,\,2c,\,2t \}$. To solve for the conditions under which a rare inversion capturing the SDL and the male-beneficial allele at the SA locus, we evaluate the Jacobian at the boundary equilibrium where the initial frequency of inverted genotypes are $y^{I}_{2c} = y^{I}_{3} = 0$:
+Substituting $x_3 = 1 - x_1 - x_2$ and $y_3 = 1 - y_1 - y_{2c} - y^I_{2c} - y_{2t} - y^I_3$, yields a system of $7$ genotypic frequency recursions. A key assumption in the analysis is that all non-inversion genotypes are initially at equilibrium when a new inversion mutation occurs. Specifically, we assume that $x_i = \hat{x}_i$ for $i \in \{1,\,2 \}$ and $y_j = \hat{y}_j$ where $j \in \{ 1,\,2c,\,2t \}$. To solve for the conditions under which a rare inversion capturing the SDR and the male-beneficial allele at the SA locus, we evaluate the Jacobian at the boundary equilibrium where the initial frequency of inverted genotypes are $y^{I}_{2c} = y^{I}_{3} = 0$:
 
 \begin{equation*}
 	\mathbb{J} = \left( \begin{array}{ccccccc}
@@ -431,7 +431,7 @@ Substituting $x_3 = 1 - x_1 - x_2$ and $y_3 = 1 - y_1 - y_{2c} - y^I_{2c} - y_{2
 	\lambda_I = \frac{w_{m,2}(1 - \hat{X}_f) + w_{m,3} \hat{X}_f} {w_{m,1}(1 - \hat{X}_f)(1 - \hat{Y}) + w_{m,3} \hat{X}_f \hat{Y} + w_{m,2} (\hat{X}_f + \hat{Y} - 2 \hat{X}_f \hat{Y})}
 \end{equation}
 
-\noindent If $\lambda_I > 1$, and all non-inversion genotypes are initially at equilibrium ($x_i = \hat{x}_i$, $y_j = \hat{y}_j$), as we have assumed, $\lambda_I$ will necessarily be the leading eigenvalue of the system of recursions. This is a strong assumption that does not necessarily hold once the system has been perturbed. We have therefore checked our use of $\lambda_I$ in subsequent approximations using both deterministic iteration of the recursions and Wright-Fisher simulations (see fig.~2 and fig.~5 in the main text). For inversions spanning the SDL on a Y chromosome, however, there are no internal equilibria; if the inversion can invade (i.e., if $\lambda_I > 1$), it will go to fixation. 
+\noindent If $\lambda_I > 1$, and all non-inversion genotypes are initially at equilibrium ($x_i = \hat{x}_i$, $y_j = \hat{y}_j$), as we have assumed, $\lambda_I$ will necessarily be the leading eigenvalue of the system of recursions. This is a strong assumption that does not necessarily hold once the system has been perturbed. We have therefore checked our use of $\lambda_I$ in subsequent approximations using both deterministic iteration of the recursions and Wright-Fisher simulations (see fig.~2 and fig.~5 in the main text). For inversions spanning the SDR on a Y chromosome, however, there are no internal equilibria; if the inversion can invade (i.e., if $\lambda_I > 1$), it will go to fixation. 
 
 Substituting in the SA fitness expessions described above, and calculating $s_I \approx \lambda - 1$ provides an estimate of the overall selection coefficient for the rare inversion \cite{OttoYong2002}, which appears in the main text as \hl{Eq(8)}. Calculating $\lambda_I$ for $r = 1/2$ yields the approximation given in \hl{Eq(6)}.
 
@@ -440,7 +440,7 @@ Substituting in the SA fitness expessions described above, and calculating $s_I 
 %%%%%%%%%%%%
 \subsection{Recursions (X chromosome inversion)}
 
-The assumptions and development of the recursions for an inversion spanning the SDL and a single SA locus on an X chromosome largely parallel those for Y chromome inversions. We use the same SA fitness expressions described in the previous section. Now, our interest is focused on a rare inversion that captures the female-beneficial $A$ allele at the SA locus, and we have $6$ relevant genotypes for both males and females:
+The assumptions and development of the recursions for an inversion spanning the SDR and a single SA locus on an X chromosome largely parallel those for Y chromome inversions. We use the same SA fitness expressions described in the previous section. Now, our interest is focused on a rare inversion that captures the female-beneficial $A$ allele at the SA locus, and we have $6$ relevant genotypes for both males and females:
 
 \begin{equation*}
 	\text{Female genotypes}:\left( \begin{array}{cc|c}
@@ -517,7 +517,7 @@ The assumptions and development of the recursions for an inversion spanning the 
 
 Again, our analysis for the model of X chromosome inversions largely paralleles that for the Y.
 
-Substituting $x_3 = 1 - x_{1} - x^I_{1} - x^{II}_{1} - x_{2} - x^I_{2}$ and $y_3 = 1 - y_1 - y^I_1 - y_{2c} - y^I_{2c} - y_{2t}$, yields a system of $10$ genotypic frequency recursions. As before, we make the key assumption that all non-inversion genotypes are initially at equilibrium when a new inversion mutation occurs: $x_i = \hat{x}_i$ for $i \in \{1,\,2 \}$ and $y_j = \hat{y}_j$ where $j \in \{ 1,\,2c,\,2t \}$. To solve for the conditions under which a rare inversion capturing the SDL and the male-beneficial allele at the SA locus, we evaluate the Jacobian at the boundary equilibrium where the initial frequency of inverted genotypes are $x^{I}_{1} = x^{II}_{1} = x^I_2 = y^I_1 = y^I_3 = 0$:
+Substituting $x_3 = 1 - x_{1} - x^I_{1} - x^{II}_{1} - x_{2} - x^I_{2}$ and $y_3 = 1 - y_1 - y^I_1 - y_{2c} - y^I_{2c} - y_{2t}$, yields a system of $10$ genotypic frequency recursions. As before, we make the key assumption that all non-inversion genotypes are initially at equilibrium when a new inversion mutation occurs: $x_i = \hat{x}_i$ for $i \in \{1,\,2 \}$ and $y_j = \hat{y}_j$ where $j \in \{ 1,\,2c,\,2t \}$. To solve for the conditions under which a rare inversion capturing the SDR and the male-beneficial allele at the SA locus, we evaluate the Jacobian at the boundary equilibrium where the initial frequency of inverted genotypes are $x^{I}_{1} = x^{II}_{1} = x^I_2 = y^I_1 = y^I_3 = 0$:
 
 
 \begin{equation*}
@@ -737,7 +737,7 @@ Our approximation of $s_I \approx \lambda - 1$, must be interpreted cautiously f
  \renewcommand{\thefigure}{C\arabic{figure}}
  \setcounter{figure}{0}
 
-The recursions and invasion analysis for the two-locus models of inversions with selection during both haploid and diploid phases are very similar to those described above for sexual antagonism. For brevity, we refer readers to the supplementary Mathematica notebook files (.nb) available in the Online Supplementary Material. There we present the recursions and a brief walk-through of the invasion analyses for models of rare inversions spanning the SDL on the Y and X chromosomes.
+The recursions and invasion analysis for the two-locus models of inversions with selection during both haploid and diploid phases are very similar to those described above for sexual antagonism. For brevity, we refer readers to the supplementary Mathematica notebook files (.nb) available in the Online Supplementary Material. There we present the recursions and a brief walk-through of the invasion analyses for models of rare inversions spanning the SDR on the Y and X chromosomes.
 
 
 

@@ -943,6 +943,7 @@ axis(1,labels = NA)
 box()
 proportionalLabel( 0.025,  1.075, expression(paste(bold(B))), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
 proportionalLabel( 0.5,  1.2,   expression(paste(italic(r), " = ", 0.02)), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+proportionalLabel( 1.6,  0.5,   expression(paste(hat(italic(Y)))), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
 
 ## Panel C: X-linked inversion Unlinked
         x        <-  xInvUnLinked$sm
@@ -975,6 +976,7 @@ axis(1,labels = TRUE)
 box()
 proportionalLabel( 0.025,  1.075, expression(paste(bold(D))), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
 proportionalLabel( 0.5,  -0.25,  expression(paste(italic(s[m]))), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+proportionalLabel( 1.6,  0.5,   expression(paste(hat(italic(X)))), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
 
 #Add a legend:
 par(new = "TRUE",plt = c(0.85,0.9,0.60,0.95),las = 1,cex.axis = 1)
