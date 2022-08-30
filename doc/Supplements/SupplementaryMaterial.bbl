@@ -1,0 +1,79 @@
+\begin{thebibliography}{15}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Cheng and Kirkpatrick(2019)}]{ChengKirkpatrick2019}
+Cheng, C. and Kirkpatrick, M. 2019: Inversions are bigger on the X chromosome.
+\newblock Molecular Ecology 28:1238--1245.
+
+\bibitem[{Clark(1987)}]{Clark1987}
+Clark, A.~G. 1987: Natural selection and Y-linked polymorphism.
+\newblock Genetics 115:569--577.
+
+\bibitem[{Connallon and Clark(2012)}]{ConnallonClark2012}
+Connallon, T. and Clark, A.~G. 2012: A general population genetic framework for
+  antagonistic selection that accounts for demography and recurrent mutation.
+\newblock Genetics 190:1477--1489.
+
+\bibitem[{Connallon and Olito(2021)}]{ConnallonOlito2021}
+Connallon, T. and Olito, C. 2021: Impact of chromosomal inversion length on
+  fixation probability.
+\newblock Mol.~Ecol. .
+
+\bibitem[{Kidwell et~al.(1977)Kidwell, Clegg, Stewart, and Prout}]{Kidwell1977}
+Kidwell, J.~F., Clegg, M.~T., Stewart, F.~M., and Prout, T. 1977: Regions of
+  stable equilibria for models of selection in the two sexes under random
+  mating.
+\newblock Genetics 85:171--183.
+
+\bibitem[{Nei et~al.(1967)Nei, Kojima, and Schaffer}]{Nei1967}
+Nei, M., Kojima, K.-I., and Schaffer, H.~E. 1967: Frequency changes of new
+  inversions in populations under mutation-selection equilibria.
+\newblock Genetics 57:741--750.
+
+\bibitem[{Otto and Day(2007)}]{OttoDay2007}
+Otto, S. and Day, T. 2007: A biologist's guide to mathematical modeling in
+  ecology and evolution.
+\newblock Princeton University Press, New Jersey, USA.
+
+\bibitem[{Otto(2014)}]{Otto2014}
+Otto, S.~P. 2014: Selective maintenance of recombination between the sex
+  chromosomes.
+\newblock J.~Evol.~Biol. 27:1431--1442.
+
+\bibitem[{Otto(2019)}]{Otto2019}
+---{}---{}---. 2019: Evolutionary potential for genomic islands of sexual
+  divergence on recombining sex chromosomes.
+\newblock New Phytologist 224:1241--1251.
+
+\bibitem[{Otto et~al.(2011)Otto, Pannell, Peichel, Ashman, Charlesworth,
+  Chippindale, Delph, Guerrero, Scarpino, and McAllister}]{Otto2011}
+Otto, S.~P., Pannell, J.~R., Peichel, C.~L., Ashman, T.-L., Charlesworth, D.,
+  Chippindale, A.~K., Delph, L.~F., Guerrero, R.~F., Scarpino, S.~V., and
+  McAllister, B.~F. 2011: About PAR: The distinct evolutionary dynamics of the
+  pseudoautosomal region.
+\newblock Trends in Genetics 27:358--367.
+
+\bibitem[{Otto and Yong(2002)}]{OttoYong2002}
+Otto, S.~P. and Yong, P. 2002: The evolution of gene duplicates.
+\newblock Adv.~in~Genetics 46:451--483.
+
+\bibitem[{Peng et~al.(2006)Peng, Pevzner, and Tesler}]{PengPevznerTesler2006}
+Peng, Q., Pevzner, P.~A., and Tesler, G. 2006: The fragile breakage versus
+  random breakage models of chromosome evolution.
+\newblock PLoS Comput.~Biol. 2:100--111.
+
+\bibitem[{Pevzner and Tesler(2003)}]{PevznerTesler2003}
+Pevzner, P.~A. and Tesler, G. 2003: Human and mouse genomic sequences reveal
+  extensive breakpoint reuse in mamallian evolution.
+\newblock PNAS 100:7672--7677.
+
+\bibitem[{Santos(1986)}]{Santos1986}
+Santos, M. 1986: The role of genic selection in the establishment of inversion
+  polymorphism in {\itshape Drosophila subobscura}.
+\newblock Genetica 69:35--45.
+
+\bibitem[{Van~Valen and Levins(1968)}]{vanValenLevins1968}
+Van~Valen, L. and Levins, R. 1968: The origins of inversion polymorphisms.
+\newblock American Naturalist 923:5--24.
+
+\end{thebibliography}

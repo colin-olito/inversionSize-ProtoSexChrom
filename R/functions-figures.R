@@ -67,6 +67,55 @@ proportionalLabel <- function(px, py, lab, adj=c(0, 1), text=TRUE, log=FALSE, ..
     }
 }
 
+
+proportionalArrows <- function(px1, py1, px2, py2, adj=c(0, 1), log=FALSE, length=length, ...) {
+    usr  <-  par('usr')
+    x.p1  <-  usr[1] + px1*(usr[2] - usr[1])
+    y.p1  <-  usr[3] + py1*(usr[4] - usr[3])
+    x.p2  <-  usr[1] + px2*(usr[2] - usr[1])
+    y.p2  <-  usr[3] + py2*(usr[4] - usr[3])
+    if(log=='x') {
+        x.p1  <-  10^(x.p1)
+        x.p2  <-  10^(x.p2)
+    }
+    if(log=='y') {
+        y.p1  <-  10^(y.p1)
+        y.p2  <-  10^(y.p2)
+    }
+    if(log=='xy') {
+        x.p1  <-  10^(x.p1)
+        y.p1  <-  10^(y.p1)
+        x.p2  <-  10^(x.p2)
+        y.p2  <-  10^(y.p2)
+    }
+    arrows(x0=x.p1, y0=y.p1, x1=x.p2, y1=y.p2, length=length,...)
+}
+
+
+proportionalRect <- function(px1, py1, px2, py2, adj=c(0, 1), log=FALSE, border=TRUE, ...) {
+    usr  <-  par('usr')
+    x.p1  <-  usr[1] + px1*(usr[2] - usr[1])
+    y.p1  <-  usr[3] + py1*(usr[4] - usr[3])
+    x.p2  <-  usr[1] + px2*(usr[2] - usr[1])
+    y.p2  <-  usr[3] + py2*(usr[4] - usr[3])
+    if(log=='x') {
+        x.p1  <-  10^(x.p1)
+        x.p2  <-  10^(x.p2)
+    }
+    if(log=='y') {
+        y.p1  <-  10^(y.p1)
+        y.p2  <-  10^(y.p2)
+    }
+    if(log=='xy') {
+        x.p1  <-  10^(x.p1)
+        y.p1  <-  10^(y.p1)
+        x.p2  <-  10^(x.p2)
+        y.p2  <-  10^(y.p2)
+    }
+    rect(xleft=x.p1, ybottom=y.p1, xright=x.p2, ytop=y.p2,...)
+}
+
+
 #' Draw equally-spaced white lines on plot window.
 #'
 #' @title Equally-spaced white lines on plot window
@@ -235,8 +284,8 @@ filled.legend <- function (x = seq(0, 1, length.out = nrow(z)), y = seq(0, 1,
 pCatchDel  <-  function(Ud, x, sd) {
     exp(-Ud*x/sd)
 }
-pCatchSDR  <-  function(SDRLocation, x) {
-    y1   <-  SDRLocation
+PrCatchSLR  <-  function(SLR_pos, x) {
+    y1   <-  SLR_pos
     y2   <-  1 - y1
     p1   <-  x/(1 - x)
     p2   <-  y1/(1 - x)
@@ -292,8 +341,1472 @@ distNewInvEXP  <-  function(lambda, x) {
 
 ##############################################################
 ##############################################################
-##  Final figures for paper
+##  Figures - partially recessive del. mut.
 
+pFixFig_Neutral_Ben  <-  function() {
+
+    ## import data.frames
+    # Neutral sims
+    neutral_N10k  <-  read.csv(file = "./output/data/simResults/shelter_PrFixFig_h0.25_s0.01_N10k_deterministic_q.csv")
+
+    # beneficial sims
+    ben_N10k <-  read.csv(file = "./output/data/simResults/beneficial_PrFixFig_sI0.02_h0.25_s0.01_N10k_deterministic_q.csv")
+
+
+    # set constants
+    x     <-  seq(0,1,by=0.005)
+    Ny    <-  10^4/2
+
+    # Colors
+    colfunc  <-  colorRampPalette(c('#252525', 'grey70'))
+    COLS     <-  colfunc(3)
+
+    # set plot layout
+    layout.mat <- matrix(c(1:2), nrow=2, ncol=1, byrow=TRUE)
+    layout     <- layout(layout.mat,respect=TRUE)
+
+## Panel A: Neutral Inversions
+    pFixNeutral  <-  pFixNeutralY(Ny=Ny)
+    par(omi=c(0.25, 0.5, 0.25, 0.5), mar = c(5,4,1,1), bty='o', xaxt='s', yaxt='s')    
+     plot(NA, axes=FALSE, type='n', main='', xlim = c(0,1), ylim = c((2/10^6), 2/(10^2)), log='y', ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80', log='y')
+        box()
+        # pInv
+        abline(h=pFixNeutral, lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[1], opacity=0.4), data=neutral_N10k)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[1], opacity=0.4), data=neutral_N10k)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=24, bg=transparentColor(COLS[1], opacity=0.4), data=neutral_N10k)
+        # Axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1, at=c(2/10^6, 2/10^5, 2/10^4, 2/10^3, 2/10^2, 2/10^1), 
+                labels=c(0, expression(2/10^5), expression(2/N), expression(2/10^3), expression(2/10^2), expression(2/10^1)))
+        # Plot labels etc.
+        proportionalLabel(0.5, 1.06, expression("Neutral") , cex=1.25, adj=c(0.5, 0.5), xpd=NA, log='y')
+        proportionalLabel(0.04, 1.05, 'A', cex=1.2, adj=c(0.5, 0.5), xpd=NA, log='y')
+        proportionalLabel(-0.0175, 0.16, '_', cex=1.2, adj=c(0.5, 0.5), xpd=NA,log='y', srt=30)
+        proportionalLabel(-0.0175, 0.14, '_', cex=1.2, adj=c(0.5, 0.5), xpd=NA,log='y', srt=30)
+        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90, log='y')        
+        # Legend
+        legend(
+               x       =  1.02,
+               y       =  0.025,
+               legend  =  c(
+                            expression(paste(italic(U/hs), " = ", 8)),
+                            expression(paste(italic(U/hs), " = ", 20)),
+                            expression(paste(italic(U/hs), " = ", 40))),
+               pch     =  c(21,22,24),
+               col     =  transparentColor(COLS[1], opacity=1),
+               pt.bg     =  transparentColor(COLS[2], opacity=0.6),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )
+
+
+## Panel B: Beneficial Inverions
+    sb  <-  0.02
+    sd  <-  0.01
+    pFixBeneficial  <-  pFixBeneficialY(x=x, sI=sb, Ud=0.02, sd=sd)
+    pFixBeneficial2  <-  pFixBeneficialY(x=x, sI=sb, Ud=0.05, sd=sd)
+    pFixBeneficial3  <-  pFixBeneficialY(x=x, sI=sb, Ud=0.1, sd=sd)
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,3), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        abline(h=2, lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        points(PrFix[U == 0.02]/sI[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[1], opacity=0.4), data=ben_N10k)
+        points(PrFix[U == 0.05]/sI[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[1], opacity=0.4), data=ben_N10k)
+        points(PrFix[U == 0.1]/sI[U == 0.1] ~ x[U == 0.1], pch=24, bg=transparentColor(COLS[1], opacity=0.4), data=ben_N10k)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1, at=c(0, 1, 2, 3), 
+                labels=c(0, 
+                         expression(italic(s[b])), 
+                         expression(2*italic(s[b])), 
+                         expression(3*italic(s[b]))))
+        # Plot labels etc.
+        # Annnotations
+        proportionalLabel( 0.03,  1.075, expression(paste(B)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.085,   expression(paste("Beneficial")), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5,  -0.3,  expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+}
+
+
+
+## Fixation probability ~ r 
+## equal SA selection, varying U/hs
+pFixFig_SA_r  <-  function() {
+
+    ## import data.frames
+    SA_add_r1  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.002_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_r2  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.008_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_r3  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.032_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_r4  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.124_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_r5  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.498_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+
+    SA_DomRev_r1  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.002_sf0.05_sm0.05_hSA0.25_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_DomRev_r2  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.008_sf0.05_sm0.05_hSA0.25_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_DomRev_r3  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.032_sf0.05_sm0.05_hSA0.25_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_DomRev_r4  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.124_sf0.05_sm0.05_hSA0.25_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_DomRev_r5  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.498_sf0.05_sm0.05_hSA0.25_h0.25_s0.01_NumEqFreq_N10k.csv")
+
+    # Colors
+    colfunc  <-  colorRampPalette(c('#252525', 'grey90'))
+    COLS     <-  colfunc(5)
+
+    # set plot layout
+    layout.mat <- matrix(c(1:6), nrow=2, ncol=3, byrow=TRUE)
+    layout     <- layout(layout.mat,respect=TRUE)
+
+## Panel A -- U/hs = 8 -- Additive SA Fitness Effects
+    par(omi=c(0.2, 0.5, 0.2, 0.5), mar = c(5,4,1,1), bty='o', xaxt='s', yaxt='s')    
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.07), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[1], opacity=0.75), data = SA_add_r1)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[2], opacity=0.75), data = SA_add_r2)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[3], opacity=0.75), data = SA_add_r3)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.75), data = SA_add_r4)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[5], opacity=0.75), data = SA_add_r5)
+        # axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1)
+        # Annnotations
+        proportionalLabel( 0.03,  1.075, expression(paste(A)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.085,   expression(paste(italic(U)/italic(hs)==8)), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel(-0.5,  0.5,   expression(paste(italic(h[SA]==1/2))), cex=1.5, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+
+## Panel B -- U/hs = 20 -- Additive SA Fitness Effects
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.07), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[1], opacity=0.75), data = SA_add_r1)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[2], opacity=0.75), data = SA_add_r2)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[3], opacity=0.75), data = SA_add_r3)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[4], opacity=0.75), data = SA_add_r4)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[5], opacity=0.75), data = SA_add_r5)
+        # axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1, labels=NA)
+        # Annnotations
+        proportionalLabel( 0.5,   1.25,   expression(paste("Sexually Antagonistic Selection")), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.03,  1.075, expression(paste(B)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.085,   expression(paste(italic(U)/italic(hs)==20)), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+#        proportionalLabel( 0.5,  -0.3,  expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+## Panel C -- U/hs = 40 -- Additive SA Fitness Effects
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.07), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[1], opacity=0.75), data = SA_add_r1)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[2], opacity=0.75), data = SA_add_r2)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[3], opacity=0.75), data = SA_add_r3)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[4], opacity=0.75), data = SA_add_r4)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[5], opacity=0.75), data = SA_add_r5)
+        # axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1, labels=NA)
+        # Annnotations
+        proportionalLabel( 0.03,  1.075, expression(paste(C)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.085,   expression(paste(italic(U)/italic(hs)==40)), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        # Legend
+        legend(
+               x       =  1.02,
+               y       =  usr[4],
+               legend  =  c(
+                            expression(paste(italic(r), " = ", 0.5)),
+                            expression(paste(italic(r), " = ", 0.124)),
+                            expression(paste(italic(r), " = ", 0.032)),
+                            expression(paste(italic(r), " = ", 0.008)),
+                            expression(paste(italic(r), " = ", 0.002))),
+               pch     =  21,
+               col     =  transparentColor(COLS[1], opacity=1),
+               pt.bg   =  c(transparentColor(COLS[5], opacity=0.75),
+                            transparentColor(COLS[4], opacity=0.75),
+                            transparentColor(COLS[3], opacity=0.75),
+                            transparentColor(COLS[2], opacity=0.75),
+                            transparentColor(COLS[1], opacity=0.75)),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )
+
+
+
+## Panel D -- U/hs = 8 -- DomRev SA Fitness Effects
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.06), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[1], opacity=0.75), data = SA_DomRev_r1)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[2], opacity=0.75), data = SA_DomRev_r2)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[3], opacity=0.75), data = SA_DomRev_r3)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.75), data = SA_DomRev_r4)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[5], opacity=0.75), data = SA_DomRev_r5)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1)
+        # Annnotations
+        proportionalLabel( 0.03, 1.075, expression(paste(D)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel(-0.5,  0.5,   expression(paste(italic(h[SA]==1/4))), cex=1.5, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5, -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+## Panel E -- U/hs = 20 -- DomRev SA Fitness Effects
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.06), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[1], opacity=0.75), data = SA_DomRev_r1)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[2], opacity=0.75), data = SA_DomRev_r2)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[3], opacity=0.75), data = SA_DomRev_r3)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[4], opacity=0.75), data = SA_DomRev_r4)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[5], opacity=0.75), data = SA_DomRev_r5)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1, labels=NA)
+        # Annnotations
+        proportionalLabel( 0.03, 1.075, expression(paste(E)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5, -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+## Panel F -- U/hs = 40 -- DomRev SA Fitness Effects
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.06), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[1], opacity=0.75), data = SA_DomRev_r1)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[2], opacity=0.75), data = SA_DomRev_r2)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[3], opacity=0.75), data = SA_DomRev_r3)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[4], opacity=0.75), data = SA_DomRev_r4)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[5], opacity=0.75), data = SA_DomRev_r5)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1, labels=NA)
+        # Annnotations
+        proportionalLabel( 0.03,  1.075, expression(paste(F)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,  -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+}
+
+
+
+
+
+
+## Fixation probability ~ r 
+## biased SA selection (sf = sm/(1 - sm)), varying U/hs
+pFixFig_SA_biasedSel_r  <-  function() {
+
+    ## import data.frames
+    SA_add_biased_r1  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.002_sf0.0526315789473684_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_biased_r2  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.008_sf0.0526315789473684_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_biased_r3  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.032_sf0.0526315789473684_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_biased_r4  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.124_sf0.0526315789473684_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_biased_r5  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.498_sf0.0526315789473684_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+
+    # Colors
+    colfunc  <-  colorRampPalette(c('#252525', 'grey90'))
+    COLS     <-  colfunc(5)
+
+    # set plot layout
+    layout.mat <- matrix(c(1:6), nrow=1, ncol=3, byrow=TRUE)
+    layout     <- layout(layout.mat,respect=TRUE)
+
+## Panel A -- U/hs = 8 -- Additive SA Fitness Effects
+    par(omi=c(0.2, 0.5, 0.2, 0.5), mar = c(5,4,1,1), bty='o', xaxt='s', yaxt='s')    
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.07), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[1], opacity=0.75), data = SA_add_biased_r1)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[2], opacity=0.75), data = SA_add_biased_r2)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[3], opacity=0.75), data = SA_add_biased_r3)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.75), data = SA_add_biased_r4)
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[5], opacity=0.75), data = SA_add_biased_r5)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1)
+        # Annnotations
+        proportionalLabel( 0.03, 1.075, expression(paste(A)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.085,   expression(paste(italic(U)/italic(hs)==8)), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5,  -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+## Panel B -- U/hs = 20 -- DomRev SA Fitness Effects
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.07), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[1], opacity=0.75), data = SA_add_biased_r1)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[2], opacity=0.75), data = SA_add_biased_r2)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[3], opacity=0.75), data = SA_add_biased_r3)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[4], opacity=0.75), data = SA_add_biased_r4)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=21, bg=transparentColor(COLS[5], opacity=0.75), data = SA_add_biased_r5)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1, labels=NA)
+        # Annnotations
+        proportionalLabel( 0.5,   1.25,   expression(paste("Biased SA Selection: ", italic(s[f])==italic(s[m])/(1-italic(s[m])))), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.03, 1.075, expression(paste(B)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.085,   expression(paste(italic(U)/italic(hs)==20)), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,  -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+## Panel c -- U/hs = 40 -- DomRev SA Fitness Effects
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.07), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[1], opacity=0.75), data = SA_add_biased_r1)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[2], opacity=0.75), data = SA_add_biased_r2)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[3], opacity=0.75), data = SA_add_biased_r3)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[4], opacity=0.75), data = SA_add_biased_r4)
+        points(PrFix[U == 0.1] ~ x[U == 0.1], pch=21, bg=transparentColor(COLS[5], opacity=0.75), data = SA_add_biased_r5)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1, labels=NA)
+        # Annnotations
+        proportionalLabel( 0.03,  1.075, expression(paste(C)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.085,   expression(paste(italic(U)/italic(hs)==40)), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,  -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+        # Legend
+        legend(
+               x       =  1.02,
+               y       =  usr[4],
+               legend  =  c(
+                            expression(paste(italic(r), " = ", 0.5)),
+                            expression(paste(italic(r), " = ", 0.124)),
+                            expression(paste(italic(r), " = ", 0.032)),
+                            expression(paste(italic(r), " = ", 0.008)),
+                            expression(paste(italic(r), " = ", 0.002))),
+               pch     =  21,
+               col     =  transparentColor(COLS[1], opacity=1),
+               pt.bg   =  c(transparentColor(COLS[5], opacity=0.75),
+                            transparentColor(COLS[4], opacity=0.75),
+                            transparentColor(COLS[3], opacity=0.75),
+                            transparentColor(COLS[2], opacity=0.75),
+                            transparentColor(COLS[1], opacity=0.75)),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )
+
+}
+
+
+
+
+
+
+
+
+
+sI_SA  <-  function(sm, hm, Yhat, Xfhat) {
+    (sm*(1 - Yhat)*(1 - Xfhat - hm*(1 - 2*Xfhat))) / (1 - sm*(1 - Xfhat - Yhat*(1 - hm - Xfhat) + hm*Xfhat*(1 - 2*Yhat)))
+}
+
+#' Combined Pr(fix | x) figure
+#'  including neutral, beneficial, and SA scenarios
+## Fixation probability ~ r 
+## equal SA selection, varying U/hs
+pFixFig_combined  <-  function() {
+
+    ## import data.frames
+    # Neutral sims
+    neutral_N10k  <-  read.csv(file = "./output/data/simResults/shelter_PrFixFig_h0.25_s0.01_N10k_deterministic_q.csv")
+
+    # beneficial sims
+    ben_N10k <-  read.csv(file = "./output/data/simResults/beneficial_PrFixFig_sI0.02_h0.25_s0.01_N10k_deterministic_q.csv")
+
+    ## SA selection
+    SA_add_r1  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.002_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_r2  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.008_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_r3  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.032_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_r4  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.124_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_r5  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.498_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+
+    # set constants
+    x     <-  seq(0,1,by=0.005)
+    Ny    <-  10^4/2
+    A     <-  1
+    P     <-  0.05
+
+    # Calculate deterministic s_I for SA selection
+    log(0.002)
+    log(0.498)
+    logSeq  <-  seq(from=-6.214608, to=-0.6971552, len=5)
+    rSeq  <-  round(exp(logSeq), digits=3)
+    rSeq[4]  <-  rSeq[4] - 0.001
+    eqFreq.dat  <-  read.csv('./output/data/simResults/SA-EqFreqs-EqualSel_sf0.05_sm0.05_hf0.5_hm0.5.csv', header=TRUE)
+        # subset sI data to these values
+        eqFreq.subdat  <-  eqFreq.dat[eqFreq.dat$r %in% rSeq,]
+        sI.vec  <-  c()
+        for(i in 1:nrow(eqFreq.subdat)) {
+            sI.vec[i]  <-  sI_SA(sm = eqFreq.subdat$sm[i], hm = eqFreq.subdat$hm[i], Yhat = eqFreq.subdat$Y[i], Xfhat = eqFreq.subdat$Xf[i])
+        }
+        sI_SA_vals  <-  data.frame(cbind(eqFreq.subdat[,1:5], sI.vec))
+
+    # Colors
+    colfunc  <-  colorRampPalette(c('#252525', 'grey90'))
+    COLS     <-  colfunc(5)
+
+    # set plot layout
+    layout.mat <- matrix(c(1:6), nrow=2, ncol=3, byrow=FALSE)
+    layout     <- layout(layout.mat,respect=TRUE)
+
+
+
+## Panel A: Neutral Inversions
+    pFixNeutral  <-  pFixNeutralY(Ny=Ny)
+    par(omi=c(0.25, 0.5, 0.5, 0.5), mar = c(5,4,1,1), bty='o', xaxt='s', yaxt='s')    
+     plot(NA, axes=FALSE, type='n', main='', xlim = c(0,1), ylim = c((2/10^6), 2/(10^2)), log='y', ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80', log='y')
+        box()
+        # pInv
+        abline(h=pFixNeutral, lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        points(PrFix[U == 0.1]  ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        # Axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1, at=c(2/10^6, 2/10^5, 2/10^4, 2/10^3, 2/10^2, 2/10^1), 
+                labels=c(0, expression(2/10^5), expression(2/N), expression(2/10^3), expression(2/10^2), expression(2/10^1)))
+        # Plot labels etc.
+        proportionalLabel(0.5, 1.25, expression("Neutral") , cex=1.5, adj=c(0.5, 0.5), xpd=NA, log='y')
+        proportionalLabel(0.04, 1.075, 'A', cex=1.2, adj=c(0.5, 0.5), xpd=NA, log='y')
+        proportionalLabel(-0.0175, 0.16, '_', cex=1.2, adj=c(0.5, 0.5), xpd=NA,log='y', srt=30)
+        proportionalLabel(-0.0175, 0.14, '_', cex=1.2, adj=c(0.5, 0.5), xpd=NA,log='y', srt=30)
+        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90, log='y')        
+        # Legend
+        legend(
+               x       =  1.02,
+               y       =  0.025,
+               legend  =  c(
+                            expression(paste(italic(U/hs), " = ", 8)),
+                            expression(paste(italic(U/hs), " = ", 20)),
+                            expression(paste(italic(U/hs), " = ", 40))),
+               pch     =  c(21,22,24),
+               col     =  transparentColor(COLS[1], opacity=1),
+               pt.bg     =  transparentColor(COLS[4], opacity=0.8),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )
+
+
+## Panel B: Beneficial Inversions
+    sb  <-  0.02
+    sd  <-  0.01
+    pFixBeneficial  <-  pFixBeneficialY(x=x, sI=sb, Ud=0.02, sd=sd)
+    pFixBeneficial2  <-  pFixBeneficialY(x=x, sI=sb, Ud=0.05, sd=sd)
+    pFixBeneficial3  <-  pFixBeneficialY(x=x, sI=sb, Ud=0.1, sd=sd)
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,3), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        abline(h=2, lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        points(PrFix[U == 0.02]/sI[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        points(PrFix[U == 0.05]/sI[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        points(PrFix[U == 0.1]/sI[U == 0.1]   ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1, at=c(0, 1, 2, 3), 
+                labels=c(0, 
+                         expression(italic(s[b])), 
+                         expression(2*italic(s[b])), 
+                         expression(3*italic(s[b]))))
+        # Plot labels etc.
+        # Annnotations
+        proportionalLabel( 0.03,  1.075, expression(paste(B)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.25,   expression(paste("Beneficial")), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5,  -0.3,  expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+
+
+## Panel C -- Additive SA Fitness Effects -- r = 0.002
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.07), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # deterministic sI_SA
+        abline(h=2*sI_SA_vals$sI.vec[1], lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        # pInv
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        points(PrFix[U == 0.1]  ~ x[U == 0.1], pch=24,  bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        # axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1)
+        # Annnotations
+        proportionalLabel( 1.15,   1.25,   expression(paste("Sexually Antagonistic Selection")), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.03,  1.075, expression(paste(C)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.075,   expression(paste(italic(r[SA])==0.002)), cex=1.25, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        # Legend
+        legend(
+               x       =  1.02,
+               y       =  0.07,
+               legend  =  c(
+                            expression(paste(italic(2*s[I])))),
+               lty     =  2,
+               lwd     =  2,
+               col     =  transparentColor(COLS[1], opacity=1),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )
+
+
+
+## Panel E -- U/hs = 40 -- Additive SA Fitness Effects
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.07), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # deterministic sI_SA
+        abline(h=2*sI_SA_vals$sI.vec[3], lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        # pInv
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r3)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r3)
+        points(PrFix[U == 0.1]  ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r3)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1)
+        # Annnotations
+        proportionalLabel( 0.03,  1.075, expression(paste(E)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.075,   expression(paste(italic(r[SA])==0.032)), cex=1.25, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,  -0.3,  expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+         # Legend
+        legend(
+               x       =  1.02,
+               y       =  0.07,
+               legend  =  c(
+                            expression(paste(italic(2*s[I])))),
+               lty     =  2,
+               lwd     =  2,
+               col     =  transparentColor(COLS[1], opacity=1),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )
+
+
+
+## Panel D -- Additive SA Fitness Effects -- r = 0.002
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.07), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # deterministic sI_SA
+        abline(h=2*sI_SA_vals$sI.vec[2], lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        # pInv
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r2)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r2)
+        points(PrFix[U == 0.1]  ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r2)
+
+        # axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1, labels=NA)
+        # Annnotations
+        proportionalLabel( 0.03,  1.075, expression(paste(D)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.075,   expression(paste(italic(r[SA])==0.008)), cex=1.25, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        # Legend
+        legend(
+               x       =  1.02,
+               y       =  0.07,
+               legend  =  c(
+                            expression(paste(italic(2*s[I])))),
+               lty     =  2,
+               lwd     =  2,
+               col     =  transparentColor(COLS[1], opacity=1),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )
+
+
+
+
+## Panel F -- Additive SA Fitness Effects -- r_SA =0.5
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.07), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # deterministic sI_SA
+        abline(h=2*sI_SA_vals$sI.vec[5], lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        # pInv
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        points(PrFix[U == 0.1]  ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1, labels=NA)
+        # Annnotations
+        proportionalLabel( 0.03, 1.075, expression(paste(F)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5,   1.075,   expression(paste(italic(r[SA])==0.5)), cex=1.25, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5, -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+        # Legend
+        legend(
+               x       =  1.02,
+               y       =  0.07,
+               legend  =  c(
+                            expression(paste(italic(2*s[I])))),
+               lty     =  2,
+               lwd     =  2,
+               col     =  transparentColor(COLS[1], opacity=1),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )
+
+
+}
+
+
+
+
+
+
+
+
+
+#' Combined Pr(fix | x) figure
+#'  including neutral, beneficial, and SA scenarios
+## Fixation probability ~ r 
+## equal SA selection, varying U/hs
+pFix_pCatchSAFig_combined  <-  function() {
+
+    ## import data.frames
+    # Neutral sims
+    neutral_N10k  <-  read.csv(file = "./output/data/simResults/shelter_PrFixFig_h0.25_s0.01_N10k_deterministic_q.csv")
+
+    # beneficial sims
+    ben_N10k <-  read.csv(file = "./output/data/simResults/beneficial_PrFixFig_sI0.02_h0.25_s0.01_N10k_deterministic_q.csv")
+
+    ## SA selection
+    SA_add_r1  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.002_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_r5  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.498_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+
+    # set constants
+    x     <-  seq(0,1,by=0.005)
+    Ny    <-  10^4/2
+    A     <-  1
+    P     <-  0.05
+
+    # Calculate deterministic s_I for SA selection
+    log(0.002)
+    log(0.498)
+    logSeq  <-  seq(from=-6.214608, to=-0.6971552, len=5)
+    rSeq  <-  round(exp(logSeq), digits=3)
+    rSeq[4]  <-  rSeq[4] - 0.001
+    eqFreq.dat  <-  read.csv('./output/data/simResults/SA-EqFreqs-EqualSel_sf0.05_sm0.05_hf0.5_hm0.5.csv', header=TRUE)
+        # subset sI data to these values
+        eqFreq.subdat  <-  eqFreq.dat[eqFreq.dat$r %in% rSeq,]
+        sI.vec  <-  c()
+        for(i in 1:nrow(eqFreq.subdat)) {
+            sI.vec[i]  <-  sI_SA(sm = eqFreq.subdat$sm[i], hm = eqFreq.subdat$hm[i], Yhat = eqFreq.subdat$Y[i], Xfhat = eqFreq.subdat$Xf[i])
+        }
+        sI_SA_vals  <-  data.frame(cbind(eqFreq.subdat, sI.vec))
+
+    # Colors
+    colfunc  <-  colorRampPalette(c('#252525', 'grey90'))
+    COLS     <-  colfunc(5)
+
+    # set plot layout
+    layout.mat <- matrix(c(1:4), nrow=2, ncol=2, byrow=FALSE)
+    layout     <- layout(layout.mat,respect=TRUE)
+
+
+
+## Panel A: Neutral Inversions
+    pFixNeutral  <-  pFixNeutralY(Ny=Ny)
+    par(omi=c(0.25, 0.25, 0.5, 0.25), mar = c(5,4,1,1), bty='o', xaxt='s', yaxt='s')    
+     plot(NA, axes=FALSE, type='n', main='', xlim = c(0,1), ylim = c((2/10^6), 2/(10^2)), log='y', ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80', log='y')
+        box()
+        # pInv
+        abline(h=pFixNeutral, lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        points(PrFix[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        points(PrFix[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        points(PrFix[U == 0.1]  ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        # Axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1, at=c(2/10^6, 2/10^5, 2/10^4, 2/10^3, 2/10^2, 2/10^1), 
+                labels=c(0, expression(2/10^5), expression(2/N), expression(2/10^3), expression(2/10^2), expression(2/10^1)))
+        # Plot labels etc.
+        proportionalLabel(0.5, 1.2, expression("Neutral") , cex=1.5, adj=c(0.5, 0.5), xpd=NA, log='y')
+        proportionalLabel(0.04, 1.075, 'A', cex=1.2, adj=c(0.5, 0.5), xpd=NA, log='y')
+        proportionalLabel(-0.0175, 0.16, '_', cex=1.2, adj=c(0.5, 0.5), xpd=NA,log='y', srt=30)
+        proportionalLabel(-0.0175, 0.14, '_', cex=1.2, adj=c(0.5, 0.5), xpd=NA,log='y', srt=30)
+        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90, log='y')        
+
+
+## Panel B: Beneficial Inversions
+    sb  <-  0.02
+    sd  <-  0.01
+    pFixBeneficial   <-  pFixBeneficialY(x=x, sI=sb, Ud=0.02, sd=sd)
+    pFixBeneficial2  <-  pFixBeneficialY(x=x, sI=sb, Ud=0.05, sd=sd)
+    pFixBeneficial3  <-  pFixBeneficialY(x=x, sI=sb, Ud=0.1, sd=sd)
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,3), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        abline(h=2, lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        points(PrFix[U == 0.02]/sI[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        points(PrFix[U == 0.05]/sI[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        points(PrFix[U == 0.1]/sI[U == 0.1]   ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1, at=c(0, 1, 2, 3), 
+                labels=c(0, 
+                         expression(italic(s[b])), 
+                         expression(2*italic(s[b])), 
+                         expression(3*italic(s[b]))))
+        # Plot labels etc.
+        # Annnotations
+        proportionalLabel( 0.03,  1.075, expression(paste(B)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.2,   expression(paste("Beneficial")), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5,  -0.3,  expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+
+## Panel C -- Additive SA Fitness Effects -- r = 1/2
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.01), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # deterministic sI_SA
+        lines(2*sI_SA_vals$sI.vec[5]*sI_SA_vals$Y[5]*A*x*exp(-A*x) ~ x, lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+#        abline(h=2*sI_SA_vals$sI.vec[5], lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        # pInv
+        points(PrFix[U == 0.02]*A*x[U == 0.02]*exp(-A*x[U == 0.02])*sI_SA_vals$Y[5] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        points(PrFix[U == 0.05]*A*x[U == 0.05]*exp(-A*x[U == 0.05])*sI_SA_vals$Y[5] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        points(PrFix[U == 0.1]*A*x[U == 0.1]*exp(-A*x[U == 0.1])*sI_SA_vals$Y[5]  ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        # axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1)
+        # Annnotations
+        proportionalLabel( 0.5,   1.2,   expression(paste("Sexually Antagonistic Selection")), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.03, 1.075, expression(paste(C)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5,   1.075,   expression(paste(italic(r[SA])==0.5)), cex=1.25, adj=c(0.5, 0.5), xpd=NA)
+
+
+
+## Panel D -- Additive SA Fitness Effects -- r = 0.002
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.001), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # deterministic sI_SA
+        abline(h=2*sI_SA_vals$sI.vec[1]*sI_SA_vals$Y[1]*A*P*exp(-A*P), lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        # pInv
+        points(PrFix[U == 0.02]*sI_SA_vals$Y[1]*A*P*exp(-A*P) ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        points(PrFix[U == 0.05]*sI_SA_vals$Y[1]*A*P*exp(-A*P) ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        points(PrFix[U == 0.1]*sI_SA_vals$Y[1]*A*P*exp(-A*P)  ~ x[U == 0.1], pch=24,  bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1)
+        # Annnotations
+        proportionalLabel( 0.03,  1.075, expression(paste(D)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.075,   expression(paste(italic(r[SA])==0.002)), cex=1.25, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5, -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+        # Legend
+        legend(
+               x       =  usr[2]*1,
+               y       =  usr[4]*0.98,
+               legend  =  c(
+                            expression(paste(Pr(fix), " ignoring del. mut."))),
+               lty     =  2,
+               lwd     =  2,
+               col     =  transparentColor(COLS[1], opacity=1),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )        # Legend
+        legend(
+               x       =  usr[2]*1,
+               y       =  usr[4]*0.85,
+               legend  =  c(
+                            expression(paste(italic(U/hs), " = ", 8)),
+                            expression(paste(italic(U/hs), " = ", 20)),
+                            expression(paste(italic(U/hs), " = ", 40))),
+               pch     =  c(21,22,24),
+               col     =  transparentColor(COLS[1], opacity=1),
+               pt.bg     =  transparentColor(COLS[4], opacity=0.8),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )
+
+
+
+}
+
+
+
+#' Probability of spanning SLR & fixing
+#' 
+
+PrSpanSLRFixFigure  <-  function(SLR_pos = c(1/2, 1/10)) {
+
+    ## import data.frames
+    # Neutral sims
+    neutral_N10k  <-  read.csv(file = "./output/data/simResults/shelter_PrFixFig_h0.25_s0.01_N10k_deterministic_q.csv")
+
+    # beneficial sims
+    ben_N10k <-  read.csv(file = "./output/data/simResults/beneficial_PrFixFig_sI0.02_h0.25_s0.01_N10k_deterministic_q.csv")
+
+    ## SA selection
+    SA_add_r1  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.002_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_r5  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.498_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+
+    # Colors
+    colfunc  <-  colorRampPalette(c('#252525', 'grey90'))
+    COLS     <-  colfunc(5)
+
+    # set constants
+    x   <-  seq(0,1,by=0.005)
+    Ny  <-  10^4/2
+    A   <-  1
+    P   <-  0.05
+    SLR_positions  <-  c(0.5, 0.1)
+
+    # Calculate deterministic s_I for SA selection
+    log(0.002)
+    log(0.498)
+    logSeq  <-  seq(from=-6.214608, to=-0.6971552, len=5)
+    rSeq  <-  round(exp(logSeq), digits=3)
+    rSeq[4]  <-  rSeq[4] - 0.001
+    eqFreq.dat  <-  read.csv('./output/data/simResults/SA-EqFreqs-EqualSel_sf0.05_sm0.05_hf0.5_hm0.5.csv', header=TRUE)
+        # subset sI data to these values
+        eqFreq.subdat  <-  eqFreq.dat[eqFreq.dat$r %in% rSeq,]
+        sI.vec  <-  c()
+        for(i in 1:nrow(eqFreq.subdat)) {
+            sI.vec[i]  <-  sI_SA(sm = eqFreq.subdat$sm[i], hm = eqFreq.subdat$hm[i], Yhat = eqFreq.subdat$Y[i], Xfhat = eqFreq.subdat$Xf[i])
+        }
+        sI_SA_vals  <-  data.frame(cbind(eqFreq.subdat, sI.vec))
+
+
+    # set plot layout
+    layout.mat <- matrix(c(1:8), nrow=2, ncol=4, byrow=TRUE)
+    layout     <- layout(layout.mat,respect=TRUE)
+
+### ROW 1: SLR_pos = 1/2
+    SLR_pos  <-  SLR_positions[1]
+## Panel A: Neutral Inversions
+    pFixNeutral  <-  pFixNeutralY(Ny=Ny)
+    par(omi=c(0.25, 0.5, 0.5, 0.25), mar = c(4.5,4,1,1), bty='o', xaxt='s', yaxt='s')    
+     plot(NA, axes=FALSE, type='n', main='', xlim = c(0,1), ylim = c((1/10^6), 4/(10^3)), log='y', ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80', log='y')
+        box()
+        # pInv
+        lines(pFixNeutral*PrCatchSLR(SLR_pos=SLR_pos, x = x) ~ x, lty=2, lwd=2, col=transparentColor('#252525', opacity=1))
+        points(PrFix[U == 0.02]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.02]) ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        points(PrFix[U == 0.05]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.05]) ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        points(PrFix[U == 0.1]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.1])  ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        # Axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1, at=c(1/10^6, 2/10^5, 2/10^4, 2/10^3, 2/10^2, 2/10^1), 
+                labels=c(0, expression(2/10^5), expression(2/N), expression(2/10^3), expression(2/10^2), expression(2/10^1)))
+        # Plot labels etc.
+        # Plot labels etc.
+        proportionalLabel(0.5, 1.1, expression("Neutral") , cex=1.5, adj=c(0.5, 0.5), xpd=NA, log='y')
+        proportionalLabel(0.04, 1.075, 'A', cex=1.2, adj=c(0.5, 0.5), xpd=NA, log='y')
+        proportionalLabel(-0.02, 0.16, '_', cex=1.2, adj=c(0.5, 0.5), xpd=NA,log='y', srt=30)
+        proportionalLabel(-0.02, 0.14, '_', cex=1.2, adj=c(0.5, 0.5), xpd=NA,log='y', srt=30)
+        proportionalLabel(-0.3,  0.5,   expression(paste("Pr(fix | ", italic(x), ", SLR)")), cex=1.2, adj=c(0.5, 0.5), log='y', xpd=NA, srt=90)        
+
+
+## Panel B: Beneficial Inversions
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,2.2), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        lines(2*PrCatchSLR(SLR_pos=SLR_pos, x = x) ~ x, lty=2, lwd=2, col=transparentColor('#252525', opacity=1.0))
+        points(PrFix[U == 0.02]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.02])/sI[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        points(PrFix[U == 0.05]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.05])/sI[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        points(PrFix[U == 0.1]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.1])/sI[U == 0.1]   ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        # axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1, at=c(0, 1, 2, 3), 
+                labels=c(0, 
+                         expression(italic(s[b])), 
+                         expression(2*italic(s[b])), 
+                         expression(3*italic(s[b]))))
+        # Annnotations
+        proportionalLabel( 1.2,  1.22,   expression(paste(SLR[pos], " = 1/2")), cex=1.75, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.03, 1.075, expression(paste(B)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,  1.085,   expression(paste("Beneficial")), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel( 0.5,  -0.25,  expression(paste(italic(x))), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+
+
+## Panel C -- Additive SA Fitness Effects -- r = 0.002
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.00018), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # deterministic sI_SA
+        lines(2*sI_SA_vals$sI.vec[1]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = x) ~ x, lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        # pInv
+        points(PrFix[U == 0.02]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.02]) ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        points(PrFix[U == 0.05]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.05]) ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        points(PrFix[U == 0.1]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.1])  ~ x[U == 0.1], pch=24,  bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        # axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1)
+        # Annnotations
+        proportionalLabel( 1.2,   1.2,   expression(paste("SA Selection")), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.03,  1.075, expression(paste(C)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.075,   expression(paste(italic(r[SA])==0.002)), cex=1.25, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+
+
+## Panel D -- Additive SA Fitness Effects -- r = 1/2
+plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.0095), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # deterministic sI_SA
+        lines(2*sI_SA_vals$sI.vec[5]*A*x*exp(-A*x)*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = x) ~ x, lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+#        abline(h=2*sI_SA_vals$sI.vec[5], lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        # pInv
+        points(PrFix[U == 0.02]*A*x[U == 0.02]*exp(-A*x[U == 0.02])*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.02]) ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        points(PrFix[U == 0.05]*A*x[U == 0.05]*exp(-A*x[U == 0.05])*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.05]) ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        points(PrFix[U == 0.1]*A*x[U == 0.1]*exp(-A*x[U == 0.1])*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.1])  ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        # axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1)
+        # Annnotations
+        proportionalLabel( 0.03, 1.075, expression(paste(D)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5,   1.075,   expression(paste(italic(r[SA])==0.5)), cex=1.25, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel( 0.5, -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+
+
+
+### ROW 2: SLR_pos = 1/2
+    SLR_pos  <-  SLR_positions[2]
+
+## Panel E: Beneficial Inversions
+    pFixNeutral  <-  pFixNeutralY(Ny=Ny)
+     plot(NA, axes=FALSE, type='n', main='', xlim = c(0,1), ylim = c((2/10^7), 4/(10^3)), log='y', ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80', log='y')
+        box()
+        # pInv
+        yvar=pFixNeutral*PrCatchSLR(SLR_pos=SLR_pos, x = x)
+        yvar[1]=2/10^7
+        lines(yvar ~ x, lty=2, lwd=2, col=transparentColor('#252525', opacity=1))
+        points(PrFix[U == 0.02]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.02]) ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        points(PrFix[U == 0.05]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.05]) ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        points(PrFix[U == 0.1]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.1])  ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data=neutral_N10k)
+        # Axes
+        axis(1, las=1)
+        axis(2, las=1, at=c(2/10^7, 2/10^5, 2/10^4, 2/10^3, 2/10^2, 2/10^1), 
+                labels=c(0, expression(2/10^5), expression(2/N), expression(2/10^3), expression(2/10^2), expression(2/10^1)))
+        # Plot labels etc.
+        # Plot labels etc.
+        proportionalLabel(0.04, 1.075, 'E', cex=1.2, adj=c(0.5, 0.5), xpd=NA, log='y')
+        proportionalLabel(-0.02, 0.24, '_', cex=1.2, adj=c(0.5, 0.5), xpd=NA, log='y', srt=30)
+        proportionalLabel(-0.02, 0.22, '_', cex=1.2, adj=c(0.5, 0.5), xpd=NA, log='y', srt=30)
+        proportionalLabel(-0.3,  0.5,   expression(paste("Pr(fix | ", italic(x), ", SLR)")), cex=1.2, adj=c(0.5, 0.5), log='y', xpd=NA, srt=90)        
+        proportionalLabel( 0.5, -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), log='y', xpd=NA)
+
+
+## Panel F: Beneficial Inversions
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,2.2), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # pInv
+        lines(2*PrCatchSLR(SLR_pos=SLR_pos, x = x) ~ x, lty=2, lwd=2, col=transparentColor('#252525', opacity=1.0))
+        points(PrFix[U == 0.02]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.02])/sI[U == 0.02] ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        points(PrFix[U == 0.05]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.05])/sI[U == 0.05] ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        points(PrFix[U == 0.1]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.1])/sI[U == 0.1]   ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data=ben_N10k)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1, at=c(0, 1, 2, 3), 
+                labels=c(0, 
+                         expression(italic(s[b])), 
+                         expression(2*italic(s[b])), 
+                         expression(3*italic(s[b]))))
+        # Annnotations
+        proportionalLabel( 1.2,  1.2,   expression(paste(SLR[pos], " = 1/10")), cex=1.75, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.03, 1.075, expression(paste(F)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel( 0.5,  -0.25,  expression(paste(italic(x))), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+        proportionalLabel( 0.5, -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+
+
+## Panel G -- Additive SA Fitness Effects -- r = 0.002
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.00018), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # deterministic sI_SA
+        lines(2*sI_SA_vals$sI.vec[1]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = x) ~ x, lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        # pInv
+        points(PrFix[U == 0.02]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.02]) ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        points(PrFix[U == 0.05]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.05]) ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        points(PrFix[U == 0.1]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.1])  ~ x[U == 0.1], pch=24,  bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r1)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1)
+        # Annnotations
+        proportionalLabel( 0.03,  1.075, expression(paste(G)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel( 0.5,   1.075,   expression(paste(italic(r[SA])==0.002)), cex=1.25, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5, -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+
+## Panel H -- Additive SA Fitness Effects -- r = 1/2
+plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,0.0095), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # deterministic sI_SA
+        lines(2*sI_SA_vals$sI.vec[5]*A*x*exp(-A*x)*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = x) ~ x, lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+#        abline(h=2*sI_SA_vals$sI.vec[5], lwd=2, lty=2, col=transparentColor(COLS[1], opacity=1.0))
+        # pInv
+        points(PrFix[U == 0.02]*A*x[U == 0.02]*exp(-A*x[U == 0.02])*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.02]) ~ x[U == 0.02], pch=21, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        points(PrFix[U == 0.05]*A*x[U == 0.05]*exp(-A*x[U == 0.05])*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.05]) ~ x[U == 0.05], pch=22, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        points(PrFix[U == 0.1]*A*x[U == 0.1]*exp(-A*x[U == 0.1])*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = x[U == 0.1])  ~ x[U == 0.1],  pch=24, bg=transparentColor(COLS[4], opacity=0.8), data = SA_add_r5)
+        # axes
+        axis(1, las=1)
+        axis(2, las=1)
+        # Annnotations
+        proportionalLabel( 0.03, 1.075, expression(paste(H)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel(-0.3,  0.5,   expression(paste("Fixation Probability")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+#        proportionalLabel( 0.5,   1.075,   expression(paste(italic(r[SA])==0.5)), cex=1.25, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5, -0.3,   expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+        # Legend
+        legend(
+               x       =  usr[2]*0.8,
+               y       =  usr[4]*0.98,
+               legend  =  c(
+                            expression("Ignoring del. mut.")),
+               lty     =  2,
+               lwd     =  2,
+               col     =  transparentColor(COLS[1], opacity=1),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )        # Legend
+        legend(
+               x       =  usr[2]*0.5,
+               y       =  usr[4]*0.875,
+               legend  =  c(
+                            expression(paste(italic(U/hs), " = ", 8)),
+                            expression(paste(italic(U/hs), " = ", 20)),
+                            expression(paste(italic(U/hs), " = ", 40))),
+               pch     =  c(21,22,24),
+               col     =  transparentColor(COLS[1], opacity=1),
+               pt.bg     =  transparentColor(COLS[4], opacity=0.8),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )
+
+
+}
+
+
+
+
+
+#' Expected overall distribution of fixed inversions 
+#' parameter Ud can take values of 0.02, 0.05, 0.1
+expectedInvDistFig  <-  function(Ud = 0.05) {
+
+
+    ## import data.frames
+    # Neutral sims
+    neutral_N10k  <-  read.csv(file = "./output/data/simResults/shelter_PrFixFig_h0.25_s0.01_N10k_deterministic_q.csv")
+
+    # beneficial sims
+    ben_N10k <-  read.csv(file = "./output/data/simResults/beneficial_PrFixFig_sI0.02_h0.25_s0.01_N10k_deterministic_q.csv")
+
+    ## SA selection
+    SA_add_r1  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.002_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+    SA_add_r5  <-  read.csv(file = "./output/data/simResults/SA_PrFixFig_rSA0.498_sf0.05_sm0.05_hSA0.5_h0.25_s0.01_NumEqFreq_N10k.csv")
+
+    # Colors
+    colfunc  <-  colorRampPalette(c('#252525', 'grey90'))
+    COLS     <-  colfunc(5)
+
+    # set constants
+    x              <-  seq(0,1,by=0.005)
+    Ny             <-  10^4/2
+    A              <-  1
+    P              <-  0.05
+    lambda         <-  10
+    SLR_positions  <-  c(0.5, 0.1)
+
+    # Calculate deterministic s_I for SA selection
+    log(0.002)
+    log(0.498)
+    logSeq  <-  seq(from=-6.214608, to=-0.6971552, len=5)
+    rSeq  <-  round(exp(logSeq), digits=3)
+    rSeq[4]  <-  rSeq[4] - 0.001
+    eqFreq.dat  <-  read.csv('./output/data/simResults/SA-EqFreqs-EqualSel_sf0.05_sm0.05_hf0.5_hm0.5.csv', header=TRUE)
+        # subset sI data to these values
+        eqFreq.subdat  <-  eqFreq.dat[eqFreq.dat$r %in% rSeq,]
+        sI.vec  <-  c()
+        for(i in 1:nrow(eqFreq.subdat)) {
+            sI.vec[i]  <-  sI_SA(sm = eqFreq.subdat$sm[i], hm = eqFreq.subdat$hm[i], Yhat = eqFreq.subdat$Y[i], Xfhat = eqFreq.subdat$Xf[i])
+        }
+        sI_SA_vals  <-  data.frame(cbind(eqFreq.subdat, sI.vec))
+
+
+    # set plot layout
+    layout.mat <- matrix(c(1:4), nrow=2, ncol=2, byrow=TRUE)
+    layout     <- layout(layout.mat,respect=TRUE)
+
+### ROW 1: SLR_pos = 1/2
+    SLR_pos  <-  SLR_positions[1]
+
+    # Results for Random Breakpoint Model    
+    neutralRBP  <-  neutral_N10k$PrFix[neutral_N10k$U == Ud]*PrCatchSLR(SLR_pos=SLR_pos, x = neutral_N10k$x[neutral_N10k$U == Ud])*distNewInvRBP(x=neutral_N10k$x[neutral_N10k$U == Ud])
+    neutralRBP  <-  neutralRBP / sum(neutralRBP)
+    beneficialRBP  <-  (ben_N10k$PrFix[ben_N10k$U == Ud]*PrCatchSLR(SLR_pos=SLR_pos, x = ben_N10k$x[ben_N10k$U == Ud])/ben_N10k$sI[ben_N10k$U == Ud])*distNewInvRBP(x=ben_N10k$x[ben_N10k$U == Ud])
+    beneficialRBP  <-  beneficialRBP / sum(beneficialRBP)
+    SAlinked_RBP  <-  SA_add_r1$PrFix[SA_add_r1$U == Ud]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = SA_add_r1$x[SA_add_r1$U == Ud])*distNewInvRBP(x=SA_add_r1$x[SA_add_r1$U == Ud])
+    SAlinked_RBP  <-  SAlinked_RBP / sum(SAlinked_RBP)
+    SAunlinked_RBP  <-  (SA_add_r5$PrFix[SA_add_r5$U == Ud]*A*SA_add_r5$x[SA_add_r5$U == Ud]*exp(-A*SA_add_r5$x[SA_add_r5$U == Ud])*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = SA_add_r5$x[SA_add_r5$U == Ud])*distNewInvRBP(x=SA_add_r5$x[SA_add_r5$U == Ud]))
+    SAunlinked_RBP  <-  SAunlinked_RBP / sum(SAunlinked_RBP)
+
+    # Results for Exponential Model    
+    neutralEXP  <-  neutral_N10k$PrFix[neutral_N10k$U == Ud]*PrCatchSLR(SLR_pos=SLR_pos, x = neutral_N10k$x[neutral_N10k$U == Ud])*distNewInvEXP(x=neutral_N10k$x[neutral_N10k$U == Ud], lambda=10)
+    neutralEXP  <-  neutralEXP / sum(neutralEXP)
+    beneficialEXP  <-  (ben_N10k$PrFix[ben_N10k$U == Ud]*PrCatchSLR(SLR_pos=SLR_pos, x = ben_N10k$x[ben_N10k$U == Ud])/ben_N10k$sI[ben_N10k$U == Ud])*distNewInvEXP(x=ben_N10k$x[ben_N10k$U == Ud], lambda=10)
+    beneficialEXP  <-  beneficialEXP / sum(beneficialEXP)
+    SAlinked_EXP  <-  SA_add_r1$PrFix[SA_add_r1$U == Ud]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = SA_add_r1$x[SA_add_r1$U == Ud])*distNewInvEXP(x=SA_add_r1$x[SA_add_r1$U == Ud], lambda=10)
+    SAlinked_EXP  <-  SAlinked_EXP / sum(SAlinked_EXP)
+    SAunlinked_EXP  <-  (SA_add_r5$PrFix[SA_add_r5$U == Ud]*A*SA_add_r5$x[SA_add_r5$U == Ud]*exp(-A*SA_add_r5$x[SA_add_r5$U == Ud])*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = SA_add_r5$x[SA_add_r5$U == Ud])*distNewInvEXP(x=SA_add_r5$x[SA_add_r5$U == Ud], lambda=10))
+    SAunlinked_EXP  <-  SAunlinked_EXP / sum(SAunlinked_EXP)
+
+    x  <-  neutral_N10k$x[neutral_N10k$U == Ud]
+
+## Panel A: Random Breakpoint 
+    par(omi=c(0.1, 0.4, 0.1, 0.4), mar = c(2.5,3,3,1.5), bty='o', xaxt='s', yaxt='s')    
+     plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,1.05*(max(neutralRBP,beneficialRBP,SAlinked_RBP,SAunlinked_RBP))), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # Probability Density
+        points(neutralRBP ~ x,     pch=21, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=neutralRBP), pch=21, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(beneficialRBP ~ x,  pch=22, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=beneficialRBP), pch=22, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(SAlinked_RBP ~ x,   pch=24, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=SAlinked_RBP), pch=24, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(SAunlinked_RBP ~ x, pch=25, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=SAunlinked_RBP), pch=25, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        # axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1)
+        # Plot labels etc.
+        proportionalLabel( 1.18,  1.275,  expression(paste(SLR[pos], " = 0.5")), cex=1.75, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.03,  1.075, expression(paste(A)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.1,  expression(paste("Random Breakpoint ", italic(f)(italic(x)))), cex=1.3, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel(-0.3,  0.5,    expression(paste("Probability density (scaled)")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+
+## Panel B: Exponential Model
+     plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,1.05*(max(neutralEXP,beneficialEXP,SAlinked_EXP,SAunlinked_EXP))), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # Prob. Density
+        points(neutralEXP ~ x,     pch=21, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=neutralEXP), pch=21, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(beneficialEXP ~ x,  pch=22, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=beneficialEXP), pch=22, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(SAlinked_EXP ~ x,   pch=24, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=SAlinked_EXP), pch=24, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(SAunlinked_EXP ~ x, pch=25, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=SAunlinked_EXP), pch=25, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        # axes
+        axis(1, las=1, labels=NA)
+        axis(2, las=1)
+        # Plot labels etc.
+        proportionalLabel( 0.03,  1.075, expression(paste(B)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,   1.1,  expression(paste("Exponential ", italic(f)(italic(x)))), cex=1.3, adj=c(0.5, 0.5), xpd=NA)
+
+
+### ROW 2: SLR_pos = 1/10
+    SLR_pos  <-  SLR_positions[2]
+
+    # Results for Random Breakpoint Model    
+    neutralRBP  <-  neutral_N10k$PrFix[neutral_N10k$U == Ud]*PrCatchSLR(SLR_pos=SLR_pos, x = neutral_N10k$x[neutral_N10k$U == Ud])*distNewInvRBP(x=neutral_N10k$x[neutral_N10k$U == Ud])
+    neutralRBP  <-  neutralRBP / sum(neutralRBP)
+    beneficialRBP  <-  (ben_N10k$PrFix[ben_N10k$U == Ud]*PrCatchSLR(SLR_pos=SLR_pos, x = ben_N10k$x[ben_N10k$U == Ud])/ben_N10k$sI[ben_N10k$U == Ud])*distNewInvRBP(x=ben_N10k$x[ben_N10k$U == Ud])
+    beneficialRBP  <-  beneficialRBP / sum(beneficialRBP)
+    SAlinked_RBP  <-  SA_add_r1$PrFix[SA_add_r1$U == Ud]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = SA_add_r1$x[SA_add_r1$U == Ud])*distNewInvRBP(x=SA_add_r1$x[SA_add_r1$U == Ud])
+    SAlinked_RBP  <-  SAlinked_RBP / sum(SAlinked_RBP)
+    SAunlinked_RBP  <-  (SA_add_r5$PrFix[SA_add_r5$U == Ud]*A*SA_add_r5$x[SA_add_r5$U == Ud]*exp(-A*SA_add_r5$x[SA_add_r5$U == Ud])*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = SA_add_r5$x[SA_add_r5$U == Ud])*distNewInvRBP(x=SA_add_r5$x[SA_add_r5$U == Ud]))
+    SAunlinked_RBP  <-  SAunlinked_RBP / sum(SAunlinked_RBP)
+
+    # Results for Exponential Model    
+    neutralEXP  <-  neutral_N10k$PrFix[neutral_N10k$U == Ud]*PrCatchSLR(SLR_pos=SLR_pos, x = neutral_N10k$x[neutral_N10k$U == Ud])*distNewInvEXP(x=neutral_N10k$x[neutral_N10k$U == Ud], lambda=10)
+    neutralEXP  <-  neutralEXP / sum(neutralEXP)
+    beneficialEXP  <-  (ben_N10k$PrFix[ben_N10k$U == Ud]*PrCatchSLR(SLR_pos=SLR_pos, x = ben_N10k$x[ben_N10k$U == Ud])/ben_N10k$sI[ben_N10k$U == Ud])*distNewInvEXP(x=ben_N10k$x[ben_N10k$U == Ud], lambda=10)
+    beneficialEXP  <-  beneficialEXP / sum(beneficialEXP)
+    SAlinked_EXP  <-  SA_add_r1$PrFix[SA_add_r1$U == Ud]*A*P*exp(-A*P)*sI_SA_vals$Y[1]*PrCatchSLR(SLR_pos=SLR_pos, x = SA_add_r1$x[SA_add_r1$U == Ud])*distNewInvEXP(x=SA_add_r1$x[SA_add_r1$U == Ud], lambda=10)
+    SAlinked_EXP  <-  SAlinked_EXP / sum(SAlinked_EXP)
+    SAunlinked_EXP  <-  (SA_add_r5$PrFix[SA_add_r5$U == Ud]*A*SA_add_r5$x[SA_add_r5$U == Ud]*exp(-A*SA_add_r5$x[SA_add_r5$U == Ud])*sI_SA_vals$Y[5]*PrCatchSLR(SLR_pos=SLR_pos, x = SA_add_r5$x[SA_add_r5$U == Ud])*distNewInvEXP(x=SA_add_r5$x[SA_add_r5$U == Ud], lambda=10))
+    SAunlinked_EXP  <-  SAunlinked_EXP / sum(SAunlinked_EXP)
+
+
+## Panel C: Random Breakpoint 
+     plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,1.05*(max(neutralRBP,beneficialRBP,SAlinked_RBP,SAunlinked_RBP))), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # Prob Density
+        points(neutralRBP ~ x,     pch=21, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=neutralRBP), pch=21, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(beneficialRBP ~ x,  pch=22, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=beneficialRBP), pch=22, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(SAlinked_RBP ~ x,   pch=24, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=SAlinked_RBP), pch=24, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(SAunlinked_RBP ~ x, pch=25, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=SAunlinked_RBP), pch=25, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        # axes
+        axis(1, las=1)
+        axis(2, las=1)
+        # Plot labels etc.
+        proportionalLabel( 1.18,  1.2,   expression(paste(SLR[pos], " = 0.1")), cex=1.75, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.03,  1.075, expression(paste(C)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel(-0.3,  0.5,    expression(paste("Probability density (scaled)")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5,  -0.3,  expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+
+## Panel D: Exponential Model
+     plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,1.05*(max(neutralEXP,beneficialEXP,SAlinked_EXP,SAunlinked_EXP))), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # Prob. Density
+        points(neutralEXP ~ x,     pch=21, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=neutralEXP), pch=21, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(beneficialEXP ~ x,  pch=22, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=beneficialEXP), pch=22, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(SAlinked_EXP ~ x,   pch=24, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=SAlinked_EXP), pch=24, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        points(SAunlinked_EXP ~ x, pch=25, bg=transparentColor(COLS[4], opacity=0.8), type='b', col=transparentColor('#252525', opacity=1))
+        points(0 ~ weighted.mean(x=x,w=SAunlinked_EXP), pch=25, bg=transparentColor(COLS[1], opacity=1), type='b', col=transparentColor('#252525', opacity=1))
+        # axes
+        axis(1, las=1)
+        axis(2, las=1)
+        # Plot labels etc.
+        proportionalLabel( 0.03,  1.075, expression(paste(D)), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,  -0.3,  expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+        # Legend
+        legend(
+               x       =  usr[2],
+               y       =  usr[4],
+               legend  =  c(
+                            expression(paste("Neutral")),
+                            expression(paste("Beneficial")),
+                            expression(paste("SA Sel. ", r[SA]==0.002)),
+                            expression(paste("SA Sel. ", r[SA]==0.5)),
+                            expression(paste("          Mean lengths"))),
+               col     =  c(1,transparentColor('#252525', opacity=1)),
+               pch     =  c(21,22,24,25,NA),
+               pt.bg   =  transparentColor(COLS[4], opacity=0.8),
+               cex     =  1,
+               xjust   =  1,
+               yjust   =  1,
+               bty     =  'n',
+               border  =  NA
+               )
+        proportionalLabel( px=c(0.43,0.48,0.53,0.58), py=c(0.615,0.615,0.615,0.615), pch=c(21,22,24,25), bg= transparentColor(COLS[1], opacity=1), cex=1, adj=c(0.5, 0.5), xpd=NA, text=FALSE)
+
+
+}
+
+
+
+
+
+
+
+##############################################################
+##############################################################
+##  Supplementary Figures 
+
+PrSpanSLR_Fig  <-  function() {
+
+    # Colors
+    COLS     <-  c('#252525', 'white')
+
+    # set constants
+    x   <-  seq(0,1,by=0.005)
+    SLR_positions  <-  c(0.5, 0.1)
+
+    # set plot layout
+    layout.mat <- matrix(c(1:2), nrow=1, ncol=2, byrow=TRUE)
+    layout     <- layout(layout.mat,respect=TRUE)
+
+    # calculate Pr(SLR | x)
+    PrSLR_0.5  <-  PrCatchSLR(SLR_pos=SLR_positions[1], x = x)
+    PrSLR_0.1  <-  PrCatchSLR(SLR_pos=SLR_positions[2], x = x)
+
+## Panel A: SLR_loc = 1/2
+    par(omi=c(0.25, 0.5, 0.5, 0.25), mar = c(4.5,4,1,1), bty='o', xaxt='s', yaxt='s')    
+     plot(NA, axes=FALSE, type='n', main='', xlim = c(0,1), ylim = c(0, 1.05), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # Shading
+        polygon(x = c(0,SLR_positions[1], SLR_positions[1], 0), y = c(usr[4],usr[4],usr[1],usr[1]), col = transparentColor(COLS[1], opacity=0.2), border=FALSE)
+        # pInv
+        lines(PrSLR_0.5 ~ x, lty=1, lwd=2, col=transparentColor(COLS[1], opacity=1))
+        # Axes
+        axis(1, las=1)
+        axis(2, las=1)
+        # Plot labels etc.
+        proportionalLabel( 0.5, 1.3, expression(SLR[pos]==1/2) , cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel(-0.3, 0.5,  expression(paste("Pr(SLR | ", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
+        proportionalLabel( 0.5, -0.3, expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+#        proportionalLabel( 0.25, 1.15, expression(italic(y)[1]==0.5) , cex=0.75, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel( 0.75, 1.15, expression(italic(y)[3]==0.5) , cex=0.75, adj=c(0.5, 0.5), xpd=NA)
+        #Annotations
+        proportionalLabel(0.072, 0.75, expression(italic(x)/(1 - italic(x))))
+        proportionalRect(0.06, 0.635, 0.4, 0.76)
+        proportionalArrows(px1=0.24, py1=0.6325, px2=0.34, py2=0.5, length=0.05, lwd=1.2)
+
+        proportionalLabel(0.75, 0.73, expression(1))
+        proportionalRect(0.73, 0.64, 0.81, 0.76)
+        proportionalArrows(px1=0.77, py1=0.76, px2=0.77, py2=0.9, length=0.05, lwd=1.2)
+
+
+## Panel B: SLR_loc = 1/10
+     plot(NA, axes=FALSE, type='n', main='', xlim = c(0,1), ylim = c(0, 1.05), ylab='', xlab='', cex.lab=1.2)
+        usr  <-  par('usr')
+        rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
+        plotGrid(lineCol='grey80')
+        box()
+        # Shading
+        polygon(x = c(0,SLR_positions[2], SLR_positions[2], 0), y = c(usr[4],usr[4],usr[1],usr[1]), col = transparentColor(COLS[1], opacity=0.2), border=FALSE)
+        polygon(x = c(SLR_positions[2], (1-SLR_positions[2]), (1-SLR_positions[2]), SLR_positions[2]), y = c(usr[4],usr[4],usr[1],usr[1]), col = transparentColor(COLS[1], opacity=0.1), border=FALSE)
+        # pInv
+        lines(PrSLR_0.1 ~ x, lty=1, lwd=2, col=transparentColor(COLS[1], opacity=1))
+        # Axes
+        axis(1, las=1)
+        axis(2, las=1, labels=NA)
+        # Plot labels etc.
+        proportionalLabel( 0.5, 1.3, expression(SLR[pos]==1/10) , cex=1.5, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5, -0.3, expression(paste("Inversion size (", italic(x), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+#        proportionalLabel( 0.1, 1.15, expression(italic(y)[1]==0.1) , cex=0.75, adj=c(0.5, 0.5), xpd=NA)
+#        proportionalLabel( 0.575, 1.15, expression(italic(y)[3]==0.9) , cex=0.75, adj=c(0.5, 0.5), xpd=NA)
+        #Annotations
+        proportionalLabel(0.075, 0.45, expression(italic(x)/(1 - italic(x))))
+#        proportionalRect(0.06, 0.335, 0.41, 0.46)
+        proportionalArrows(px1=0.235, py1=0.335, px2=0.09, py2=0.12, length=0.05, lwd=1.2)
+
+        proportionalLabel(0.4, 0.6, expression(italic(y[1])/(1 - italic(x))))
+#        proportionalRect(0.39, 0.485, 0.76, 0.61)
+        proportionalArrows(px1=0.575, py1=0.4825, px2=0.71, py2=0.39, length=0.05, lwd=1.2)
+
+        proportionalLabel(0.905, 0.73, expression(1))
+#        proportionalRect(0.885, 0.64, 0.965, 0.76)
+        proportionalArrows(px1=0.925, py1=0.765, px2=0.925, py2=0.9, length=0.05, lwd=1.2)
+
+}
+
+
+
+##############################################################
+##############################################################
+##  Old Figures for additive del. mutations
 
 fixationProbabilityFigure  <-  function() {
 
@@ -511,7 +2024,7 @@ fixationProbabilityFigure  <-  function() {
 }
 
 
-PrCatchFixFigure  <-  function(SDRloc = c(1/2, 1/10)) {
+PrCatchFixFigure  <-  function(SLR_pos = c(1/2, 1/10)) {
 
     ## import data.frames
     # Neutral sims
@@ -543,8 +2056,8 @@ PrCatchFixFigure  <-  function(SDRloc = c(1/2, 1/10)) {
     layout.mat <- matrix(c(1:6), nrow=2, ncol=3, byrow=TRUE)
     layout     <- layout(layout.mat,respect=TRUE)
 
-### ROW 1: SDR_loc = 1/2
-    SDR_loc  <-  SDRloc[1]
+### ROW 1: SLR_pos = 1/2
+    SLR_pos  <-  SLR_pos[1]
 ## Panel A: Neutral Inversions
     pFixNeutral  <-  pFixNeutralY(Ny=Ny)
     par(omi=c(0.1, 0.5, 0.1, 0.5), mar = c(4,5,4,2), bty='o', xaxt='s', yaxt='s')    
@@ -554,10 +2067,10 @@ PrCatchFixFigure  <-  function(SDRloc = c(1/2, 1/10)) {
         plotGrid(lineCol='grey80')
         box()
         # pInv
-        lines(pCatchSDR(SDRLocation=SDR_loc, x = x) ~ x, lwd=2, col=transparentColor('#252525', opacity=1))
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.1), data=neutralNy500)
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.3), data=neutralNy1000)
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.7), data=neutralNy10000)
+        lines(PrCatchSLR(SLR_pos=SLR_pos, x = x) ~ x, lwd=2, col=transparentColor('#252525', opacity=1))
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.1), data=neutralNy500)
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.3), data=neutralNy1000)
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.7), data=neutralNy10000)
         # axes
         axis(1, labels=NA)
         axis(2, las=1, at=c(0, 1/4, 1/2, 3/4, 1), labels = NA)
@@ -600,16 +2113,16 @@ PrCatchFixFigure  <-  function(SDRloc = c(1/2, 1/10)) {
     pFixBeneficial  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)
     Ud  <-  0.1
     pFixBeneficial_2  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)
-    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,1.1*max((benNy1000_2$PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = benNy1000_2$invSizes)/sb),(pFixBeneficial_2*pCatchSDR(SDRLocation=SDR_loc, x = x)/sb))), ylab='', xlab='', cex.lab=1.2)
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,1.1*max((benNy1000_2$PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = benNy1000_2$invSizes)/sb),(pFixBeneficial_2*PrCatchSLR(SLR_pos=SLR_pos, x = x)/sb))), ylab='', xlab='', cex.lab=1.2)
         usr  <-  par('usr')
         rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
         plotGrid(lineCol='grey80')
         box()
         # pInv
-        lines(pFixBeneficial*pCatchSDR(SDRLocation=SDR_loc, x = x)/sb ~ x, lty=1, lwd=2, col=transparentColor('#252525', opacity=1.0))
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)/sb ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.7), data=benNy1000)
-        lines(pFixBeneficial_2*pCatchSDR(SDRLocation=SDR_loc, x = x)/sb ~ x, lty=2, lwd=2, col=transparentColor('#252525', opacity=1.0))
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)/sb ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.1), data=benNy1000_2)
+        lines(pFixBeneficial*PrCatchSLR(SLR_pos=SLR_pos, x = x)/sb ~ x, lty=1, lwd=2, col=transparentColor('#252525', opacity=1.0))
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)/sb ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.7), data=benNy1000)
+        lines(pFixBeneficial_2*PrCatchSLR(SLR_pos=SLR_pos, x = x)/sb ~ x, lty=2, lwd=2, col=transparentColor('#252525', opacity=1.0))
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)/sb ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.1), data=benNy1000_2)
         # axes
         axis(1, labels=NA)
         axis(2, las=1, labels=NA)
@@ -665,11 +2178,11 @@ PrCatchFixFigure  <-  function(SDRloc = c(1/2, 1/10)) {
     sd    <-  0.02
     r_SA  <-  SAaddLinked$r[6]
     qHatSA             <-  qHat_SAAdd(sf=sf, sm=sm)
-    pFixSAunlinkedAdd  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=Ud, sd=sd)*pCatchSDR(SDRLocation=SDR_loc, x = x)
+    pFixSAunlinkedAdd  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=Ud, sd=sd)*PrCatchSLR(SLR_pos=SLR_pos, x = x)
     sISAaddLinked      <-  SAaddLinked$sI[SAaddLinked$r == r_SA]
-    pFixSAlinked       <-  pFix_SALinkedAdd(x=x, sI=sISAaddLinked, A=A, P=P, Ud=Ud, sd=sd)*pCatchSDR(SDRLocation=SDR_loc, x = x)
-    yMaxLinked         <-  1.1*max(c(pFixSAlinked,(SAaddLinkedWF$PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = SAaddLinkedWF$invSizes)/SAaddLinkedWF$invSizes)))
-    yMaxUnLinked       <-  1.1*max(c(pFixSAunlinkedAdd,(SAaddUnLinkedWF$PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = SAaddUnLinkedWF$invSizes)/SAaddUnLinkedWF$invSizes)))
+    pFixSAlinked       <-  pFix_SALinkedAdd(x=x, sI=sISAaddLinked, A=A, P=P, Ud=Ud, sd=sd)*PrCatchSLR(SLR_pos=SLR_pos, x = x)
+    yMaxLinked         <-  1.1*max(c(pFixSAlinked,(SAaddLinkedWF$PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = SAaddLinkedWF$invSizes)/SAaddLinkedWF$invSizes)))
+    yMaxUnLinked       <-  1.1*max(c(pFixSAunlinkedAdd,(SAaddUnLinkedWF$PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = SAaddUnLinkedWF$invSizes)/SAaddUnLinkedWF$invSizes)))
     plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,yMaxUnLinked), ylab='', xlab='', cex.lab=1.2)
         usr  <-  par('usr')
         rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
@@ -677,11 +2190,11 @@ PrCatchFixFigure  <-  function(SDRloc = c(1/2, 1/10)) {
         box()
         # pInv Linked
         lines(pFixSAlinked ~ x, lty=1, lwd=2, col=transparentColor('#252525', opacity=1))
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)/invSizes ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.75), data=SAaddLinkedWF)
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)/invSizes ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.75), data=SAaddLinkedWF)
         axis(2, las=1, at=axTicks(2), labels=sciNotation(axTicks(2),1))
         # pInv Unlinked
         lines(pFixSAunlinkedAdd ~ x, lty=2, lwd=2, col=transparentColor('#252525', opacity=1))
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)/invSizes ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.25), data=SAaddUnLinkedWF)
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)/invSizes ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.25), data=SAaddUnLinkedWF)
         # x Axis
         axis(1, labels=NA)
         # Plot labels etc.
@@ -723,8 +2236,8 @@ PrCatchFixFigure  <-  function(SDRloc = c(1/2, 1/10)) {
                )
 
 
-### ROW 2: SDR_loc = 1/2
-    SDR_loc  <-  SDRloc[2]
+### ROW 2: SLR_pos = 1/2
+    SLR_pos  <-  SLR_pos[2]
 
 ## Panel D: Neutral Inversions
     pFixNeutral  <-  pFixNeutralY(Ny=Ny)
@@ -734,10 +2247,10 @@ PrCatchFixFigure  <-  function(SDRloc = c(1/2, 1/10)) {
         plotGrid(lineCol='grey80')
         box()
         # pInv
-        lines(pCatchSDR(SDRLocation=SDR_loc, x = x) ~ x, lwd=2, col=transparentColor('#252525', opacity=1))
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.1), data=neutralNy500)
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.3), data=neutralNy1000)
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.7), data=neutralNy10000)
+        lines(PrCatchSLR(SLR_pos=SLR_pos, x = x) ~ x, lwd=2, col=transparentColor('#252525', opacity=1))
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.1), data=neutralNy500)
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.3), data=neutralNy1000)
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)*Ny ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.7), data=neutralNy10000)
         # axes
         axis(1, las=1)
         axis(2, las=1, at=c(0, 1/4, 1/2, 3/4, 1), labels = NA)
@@ -779,16 +2292,16 @@ PrCatchFixFigure  <-  function(SDRloc = c(1/2, 1/10)) {
     pFixBeneficial  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)
     Ud  <-  0.1
     pFixBeneficial_2  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)
-    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,1.1*max((benNy1000_2$PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = benNy1000_2$invSizes)/sb),(pFixBeneficial_2*pCatchSDR(SDRLocation=SDR_loc, x = x)/sb))), ylab='', xlab='', cex.lab=1.2)
+    plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,1.1*max((benNy1000_2$PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = benNy1000_2$invSizes)/sb),(pFixBeneficial_2*PrCatchSLR(SLR_pos=SLR_pos, x = x)/sb))), ylab='', xlab='', cex.lab=1.2)
         usr  <-  par('usr')
         rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
         plotGrid(lineCol='grey80')
         box()
         # pInv
-        lines(pFixBeneficial*pCatchSDR(SDRLocation=SDR_loc, x = x)/sb ~ x, lty=1, lwd=2, col=transparentColor('#252525', opacity=1.0))
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)/sb ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.7), data=benNy1000)
-        lines(pFixBeneficial_2*pCatchSDR(SDRLocation=SDR_loc, x = x)/sb ~ x, lty=2, lwd=2, col=transparentColor('#252525', opacity=1.0))
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)/sb ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.1), data=benNy1000_2)
+        lines(pFixBeneficial*PrCatchSLR(SLR_pos=SLR_pos, x = x)/sb ~ x, lty=1, lwd=2, col=transparentColor('#252525', opacity=1.0))
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)/sb ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.7), data=benNy1000)
+        lines(pFixBeneficial_2*PrCatchSLR(SLR_pos=SLR_pos, x = x)/sb ~ x, lty=2, lwd=2, col=transparentColor('#252525', opacity=1.0))
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)/sb ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.1), data=benNy1000_2)
         # axes
         axis(1, las=1)
         axis(2, las=1, at=axTicks(2), labels=c(
@@ -839,11 +2352,11 @@ PrCatchFixFigure  <-  function(SDRloc = c(1/2, 1/10)) {
     sd    <-  0.02
     r_SA  <-  SAaddLinked$r[6]
     qHatSA             <-  qHat_SAAdd(sf=sf, sm=sm)
-    pFixSAunlinkedAdd  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=Ud, sd=sd)*pCatchSDR(SDRLocation=SDR_loc, x = x)
+    pFixSAunlinkedAdd  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=Ud, sd=sd)*PrCatchSLR(SLR_pos=SLR_pos, x = x)
     sISAaddLinked      <-  SAaddLinked$sI[SAaddLinked$r == r_SA]
-    pFixSAlinked       <-  pFix_SALinkedAdd(x=x, sI=sISAaddLinked, A=A, P=P, Ud=Ud, sd=sd)*pCatchSDR(SDRLocation=SDR_loc, x = x)
-    yMaxLinked         <-  1.1*max(c(pFixSAlinked,(SAaddLinkedWF$PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = SAaddLinkedWF$invSizes)/SAaddLinkedWF$invSizes)))
-    yMaxUnLinked       <-  1.1*max(c(pFixSAunlinkedAdd,(SAaddUnLinkedWF$PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = SAaddUnLinkedWF$invSizes)/SAaddUnLinkedWF$invSizes)))
+    pFixSAlinked       <-  pFix_SALinkedAdd(x=x, sI=sISAaddLinked, A=A, P=P, Ud=Ud, sd=sd)*PrCatchSLR(SLR_pos=SLR_pos, x = x)
+    yMaxLinked         <-  1.1*max(c(pFixSAlinked,(SAaddLinkedWF$PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = SAaddLinkedWF$invSizes)/SAaddLinkedWF$invSizes)))
+    yMaxUnLinked       <-  1.1*max(c(pFixSAunlinkedAdd,(SAaddUnLinkedWF$PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = SAaddUnLinkedWF$invSizes)/SAaddUnLinkedWF$invSizes)))
     plot(NA, axes=FALSE, type='n', main='',xlim = c(0,1), ylim = c(0,yMaxUnLinked), ylab='', xlab='', cex.lab=1.2)
         usr  <-  par('usr')
         rect(usr[1], usr[3], usr[2], usr[4], col='white', border=NA)
@@ -851,11 +2364,11 @@ PrCatchFixFigure  <-  function(SDRloc = c(1/2, 1/10)) {
         box()
         # pInv Linked
         lines(pFixSAlinked ~ x, lty=1, lwd=2, col=transparentColor('#252525', opacity=1))
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)/invSizes ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.75), data=SAaddLinkedWF)
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)/invSizes ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.75), data=SAaddLinkedWF)
         axis(2, las=1, at=axTicks(2), labels=sciNotation(axTicks(2),1))
         # pInv Unlinked
         lines(pFixSAunlinkedAdd ~ x, lty=2, lwd=2, col=transparentColor('#252525', opacity=1))
-        points(PrFixSimDel*pCatchSDR(SDRLocation=SDR_loc, x = invSizes)/invSizes ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.25), data=SAaddUnLinkedWF)
+        points(PrFixSimDel*PrCatchSLR(SLR_pos=SLR_pos, x = invSizes)/invSizes ~ invSizes, pch=21, bg=transparentColor('#252525', opacity=0.25), data=SAaddUnLinkedWF)
         # x Axis
         axis(1, las=1)
         # Plot labels etc.
@@ -1206,7 +2719,7 @@ SA_Y_validatePinv  <-  function(s.df, r.df) {
 
 
 
-expectedDistributionFig  <-  function(SDRloc = 1/2) {
+expectedDistributionFig  <-  function(SLR_pos = 1/2) {
 
     # set constants
     x     <-  seq(0,1,by=0.005)
@@ -1229,23 +2742,23 @@ expectedDistributionFig  <-  function(SDRloc = 1/2) {
     layout.mat <- matrix(c(1:4), nrow=2, ncol=2, byrow=TRUE)
     layout     <- layout(layout.mat,respect=TRUE)
 
-### ROW 1: SDR_loc = 1/2
-    SDR_loc  <-  SDRloc[1]
+### ROW 1: SLR_pos = 1/2
+    SLR_pos  <-  SLR_pos[1]
 
     # Results for Random Breakpoint Model    
-    neutralRBP  <-  pFixNeutralY(Ny=Ny)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvRBP(x=x)
+    neutralRBP  <-  pFixNeutralY(Ny=Ny)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvRBP(x=x)
     neutralRBP  <-  neutralRBP / sum(neutralRBP)
-    beneficialRBP  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvRBP(x=x)
+    beneficialRBP  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvRBP(x=x)
     beneficialRBP  <-  beneficialRBP / sum(beneficialRBP)
-    sexAntagRBP  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=UdSA, sd=sdSA)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvRBP(x=x)
+    sexAntagRBP  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=UdSA, sd=sdSA)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvRBP(x=x)
     sexAntagRBP  <-  sexAntagRBP / sum(sexAntagRBP)
 
     # Results for Exponential Model    
-    neutralEXP  <-  pFixNeutralY(Ny=Ny)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvEXP(x=x, lambda=10)
+    neutralEXP  <-  pFixNeutralY(Ny=Ny)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvEXP(x=x, lambda=10)
     neutralEXP  <-  neutralEXP / sum(neutralEXP)
-    beneficialEXP  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvEXP(x=x, lambda=10)
+    beneficialEXP  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvEXP(x=x, lambda=10)
     beneficialEXP  <-  beneficialEXP / sum(beneficialEXP)
-    sexAntagEXP  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=UdSA, sd=sdSA)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvEXP(x=x,lambda=10)
+    sexAntagEXP  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=UdSA, sd=sdSA)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvEXP(x=x,lambda=10)
     sexAntagEXP  <-  sexAntagEXP / sum(sexAntagEXP)
 
 ## Panel A: Random Breakpoint 
@@ -1288,23 +2801,23 @@ expectedDistributionFig  <-  function(SDRloc = 1/2) {
         proportionalLabel( 0.5,   1.075, expression(paste(italic(f),"(", italic(x),") = ", italic(lambda)~italic(e)^-italic(lambda)~italic(x)/(1 - italic(e)^-italic(lambda)))), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
 
 
-### ROW 2: SDR_loc = 1/10
-    SDR_loc  <-  SDRloc[2]
+### ROW 2: SLR_pos = 1/10
+    SLR_pos  <-  SLR_pos[2]
 
     # Results for Random Breakpoint Model    
-    neutralRBP  <-  pFixNeutralY(Ny=Ny)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvRBP(x=x)
+    neutralRBP  <-  pFixNeutralY(Ny=Ny)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvRBP(x=x)
     neutralRBP  <-  neutralRBP / sum(neutralRBP)
-    beneficialRBP  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvRBP(x=x)
+    beneficialRBP  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvRBP(x=x)
     beneficialRBP  <-  beneficialRBP / sum(beneficialRBP)
-    sexAntagRBP  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=UdSA, sd=sdSA)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvRBP(x=x)
+    sexAntagRBP  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=UdSA, sd=sdSA)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvRBP(x=x)
     sexAntagRBP  <-  sexAntagRBP / sum(sexAntagRBP)
 
     # Results for Exponential Model    
-    neutralEXP  <-  pFixNeutralY(Ny=Ny)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvEXP(x=x, lambda=10)
+    neutralEXP  <-  pFixNeutralY(Ny=Ny)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvEXP(x=x, lambda=10)
     neutralEXP  <-  neutralEXP / sum(neutralEXP)
-    beneficialEXP  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvEXP(x=x, lambda=10)
+    beneficialEXP  <-  pFixBeneficialY(x=x, sI=sb, Ud=Ud, sd=sd)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvEXP(x=x, lambda=10)
     beneficialEXP  <-  beneficialEXP / sum(beneficialEXP)
-    sexAntagEXP  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=UdSA, sd=sdSA)*pCatchSDR(SDRLocation=SDR_loc, x = x)*distNewInvEXP(x=x,lambda=10)
+    sexAntagEXP  <-  pFix_SAUnlinkedAdd(x=x, sm=sm, qHat=qHatSA, A=A, Ud=UdSA, sd=sdSA)*PrCatchSLR(SLR_pos=SLR_pos, x = x)*distNewInvEXP(x=x,lambda=10)
     sexAntagEXP  <-  sexAntagEXP / sum(sexAntagEXP)
 
 ## Panel C: Random Breakpoint 

@@ -1,0 +1,9 @@
+\contentsline {section}{\numberline {S1}Neutral inversions}{3}{section.1}
+\contentsline {subsection}{\numberline {S1.1}Fixation Probability}{3}{subsection.1.1}
+\contentsline {section}{\numberline {S2}Sexual Antagonism}{8}{section.2}
+\contentsline {subsection}{\numberline {S2.1}Recursions (Y chromosome inversion)}{8}{subsection.2.1}
+\contentsline {subsection}{\numberline {S2.2}Eigenvalues (Y chromosome inversion)}{10}{subsection.2.2}
+\contentsline {subsection}{\numberline {S2.3}Recursions (X chromosome inversion)}{12}{subsection.2.3}
+\contentsline {subsection}{\numberline {S2.4}Eigenvalues (X chromosome inversion)}{14}{subsection.2.4}
+\contentsline {section}{\numberline {S3}Expected length distributions of evolutionary strata}{17}{section.3}
+\contentsline {section}{\numberline {S4}Supplementary Figures}{19}{section.4}

@@ -26,13 +26,55 @@ rm(list=ls())
 library(extrafont)
 library(fontcm)
 loadfonts(quiet = TRUE)
-library(data.table)
 
 source('R/functions-figures.R')
 
 
 ########################
-# Figures for the paper
+#' Main Figures
+########################
+
+# Replaced with Combined fig
+# toPdf(pFixFig_Neutral_Ben(), figPath(name='PrFix_neutral_ben_delMut.pdf'), width=5, height=10)
+# embed_fonts(figPath(name='PrFix_neutral_ben_delMut.pdf'))
+
+
+# Preferred fig including Pr(catch SA) below
+# toPdf(pFixFig_combined(), figPath(name='PrFix_combined_delMut.pdf'), width=8, height=6)
+# embed_fonts(figPath(name='PrFix_combined_delMut.pdf'))
+
+
+ toPdf(pFix_pCatchSAFig_combined(), figPath(name='PrFix_PrCatchSA_combined_delMut.pdf'), width=7, height=7)
+ embed_fonts(figPath(name='PrFix_PrCatchSA_combined_delMut.pdf'))
+
+ toPdf(PrSpanSLRFixFigure(), figPath(name='PrFix_SpanSLR_combined_delMut.pdf'), width=10, height=7)
+ embed_fonts(figPath(name='PrFix_SpanSLR_combined_delMut.pdf'))
+
+source('R/functions-figures.R')
+ toPdf(expectedInvDistFig(Ud=0.02), figPath(name='Expected_xDistribution_delMut_Ud0_02.pdf'), width=7, height=7)
+ embed_fonts(figPath(name='Expected_xDistribution_delMut_Ud0_02.pdf'))
+
+
+ 
+
+########################
+#' Supplementary Figures
+########################
+
+ toPdf(pFixFig_SA_r(), figPath(name='PrFix_SA_r_delMut.pdf'), width=8, height=6)
+ embed_fonts(figPath(name='PrFix_SA_r_delMut.pdf'))
+
+ toPdf(pFixFig_SA_biasedSel_r(), figPath(name='PrFix_biasedSA_r_delMut.pdf'), width=8, height=4)
+ embed_fonts(figPath(name='PrFix_biasedSA_r_delMut.pdf'))
+
+
+source('R/functions-figures.R')
+
+ toPdf(PrSpanSLR_Fig(), figPath(name='PrSpanSLR_SuppFig.pdf'), width=7, height=4)
+ embed_fonts(figPath(name='PrSpanSLR_SuppFig.pdf'))
+
+########################
+# Old Figures
 ########################
 
 

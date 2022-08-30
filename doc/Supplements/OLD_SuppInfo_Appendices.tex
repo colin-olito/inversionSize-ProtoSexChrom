@@ -738,10 +738,67 @@ Our approximation of $s_I \approx \lambda - 1$, must be interpreted cautiously f
  \setcounter{figure}{0}
 
 The recursions and invasion analysis for the two-locus models of inversions with selection during both haploid and diploid phases are very similar to those described above for sexual antagonism. For brevity, we refer readers to the supplementary Mathematica notebook files (.nb) available in the Online Supplementary Material. There we present the recursions and a brief walk-through of the invasion analyses for models of rare inversions spanning the SDR on the Y and X chromosomes.
+\bigskip
+
+\hl{Excerpt from Version 1}
+We have so far considered selection in the diploid phase only. However, sexually reproducing eukaryotes have alternating life-cycles with a reduced (e.g., haploid) and doubled (e.g., diploid) phase \citep{Strasburger1894, Roe1975}. Moreover, haploid selection can play an important role in maintaining genetic polymorphisms \citep{ImmlerOtto2011}, as well as facilitating sex chromosome turnovers \citep{OttoScottOsmond2018} and transitions between sex determination systems \citep{MuralidharVeller2018}. The models summarized above for sexually antagonistic selection can be easily extended to incorporate haploid selection, although this opens up many new possible selection scenarios \citep{ImmlerOtto2011, OttoScottOsmond2018}. For simplicity and brevity, we briefly consider a general model of haploid and diploid selection, and illustrate the model predictions with a single representative case of ploidally antagonistic selection. The critical difference between this model and those of SA selection above with respect to the fixation probability of inversions is that $s_I$ is now a function of fitness during both haploid and diploid phases. 
+
+Consider the simple case of a rare inversion capturing the SDR and a single selected locus on the Y chromosome. To keep the model general, and relatively simple, we retain arbitrary fitness expressions for the haploid ($v^{f}_{1}$, $v^{f}_{2}$ for female, and $v^{m}_{1}$, $v^{m}_{2}$ for male gametes, respectively) and diploid genotypes ($w^{f}_{11}$, $w^{f}_{12}$, $w^{f}_{22}$ in females, and $w^{m}_{11}$, $w^{m}_{12}$, $w^{m}_{22}$ in males). For Y-linked inversions capturing a single selected locus, the approximate selection coefficient for the rare inversion under arbitrary linkage ($0 \leq r \leq 1/2$) is:
+
+\begin{equation}\label{eq:sI-HapDip-2LocLinked}
+	s_I \approx \frac{\big( v^{f}_{2} \hat{X}_f (v^{m}_{2} w^{m}_{22} -v^{m}_{1} w^{m}_{12} ) - v^{f}_{1} (1 - \hat{X}_f) (v^{m}_{1} w^{m}_{11} - v^{m}_{2} w^{m}_{12}) \big) (1 - \hat{Y})} {v^{f}_{1} (1 - \hat{X}_f) \big( v^{m}_{1} w^{m}_{11} (1 - \hat{Y}) + v^{m}_{2} w^{m}_{12} \hat{Y} \big) + v^{f}_{2} \hat{X}_f \big( v^{m}_{2} w^{m}_{22} \hat{Y} + v^{m}_{1} (w^{m}_{12} - w^{m}_{12} \hat{Y}) \big)},
+\end{equation}
+
+\noindent where $\hat{Y}$ and $\hat{X_f}$ represent the equilibrium frequency of the $2^{\text{nd}}$ allele at the selected locus in Y chromosomes and X chromosomes in females when the inversion originates. For a rare inversion to invade, $s_I > 0$ must be satisfied for Eq(\ref{eq:sI-HapDip-2LocLinked}), which requires that the net fitness effect of the inversion across haploid and diploid phases is male-beneficial, or there is sufficient linkage disequilibrium to offset a female-bias in selection. For example, under weak ploidally antagonistic selection with additive fitness in the diploid phase (see Table.~\hl{XXX}), an inversion capturing the SDR and the $2^{\text{nd}}$ allele at the selected locus can invade when $s > 2 t + O(s^2,t^2)$.  
+
+Calculation of the fixation probability, and the effects of deleterious mutations are the same as for the sexually antagonistic model described above, and result in qualitatively similar predictions. Selection, whether during the haploid, diploid, or both phases, influences the fixation probability of differently sized inversions similarly, and should favour small to intermediately sized inversions.
+
+For X-linked inversions, the addition of selection during the haploid phase expands the conditions under which an inversion can be maintained as a balanced polymorphism. The overall result parallels that for sexually antagonistic selection: while X-linked inversions can contribute to reduced recombination between sex chromosomes, they are far less likely to fix and thereby form evolutionary strata than Y-linked inversions. \vspace{12pt}
+
+\noindent {\itshape Key result: The fixation probability of different sized inversions is a similar function for selection occuring during the haploid, diploid, or both phases. Inversion length will therefore provide little insight into when during the life cycle indirect selection for suppressed recombination occurs.} 
 
 
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \section{Expected length distributions of evolutionary strata} \label{AppC:DistFixedInv}
+ \renewcommand{\theequation}{D\arabic{equation}}
+ \setcounter{equation}{0}
+ \renewcommand{\thefigure}{D\arabic{figure}}
+ \setcounter{figure}{0}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+With expressions for the fixation probability of new inversions under different evolutionary scenarios in hand, it is possible to derive the corresponding expected distributions of fixed inversion sizes. Following \citet{vanValenLevins1968, Santos1986}, and \citet{ConnallonOlito2020}, the proportion of fixed inversions of length $x$ is given by 
+
+\begin{equation} \label{eq:generalInvSizeModel}
+	g(x) = \frac{\Pr(\text{fix} \mid x) f(x)} {\int \Pr(\text{fix} \mid x) f(x)\,dx},
+\end{equation}
+
+\noindent where $f(x)$ is the probability of a new inversion of length $x$, and $\Pr(\text{fix} \mid x)$ is the fixation probability given in Eq(\ref{eq:generalPrFix}) with appropriate substitutions made for each selection scenario. $x\int \Pr(\text{fix} \mid x) f(x)\,dx$ gives the mean length of fixed inversions. Little is known about how the mutational process for new inversions shapes $f(x)$, and we therefore examine two scenarios representing plausible extremes to illustrate the spectrum of possible outcomes.
+
+On one hand, if inversion breakpoints are distributed uniformly across the chromosome arm containing the SLR, then $f(x) = 2(1 - x)$, an extreme scenario we refer to as the "random breakpoint" model \citep{vanValenLevins1968}. On the other hand, if inversion breakpoints tend to be clustered, for example in chromosomal regions with repetitive sequences, the resulting enrichment of smaller new inversions can be modeled phenomenologically using a truncated exponential distribution:
+
+\begin{equation} \label{eq:truncExp}
+	f(x) = \frac{ \lambda e^{-\lambda x}} {1 - e^{-\lambda}},
+\end{equation}
+
+\noindent where $\lambda$ is the exponential rate parameter \citep{PevznerTesler2003, PengPevznerTesler2006, ChengKirkpatrick2019,ConnallonOlito2020}. For strongly skewed distributions (e.g., $\lambda > 10$, as we assume here), the truncation effect is negligible, and $f(x)$ is approximately equal to the numerator of Eq(\ref{eq:truncExp}). We refer to this other extreme as the "exponential model". Two key results emerge from the expected distributions of evolutionary strata length.
+
+
+ \begin{figure}[htbp]
+ \centering
+ \includegraphics[scale=0.65]{./expDistFig}
+ \caption{Probability density functions for fixed inversions expanding the SLR on Y chromosomes ($g(x)$ from Eq[\ref{eq:generalInvSizeModel}]). For clarity, we show results for the model of Sexual Anatagonism with an initially unlinked SA locus ($r = 1/2$). Results are shown for the same parameter values as in Fig.~\ref{fig:fixProbFig} and Fig.~\ref{fig:probCatchFixFig}: $U_d = 0.2$, $s_d = 0.02$, and $s_I = 0.02$ for Neutral and Beneficial inversion scenarios, and $s_f = s_m = 0.05$, $U_d = 0.1$, $s_d = 0.01$, $A = 1$ for the Sex Antagonism scenario.}
+ \label{fig:ExpectedDistFig}
+ \end{figure}
+
+
+First, the results are again strongly influenced by the location of the SLR. When the SLR is located in the center of the chromosome arm, neutral inversions are expected to give rise to a triangular distribution of evolutionary strata lengths, with a mean at $x = 1/2$ (Fig.\ref{fig:ExpectedDistFig}A). Both beneficial inversions and those capturing SA loci yield largely overlapping distributions of smaller inversions, although the distribution for sex antagonism has a distinctly heavier tail under the random breakpoint model. The differences between the distributions for neutral and selected inversions becomes exaggerated when the SLR is located near one end of the chromosome arm (Fig.\ref{fig:ExpectedDistFig}C). The distribution for neutral inversions now has three distinct regions, yielding a plateau shape, while those for beneficial and sex antagonistic inversions become increasingly skewed and overlapping. The unusual form of the length distributions for neutral inversions under the random breakpoint model results from the appearance of $(1 - x)$ terms in both $f(x)$ and $\Pr(\text{SLR} \mid x)$, which cancel in different ranges of $x$ depending on the location of the SLR.  
+
+Second, the expected length distributions of evolutionary strata are sensitive to the form of $f(x)$. In contrast to the random breakpoints model, when inversion breakpoints are clustered the predicted distributions of strata length are highly overlapping for all three selection scenarios, and are practically indistinguishable when the SLR is located near the end of the chromosome arm (Fig.~\ref{fig:ExpectedDistFig}B,D). \vspace{12pt}
+
+\noindent {\itshape Key result: Two dominant factors influence the expected length distribution of fixed inversions expanding the SLR: the location of the ancestral SLR on the chromosome arm, and the length distribution of new inversions. While different selection scenarios are expected to result in distinct distributions under a random breakpoint model, the length distributions become practically indistinguishable under an exponential model of new inversion lengths.} 
 
 % \begin{figure}[h!]
 % \includegraphics[scale=0.7]{./recSimFig_add}
@@ -751,8 +808,8 @@ The recursions and invasion analysis for the two-locus models of inversions with
 % \newpage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- \section{Supplementary Figures} \label{AppD}
- \renewcommand{\theequation}{D\arabic{equation}}
+ \section{Supplementary Figures} \label{SuppFigs}
+ \renewcommand{\theequation}{S\arabic{equation}}
  \setcounter{equation}{0}
  \renewcommand{\thefigure}{S\arabic{figure}}
  \setcounter{figure}{0}
