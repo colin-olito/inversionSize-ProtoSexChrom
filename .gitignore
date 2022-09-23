@@ -111,4 +111,5 @@ doc/genetics-submission/*
 # Untracked Files for public repo #
 ###################################
 doc/*
+notes/*
 *CoverLetter*.tex
