@@ -1,4 +1,4 @@
-\begin{thebibliography}{84}
+\begin{thebibliography}{85}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Agrawal and Whitlock(2012)}]{AgrawalWhitlock2012}
@@ -6,15 +6,15 @@ Agrawal, A.~F. and Whitlock, M.~C. 2012: Mutation load: the fitness of
   individuals in populations where deleterious alleles are abundant.
 \newblock Ann.~Rev.~Ecol.~Evol.~Syst. 43:115--135.
 
-\bibitem[{Almeida et~al.(2019)Almeida, Proux-Wera, Churcher, Soler, Dainat,
+\bibitem[{Almeida et~al.(2020)Almeida, Proux-Wera, Churcher, Soler, Dainat,
   Pucholt, Nordlund, Martin, R\"{o}nnberg-W\"{a}stljung, Bj\"{o}rn, Berlin, and
-  Mank}]{AlmeidaMank2019}
+  Mank}]{AlmeidaMank2020}
 Almeida, P., Proux-Wera, E., Churcher, A., Soler, L., Dainat, J., Pucholt, P.,
   Nordlund, J., Martin, T., R\"{o}nnberg-W\"{a}stljung, Bj\"{o}rn, N., Berlin,
-  S., and Mank, J.~E. 2019: Single-molecule genome assembly of the Basket
-  Willow, {\itshape Salix viminalis}, reveals earliest stages of sex chromosome
-  expansion.
-\newblock bioRxiv doi: https://doi.org/10.1101/589804:1--40.
+  S., and Mank, J.~E. 2020: Genome assembly of the Basket Willow, {\itshape
+  Salix viminalis}, reveals earliest stages of sex chromosome expansion.
+\newblock BMC Biology 18:78.
+\newblock DOI: https://doi.org/10.1186/s12915-020-00808-1.
 
 \bibitem[{Bachtrog(2008)}]{Bachtrog2008}
 Bachtrog, D. 2008: The temporal dynamics of processes underlying Y chromosome
@@ -171,6 +171,12 @@ Handley, L.~L., Ceplitis, H., and Ellegren, H. 2004: Evolutionary strata on the
   chicken Z chromosome: Implications for sex chromosome evolution.
 \newblock Genetics 167:367--376.
 
+\bibitem[{Harkess(2017)}]{Harkess2017}
+Harkess, A. 2017: The asparagus genome sheds light on the origin and evolution
+  of a young Y chromosome.
+\newblock Nature Comm. 8:1279.
+\newblock DOI: 10.1038/s41467-017-01064-8.
+
 \bibitem[{Hobza et~al.(2018)Hobza, Hudzieczek, Kubat, Cegan, Vyskot, Kejnovsky,
   and Janousek}]{HobzaEtAl2018}
 Hobza, R., Hudzieczek, V., Kubat, Z., Cegan, R., Vyskot, B., Kejnovsky, E., and
@@ -183,6 +189,7 @@ Hobza, R., Hudzieczek, V., Kubat, Z., Cegan, R., Vyskot, B., Kejnovsky, E., and
 Huber, C., Durvasula, A., Hancock, A., and Lohmueller, K. 2018: Gene expression
   drives the evolution of dominance.
 \newblock Nature Communications 9:2750.
+\newblock DOI: 10.1038/s41467-018-05281-7.
 
 \bibitem[{Ironside(2010)}]{Ironside2010}
 Ironside, J.~E. 2010: No amicable divorce? Challenging the notion that sexual
@@ -194,7 +201,7 @@ Jay, P., Tezenas, E., V{\'e}ber, A., and Giraud, T. 2022: Sheltering of
   deleterious mutations explains the stepwise extension of recombination
   suppression on sex chromosomes and other supergenes.
 \newblock PLoS Biology 20:e3001698.
-\newblock Doi: https://doi.org/10.1371/journal.pbio.3001698.
+\newblock DOI: https://doi.org/10.1371/journal.pbio.3001698.
 
 \bibitem[{Jordan and Charlesworth(2012)}]{JordanCharlesworth2012}
 Jordan, C.~Y. and Charlesworth, D. 2012: The potential for sexually
@@ -352,8 +359,8 @@ Qiu, S., Bergero, R., Guirao-Rico, S., Campos, J., Cezard, T., Gharbi, K., and
   boundary of a plant pseudoautosomal region.
 \newblock Molecular Ecology 25:414--430.
 
-\bibitem[{{R Core Team}(2018)}]{RSoftware}
-{R Core Team}. 2018: R: A Language and Environment for Statistical Computing.
+\bibitem[{{R Core Team}(2020)}]{RSoftware}
+{R Core Team}. 2020: R: A Language and Environment for Statistical Computing.
 \newblock R Foundation for Statistical Computing, Vienna, Austria.
 
 \bibitem[{Rice(1984)}]{Rice1984}
@@ -408,7 +415,7 @@ Singhal, S., Leffler, E.~M., Sannareddy, K., Turner, O., Isaac~Venn, Hooper,
 \bibitem[{\'{U}beda et~al.(2010)\'{U}beda, Haig, and Patten}]{UbedaPatten2010}
 \'{U}beda, F., Haig, D., and Patten, M. 2010: Stable linkage disequilibrium
   owing to sexual antagonism.
-\newblock Proc.~Roy.~Soc.~B (doi:10.1098/rspb.2010.1201):1--8.
+\newblock Proc.~Roy.~Soc.~B (DOI:10.1098/rspb.2010.1201):1--8.
 
 \bibitem[{van Doorn and Kirkpatrick(2007)}]{vanDoornKirkpatrick2007}
 van Doorn, G.~S. and Kirkpatrick, M. 2007: Turnover of sex chromosomes induced

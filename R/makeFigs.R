@@ -73,6 +73,15 @@ source('R/functions-figures.R')
  toPdf(PrSpanSLR_Fig(), figPath(name='PrSpanSLR_SuppFig.pdf'), width=7, height=4)
  embed_fonts(figPath(name='PrSpanSLR_SuppFig.pdf'))
 
+
+
+source('R/functions-figures.R')
+ toPdf(expectedInvDistFig(Ud=0.05), figPath(name='Expected_xDistribution_delMut_Ud0_05.pdf'), width=7, height=7)
+ embed_fonts(figPath(name='Expected_xDistribution_delMut_Ud0_05.pdf'))
+
+ toPdf(expectedInvDistFig(Ud=0.1), figPath(name='Expected_xDistribution_delMut_Ud0_1.pdf'), width=7, height=7)
+ embed_fonts(figPath(name='Expected_xDistribution_delMut_Ud0_1.pdf'))
+
 ########################
 # Old Figures
 ########################

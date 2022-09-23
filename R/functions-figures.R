@@ -2556,7 +2556,7 @@ recombEffectSATwoLocus  <-  function() {
         proportionalLabel( 0.5,  1.2,   expression(paste("Equal Selection")), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
         proportionalLabel(0.5, 1.075, expression(paste(italic(s[f]), " = ", italic(s[m]))), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=0)        
         proportionalLabel(-0.25,  0.5,   expression(paste(italic(s[I]))), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=90)        
-        proportionalLabel( 0.5,  -0.25,  expression(paste(italic(r))), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
+        proportionalLabel( 0.5,  -0.25,  expression(paste(italic(r[SA]))), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
 
 
 
@@ -2579,7 +2579,7 @@ recombEffectSATwoLocus  <-  function() {
         proportionalLabel( 0.03,  1.075, expression(paste(bold(B))), cex=1.2, adj=c(0.5, 0.5), xpd=NA)
         proportionalLabel( 0.5,  1.2,   expression(paste("Biased Selection")), cex=1.5, adj=c(0.5, 0.5), xpd=NA)
         proportionalLabel(0.5, 1.075, expression(paste(italic(s[f]), " = ", italic(s[m]), "/(1 - ", italic(s[m]), ")")), cex=1.2, adj=c(0.5, 0.5), xpd=NA, srt=0)        
-        proportionalLabel( 0.5,  -0.25,  expression(paste(italic(r))), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
+        proportionalLabel( 0.5,  -0.25,  expression(paste(italic(r[SA]))), cex=1.2, adj=c(0.5, 0.5), xpd=NA)        
         # Legend
         legend(
                x       =  usr[2],

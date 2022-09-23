@@ -1,9 +1,13 @@
-\contentsline {section}{\numberline {S1}Neutral inversions}{3}{section.1}
-\contentsline {subsection}{\numberline {S1.1}Fixation Probability}{3}{subsection.1.1}
-\contentsline {section}{\numberline {S2}Sexual Antagonism}{8}{section.2}
-\contentsline {subsection}{\numberline {S2.1}Recursions (Y chromosome inversion)}{8}{subsection.2.1}
-\contentsline {subsection}{\numberline {S2.2}Eigenvalues (Y chromosome inversion)}{10}{subsection.2.2}
-\contentsline {subsection}{\numberline {S2.3}Recursions (X chromosome inversion)}{12}{subsection.2.3}
-\contentsline {subsection}{\numberline {S2.4}Eigenvalues (X chromosome inversion)}{14}{subsection.2.4}
-\contentsline {section}{\numberline {S3}Expected length distributions of evolutionary strata}{17}{section.3}
-\contentsline {section}{\numberline {S4}Supplementary Figures}{19}{section.4}
+\select@language {english}
+\contentsline {section}{Appendix \numberline {A}Neutral inversions}{3}{Appendix.a.A}
+\contentsline {subsection}{\numberline {A.1}Deterministic two-locus recursions}{3}{subsection.a.A.1}
+\contentsline {subsection}{\numberline {A.2}Recursions when inversion captures either a wild-type or deleterious allele}{4}{subsection.a.A.2}
+\contentsline {subsection}{\numberline {A.3}Multilocus recursion for inversion frequency}{5}{subsection.a.A.3}
+\contentsline {section}{Appendix \numberline {B}Beneficial inversions}{5}{Appendix.a.B}
+\contentsline {subsection}{\numberline {B.1}Multilocus recursions for inversion frequency}{5}{subsection.a.B.1}
+\contentsline {section}{Appendix \numberline {C}Inversions capturing sexually antagonistic loci}{6}{Appendix.a.C}
+\contentsline {subsection}{\numberline {C.1}Deterministic two-locus recursions}{6}{subsection.a.C.1}
+\contentsline {subsection}{\numberline {C.2}Eigenvalues and approximation for inversion invasion selection coefficient, $s_I$}{8}{subsection.a.C.2}
+\contentsline {subsection}{\numberline {C.3}Multilocus recursions for inversion frequency}{9}{subsection.a.C.3}
+\contentsline {subsection}{\numberline {C.4}Inversions on X chromosomes}{10}{subsection.a.C.4}
+\contentsline {section}{Appendix \numberline {D}Supplementary Figures}{15}{Appendix.a.D}
