@@ -25,6 +25,7 @@ toDev <- function(expr, dev, filename, ..., verbose=TRUE) {
   if ( verbose )
     cat(sprintf('Creating %s\n', filename))
   dev(filename, family='CM Roman', ...)
+#    dev(filename, family='Arial', ...)
   on.exit(dev.off())
   eval.parent(substitute(expr))
 }
