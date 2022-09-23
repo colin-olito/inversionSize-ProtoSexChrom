@@ -106,8 +106,9 @@ vignettes/*.pdf
 Mathematica/*
 output/*
 papers/*
-doc/notes/*
+doc/*notes/*
 doc/genetics-submission/*
 # Untracked Files for public repo #
 ###################################
+doc/*
 *CoverLetter*.tex
