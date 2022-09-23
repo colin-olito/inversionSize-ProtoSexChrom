@@ -1,4 +1,4 @@
-# The evolution of suppressed recombination between sex chromosomes by chromosomal inversions
+# The evolution of inversions suppressing recombination between sex chromosomes
 
 ## Overview
 
