@@ -23,10 +23,6 @@ rm(list=ls())
 ###############
 # Dependencies
 ###############
-library(extrafont)
-library(fontcm)
-loadfonts(quiet = TRUE)
-
 source('R/functions-figures.R')
 
 

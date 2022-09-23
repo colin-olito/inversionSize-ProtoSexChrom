@@ -7,7 +7,7 @@ This is a GitHub repository for the development of a theoretical population gene
 
 ## Abstract
 
-The idea that sex-differences in selection drive the evolution of suppressed recombination between sex chromosomes is well-developed in population genetics. Yet, despite a now classic body of theory, empirical evidence that sexual antagonism drives the evolution of recombination suppression remains meagre and alternative hypotheses underdeveloped. We investigate whether the length of ’evolutionary strata’ formed by chromosomal inversions that expand the non-recombining sex determining region (SDR) on recombining sex chromosomes can offer an informative signature of whether, and how, selection influenced their fixation. We develop population genetic models that determine how the length of a chromosomal inversion that expands the SDR affects its fixation probability for three categories of inversions: (i) neutral, (ii) directly beneficial (i.e., due to breakpoint or position effects), and (iii) indirectly beneficial (especially those capturing sexually antagonistic loci). Our models predict that neutral inversions should leave behind a unique signature of large evolutionary strata, and that it will often be difficult or impossible to distinguish between smaller strata fromed by the fixation of directly or indirectly beneficial inversions. An interesting and unexpected prediction of our models is that the physical location of the ancestral SDR on the sex chromosomes is the most important factor influencing the relation between inversion size and the probability of expanding the SDR. Our findings raise a suite of new questions about how physical as well as selective processes influence the evolution of recombination suppression between sex chromosomes.
+The idea that sex-differences in selection drive the evolution of suppressed recombination between sex chromosomes is well-developed in population genetics. Yet, despite a now classic body of theory, empirical evidence that sexually antagonistic selection drives the evolution of recombination arrest remains meagre and alternative hypotheses underdeveloped. Here, we investigate whether the length of 'evolutionary strata' formed by chromosomal inversions expanding the non-recombining sex-linked region (SLR) on proto sex chromosomes can be informative of how selection influenced their fixation. We develop population genetic models to show how the length of an SLR-expanding inversion, and the presence of partially recessive deleterious mutational variation, affect the fixation probability of three different classes of inversions: (*i*) neutral, (*ii*) directly beneficial (i.e., due to breakpoint or positional effects), and (*iii*) those capturing sexually antagonistic (SA) loci. Our models indicate that neutral inversions, and those capturing an SA locus in linkage disequilibrium with the ancestral SLR, will exhibit a strong fixation bias towards small inversions; while unconditionally beneficial inversions, and those capturing a previously unlinked SA locus, will generally favour fixation of larger inversions. The signatures of evolutionary strata size left behind by different selection regimes are strongly influenced by parameters affecting the deleterious mutation load, the physical position of the ancestral SLR, and the shape of the length distribution of new inversions (about which we know very little).
 
 ## Citing information
 
@@ -18,6 +18,58 @@ Olito, C. and J.K. Abbott. 2020. The evolution of suppressed recombination betwe
 *Paper citation*:
 
 Citing information for the final paper will be provided when it is made [available through the publisher](URL). You can also contact me directly if you would like a reprint. 
+
+##  Instructions
+
+This repository provides all code necessary to (1) rerun the simulations and (2) produce the main figures from the paper as .pdf's. To do so, please follow these basic steps:
+
+1. Clone the repo using the following: `git clone https://https://github.com/colin-olito/inversionSize-ProtoSexChrom`. Alternatively, on the project main page on GitHub, click on the green button `clone` or `download` and then click on `Download ZIP`.  
+2. Check that you have a recent version of [`R`](https://www.r-project.org/) installed. 
+3. Make sure that the working directory for your R session is the root directory of this repo (e.g., `inversionSize-ProtoSexChrom-master/`).
+4. Run `./R/run-WFSims-prFix-recDel.R` either interactively in R or in terminal. The simulations can take quite some time to run.
+5. *Note*: We use CM fonts in the figures. To do this, be sure to correctly install the `R` font packages `extrafont` and `fontcm`. Alternatively, comment out L.4-6 in `./R/functions-figures`, and change the default font family to 'Arial' by swapping L.27 & L.28.
+6. Run `makeFigs.R`, which will read the simulation output files and generate the main figures in the paper and supplementary material.  
+
+
+## Repository structure and contents 
+
+The directories/files in this repository needed to reproduce the results for this study are as follows:  
+
+- **`R`**   
+	- `functions-beneficial-recDel.R`  
+	- `functions-figures.R`  
+	- `functions-SA-recDel.R`  
+	- `functions-sheltering-recDel.R`  
+- **`output`**   
+	- **`data`**   
+			- **`simResults`**   
+				- `SA-eqFreqs-*.R`  
+				- `SA-sI-*.R`  
+	- **`figures`***  
+- `makeFigs.R`  
+- `run-WFSims-prFix-recDel.R`  
+- `LICENSE.txt`   
+
+**Note:** * `./output` and `./output/figures` directories will be created locally the first time `run-WFSims-prFix-recDel.R` is run (*if needed*).
+
+
+### File & variable descriptions
+
+Plotting function files
+- `functions-figures.R`: general plotting functions.   
+
+Simulation function files for each selection scenario.
+- `functions-beneficial-recDel.R`  
+- `functions-figures.R`  
+- `functions-SA-recDel.R`  
+- `functions-sheltering-recDel.R`  
+
+Executables
+- `run-WFSims-prFix-recDel.R`: executable functions for W-F simulations of inversions under deleterious mutation pressure.   
+- `makeFigs.R`: executable functions to create .pdf figures using simulation output files.
+
+License    
+- `LICENSE.txt`: MIT license for this repository.  
 
 
 ## Contact & bug reporting
