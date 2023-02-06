@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a GitHub repository for the development of a theoretical population genetics research project that is now published in *Evolution* under the title "*The evolution of suppressed recombination between sex chromosomes and the lengths of evolutionary strata*" (doi: [https://doi.org/10.1101/2020.03.23.003558](https://doi.org/10.1101/2020.03.23.003558)). Here you can find all of the necessary code to reproduce the simulations presented in the published paper and appendices, and the LaTeX files used to compile the manuscript. Other supplementary material for the paper can be downloaded as an online appendix from [link to publisher website](URL).
+This is a GitHub repository for the development of a theoretical population genetics research project that is now accepted for publication in *Evolution* under the title "*The evolution of suppressed recombination between sex chromosomes and the lengths of evolutionary strata*". In this repository you can find all of the necessary R code to reproduce the simulations and figures presented in the published paper and appendices. Other supplementary material, including online Appendixes and Mathematica code to reproduce important analytical results can be downloaded from the publisher. A link will be provided when it is made [available through the publisher](URL)[link to publisher website](URL).
 
 
 ## Abstract
@@ -11,13 +11,13 @@ The idea that sex-differences in selection drive the evolution of suppressed rec
 
 ## Citing information
 
-*Preprint citation*:
-
-Olito, C. and J.K. Abbott. 2020. The evolution of suppressed recombination between sex chromosomes by chromosomal inversions. bioRXiv doi: [https://doi.org/10.1101/2020.03.23.003558](https://doi.org/10.1101/2020.03.23.003558).
-
 *Paper citation*:
 
 Citing information for the final paper will be provided when it is made [available through the publisher](URL). You can also contact me directly if you would like a reprint. 
+
+*Preprint info*:
+
+Olito, C. and J.K. Abbott. 2020. The evolution of suppressed recombination between sex chromosomes by chromosomal inversions. bioRXiv doi: [https://doi.org/10.1101/2020.03.23.003558](https://doi.org/10.1101/2020.03.23.003558).
 
 ##  Instructions
 
