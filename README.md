@@ -1,8 +1,8 @@
-# The evolution of inversions suppressing recombination between sex chromosomes
+# The evolution of suppressed recombination between sex chromosomes and the lengths of evolutionary strata
 
 ## Overview
 
-This is a GitHub repository for the development of a theoretical population genetics research project that is now published under the title "*The evolution of suppressed recombination between sex chromosomes by chromosomal inversions*" (doi: [https://doi.org/10.1101/2020.03.23.003558](https://doi.org/10.1101/2020.03.23.003558)). Here you can find all of the necessary code to reproduce the simulations presented in the published paper and appendices, and the LaTeX files used to compile the manuscript. Other supplementary material for the paper can be downloaded as an online appendix from [link to publisher website](URL).
+This is a GitHub repository for the development of a theoretical population genetics research project that is now published in *Evolution* under the title "*The evolution of suppressed recombination between sex chromosomes and the lengths of evolutionary strata*" (doi: [https://doi.org/10.1101/2020.03.23.003558](https://doi.org/10.1101/2020.03.23.003558)). Here you can find all of the necessary code to reproduce the simulations presented in the published paper and appendices, and the LaTeX files used to compile the manuscript. Other supplementary material for the paper can be downloaded as an online appendix from [link to publisher website](URL).
 
 
 ## Abstract
