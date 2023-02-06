@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a GitHub repository for the development of a theoretical population genetics research project that is now accepted for publication in *Evolution* under the title "*The evolution of suppressed recombination between sex chromosomes and the lengths of evolutionary strata*". In this repository you can find all of the necessary R code to reproduce the simulations and figures presented in the published paper and appendices. Other supplementary material, including online Appendixes and Mathematica code to reproduce important analytical results can be downloaded from the publisher. A link will be provided when it is made [available through the publisher](URL)[link to publisher website](URL).
+This is a GitHub repository for the development of a theoretical population genetics research project that is now accepted for publication in *Evolution* under the title "*The evolution of suppressed recombination between sex chromosomes and the lengths of evolutionary strata*". In this repository you can find all of the necessary R code to reproduce the simulations and figures presented in the published paper and appendices. A link to other supplementary material -- including online Appendixes and Mathematica code to reproduce important analytical results -- will be provided when it is made [available through the publisher](URL).
 
 
 ## Abstract
@@ -13,7 +13,7 @@ The idea that sex-differences in selection drive the evolution of suppressed rec
 
 *Paper citation*:
 
-Citing information for the final paper will be provided when it is made [available through the publisher](URL). You can also contact me directly if you would like a reprint. 
+Citing information for the final paper will be provided when it is made [available through the publisher](URL). You can also contact me directly to request a reprint or any of the supplementary material. 
 
 *Preprint info*:
 
