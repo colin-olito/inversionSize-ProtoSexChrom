@@ -45,7 +45,7 @@ wBarY  <-  function(sm, hm, qtXf, qtY, n, r, s, h, YI.t, qt.I.wt, qt.Y.wt, qt.Y.
 	pt.Y.del   <-  1 - qt.Y.del
 	pt.Y.wt    <-  1 - qt.Y.wt
 		  YI.t*(1 - sm*hm*(1 - qtXf))*(( 1 - s*(h*(1 - XaOv.t.del) + XaOv.t.del) )^r) * (1 - s*(h*(pt.I.wt*XaOv.t.wt + qt.I.wt*(1 - XaOv.t.wt)) + qt.I.wt*XaOv.t.wt))^(n-r) +
-	(1 - YI.t)*(1 - sm*(hm*((1 - qtXf)*qtY + qtXf*(1 - qtY)) + (1 - qtXf)*(1 - qtY)))*( (1 - s*(h*((1 - XaOv.t.del)*qt.Y.del + XaOv.t.del*pt.Y.del) + XaOv.t.del*qt.Y.del)^r) * ((1 - s*(h*((1 - XaOv.t.wt)*qt.Y.wt + XaOv.t.wt*pt.Y.wt) + XaOv.t.wt*qt.Y.wt))^(n - r)) )
+	(1 - YI.t)*(1 - sm*(hm*((1 - qtXf)*qtY + qtXf*(1 - qtY)) + (1 - qtXf)*(1 - qtY)))*( (1 - s*(h*((1 - XaOv.t.del)*qt.Y.del + XaOv.t.del*pt.Y.del) + XaOv.t.del*qt.Y.del))^r * ((1 - s*(h*((1 - XaOv.t.wt)*qt.Y.wt + XaOv.t.wt*pt.Y.wt) + XaOv.t.wt*qt.Y.wt))^(n - r)) )
 }
 
 YI.prime  <-  function(sm, hm, qtXf, qtY, n, r, s, h, YI.t, qt.I.wt, qt.Y.wt, qt.Y.del, XaOv.t.wt, XaOv.t.del, ...) {
@@ -341,8 +341,8 @@ YI.multi.prime  <-  function(sm, hm, qtXf, qtY, n, r, s, h, YI.t, qt.I.wt, qt.Y.
 # Function to estimate Pr(fix | x) for different inversion sizes (x)
 # Looping over different Population size and U/s ratios
 makeDataPrFixInvSize  <-  function(sf = 0.01, hf = 1/2, sm = 0.1, hm = 1/2, rSA=1/2, eq.df=NA,
-																	 h = 0.1, s = 0.01, Us.factor.vals = c(2, 5, 10),
-																	 nTot = 10^4, N.vals = c(10^3, 10^4), Nfname = "") {
+								   h = 0.1, s = 0.01, Us.factor.vals = c(2, 5, 10),
+								   nTot = 10^4, N.vals = c(10^3, 10^4), Nfname = "") {
 
 	# Containers
 	PrFix       <-  c()

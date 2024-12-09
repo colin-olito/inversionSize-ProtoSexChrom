@@ -72,6 +72,16 @@ source('R/functions-figures.R')
  toPdf(expectedInvDistFig(Ud=0.1), figPath(name='Expected_xDistribution_delMut_Ud0_1.pdf'), width=7, height=7)
  embed_fonts(figPath(name='Expected_xDistribution_delMut_Ud0_1.pdf'))
 
+# Deterministic inversion frequencies for X- and Y-linked inversions
+ toPdf(determInvFreqPlot(wesMovie = 'Zissou1'), figPath(name='detEqInvFreqFig.pdf'), width=10, height=10)
+ embed_fonts(figPath(name='detEqInvFreqFig.pdf'))
+
+
+# Effect of recombination (r_SA) on inversion selection coefficent under SA selection
+ toPdf(recombEffectSATwoLocus(), figPath(name='SA-sI-recombEffectTwoLocus.pdf'), width=8, height=6)
+ embed_fonts(figPath(name='SA-sI-recombEffectTwoLocus.pdf'))
+
+
 
 
 ########################
@@ -97,8 +107,6 @@ source('R/functions-figures.R')
 # toPdf(expectedDistributionFig(SDRloc = c(1/2, 1/10)), figPath(name='expDistFig.pdf'), width=7, height=7)
 # embed_fonts(figPath(name='expDistFig.pdf'))
 
-# toPdf(determInvFreqPlot(wesMovie = 'Zissou1'), figPath(name='detEqInvFreqFig.pdf'), width=10, height=10)
-# embed_fonts(figPath(name='detEqInvFreqFig.pdf'))
 
 # toPdf(recombEffectSATwoLocus(), figPath(name='recombEffect.pdf'), width=10, height=6)
 # embed_fonts(figPath(name='recombEffect.pdf'))

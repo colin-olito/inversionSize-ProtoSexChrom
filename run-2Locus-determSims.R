@@ -53,6 +53,11 @@ detXSAInversionEQFreqs(selRange = c(0,1), by=0.01, generations = 10000,
 
 
 
+
+
+
+
+
 selRange = c(0.02,1)
 by=0.02
 generations = 10000

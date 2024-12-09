@@ -240,7 +240,7 @@ runWFSimsYinversionValidatePinvApprox  <-  function(par.list) {
 		pInvApprox2  <-  c()
 		for(i in 1:length(sfs)) {
 			par.list$sf  <-  sfs[i]
-			initEq       <-  getEqFreqs(par.list=par.list, eq.threshold=1e-6)
+			initEq       <-  getEqFreqsY(par.list=par.list, eq.threshold=1e-6)
 			aFreq.eq     <-  initEq$aFreq.eq
 			Fx.eq        <-  initEq$Fx.eq
 			Fy.eq        <-  initEq$Fy.eq
@@ -294,7 +294,7 @@ runWFSimsYinversionValidatePinvApprox  <-  function(par.list) {
 		pInvApprox2  <-  c()
 		for(i in 1:length(rs)) {
 			par.list$r   <-  rs[i]
-			initEq       <-  getEqFreqs(par.list=par.list, eq.threshold=1e-6)
+			initEq       <-  getEqFreqsY(par.list=par.list, eq.threshold=1e-6)
 			aFreq.eq     <-  initEq$aFreq.eq
 			Fx.eq        <-  initEq$Fx.eq
 			Fy.eq        <-  initEq$Fy.eq

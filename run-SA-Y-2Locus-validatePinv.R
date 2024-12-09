@@ -18,8 +18,8 @@
 rm(list=ls())
 #####################
 ##  Dependencies
-source('R/functions-SA-Y-WFSims.R')
-source('R/functions-SA-Y-determSims.R')
+source('./R/functions-SA-Y-2locus-WFSims.R')
+source('./R/functions-SA-Y-2locus-determSims.R')
 
 
 ##############################################################################################
@@ -37,13 +37,14 @@ source('R/functions-SA-Y-determSims.R')
 	upper  <-  sm / (1 - sm)
 	sfs    <-  seq((lower - 1*(upper - lower)),(upper + 1*(upper - lower)), length=15)
 	par.list  <-  list(
-					   gen    =  10000,
-					   N      =  30000,
-					   sm     =  sm,
-					   sf     =  sfs,
-					   hm     =  1/2,
-					   hf     =  1/2,
-					   r      =  1/2
+					   gen     =  10000,
+					   N       =  30000,
+					   selType =  "SA",
+					   sm      =  sm,
+					   sf      =  sfs,
+					   hm      =  1/2,
+					   hf      =  1/2,
+					   r       =  1/2
 					  )
 runWFSimsYinversionValidatePinvApprox(par.list=par.list)
 

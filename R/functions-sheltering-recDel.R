@@ -16,7 +16,15 @@
 #' 			for the evolution of inversions suppressing 
 #' 			recombination between sex chromosomes. 
 #' 			Evolution X: XX--XX. doi: 10.1111/evo.14496.
-#'		
+#'
+#'	IMPORTANT: THIS FILE IS DEPRECATED! 
+#   					 	FUNCTIONS wBarY and YI.prime included an error from 
+#' 							the original Olito et al. (2022) paper, which has 
+#'							now been corrected (see Olito et al. 2024;
+#'							https://doi.org/10.1093/evolut/qpae060.
+#'							
+#'							see revised file './R/functions-Neutral-WFSims-CORRECTION.R'
+#'							for corrected code based on the Olito et al. (2024) correction.
 
 
 
@@ -31,7 +39,7 @@ wBarY  <-  function(n, r, s, h, YI.t, qt.I.wt, qt.Y.wt, qt.Y.del, XaOv.t.wt, XaO
 	pt.Y.del   <-  1 - qt.Y.del
 	pt.Y.wt    <-  1 - qt.Y.wt
 		  YI.t*(( 1 - s*(h*(1 - XaOv.t.del) + XaOv.t.del) )^r) * (1 - s*(h*(pt.I.wt*XaOv.t.wt + qt.I.wt*(1 - XaOv.t.wt)) + qt.I.wt*XaOv.t.wt))^(n-r) +
-	(1 - YI.t)*( (1 - s*(h*((1 - XaOv.t.del)*qt.Y.del + XaOv.t.del*pt.Y.del) + XaOv.t.del*qt.Y.del)^r) * ((1 - s*(h*((1 - XaOv.t.wt)*qt.Y.wt + XaOv.t.wt*pt.Y.wt) + XaOv.t.wt*qt.Y.wt))^(n - r)) )
+	(1 - YI.t)*( (1 - s*(h*((1 - XaOv.t.del)*qt.Y.del + XaOv.t.del*pt.Y.del) + XaOv.t.del*qt.Y.del))^r * ((1 - s*(h*((1 - XaOv.t.wt)*qt.Y.wt + XaOv.t.wt*pt.Y.wt) + XaOv.t.wt*qt.Y.wt))^(n - r)) )
 }
 
 YI.prime  <-  function(n, r, s, h, YI.t, qt.I.wt, qt.Y.wt, qt.Y.del, XaOv.t.wt, XaOv.t.del, ...) {
